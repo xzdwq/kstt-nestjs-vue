@@ -1,4 +1,7 @@
 export default (): object => ({
+  app: {
+    title: 'kstt'
+  },
   port: +process.env.PORT,
   database: {
     ms_kstt: {
