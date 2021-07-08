@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "noLib": false,
+    "lib": ["es7"],
+    "allowJs": true,
+    "paths": {
+      "@cfg/*": ["configuration/*"],
+      "@auth/*": ["src/auth/*"],
+      "@db/*": ["src/database/*"],
+      "@ks3/*": ["src/ks3/*"]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
