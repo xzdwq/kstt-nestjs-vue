@@ -1,5 +1,5 @@
 
-![Image](assets/banner.png)
+![Image](assets/preview.png)
 
 ## Описание
 
