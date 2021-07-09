@@ -4,6 +4,8 @@
 
 ![alt text](assets/banner.png)
 
+![plot](assets/banner.png)
+
 ## Описание
 
 Проект включает в себя три основные технологии: NestJS, VueJS и TailwindCSS  
