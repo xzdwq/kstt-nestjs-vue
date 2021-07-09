@@ -33,3 +33,42 @@
     @apply border-gray-300;
   }
 }
+
+.theme-light {
+  --bg-background-primary: white;
+  --bg-background-secondary: #f7fafc;
+  --bg-background-tertiary: #e2e8f0;
+
+  --bg-background-form: white;
+
+  --text-copy-primary: #799bd6;
+  --text-copy-secondary: #4a5568;
+
+  --border-border-color-primary: white;
+}
+
+.theme-dark {
+  --bg-background-primary: #0D2438;
+  --bg-background-secondary: #102C44;
+  --bg-background-tertiary: #1E3951;
+
+  --bg-background-form: #1a202c;
+
+  --text-copy-primary: #cbd5e0;
+  --text-copy-secondary: #e2e8f0;
+
+  --border-border-color-primary: #1a202c;
+}
+
+.theme-dark nav .active {
+  @apply border-white border-b;
+}
+
+.content-wrapper {
+  transition: background-color .25s;
+}
+
+.content-wrapper > header,
+.content-wrapper > main {
+  background-color: var(--bg-background-primary);
+}
