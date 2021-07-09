@@ -10,6 +10,9 @@ import { KS3Module } from '@ks3/ks3.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: [
+        `.env.${process.env.NODE_ENV}`
+      ],
       load: [
         configuration
       ],
@@ -18,7 +21,7 @@ import { KS3Module } from '@ks3/ks3.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         ...config.get('database').ms_kstt,
-        synchronize: true,
+        synchronize: config.get('mode') === 'development' ? true : false,
         extra: {
           validateConnection: false,
           trustServerCertificate: true

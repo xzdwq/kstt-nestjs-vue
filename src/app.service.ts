@@ -8,8 +8,7 @@ export class AppService {
   ){}
   getLogin(): object {
     return {
-      title: this.config.get('app').title,
-      message: 'Hello World!'
+      message: 'Login Form'
     };
   }
 }

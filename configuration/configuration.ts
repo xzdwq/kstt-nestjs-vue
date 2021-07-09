@@ -1,7 +1,7 @@
+const MODE = process.env.NODE_ENV;
+
 export default (): object => ({
-  app: {
-    title: 'kstt'
-  },
+  mode: MODE,
   port: +process.env.PORT,
   database: {
     ms_kstt: {

@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "watch-ui": "vue-cli-service build --watch --mode development",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "serve": "vue-cli-service serve --mode development",
+    "build": "vue-cli-service build --mode production"
   },
   "dependencies": {
     "copy-webpack-plugin": "^9.0.1",
