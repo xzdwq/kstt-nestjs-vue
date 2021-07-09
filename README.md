@@ -1,10 +1,4 @@
-<div align="center">
-<img src="assets/banner.png" />
-</div>
-
-![alt text](assets/banner.png)
-
-![plot](assets/banner.png)
+![kstt banner](assets/banner.png?raw=true)
 
 ## Описание
 
