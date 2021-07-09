@@ -1,5 +1,5 @@
 <div align="center">
-![alt text](assets/banner.png)
+<img src="assets/banner.png">
 </div>
 
 ## Описание
