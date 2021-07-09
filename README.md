@@ -1,3 +1,5 @@
+![alt text]('./assets/nest.png')
+
 ## Описание
 
 Проект включает в себя три основные технологии: NestJS, VueJS и TailwindCSS  
