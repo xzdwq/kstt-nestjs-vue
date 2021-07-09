@@ -1,4 +1,4 @@
-![alt text]('./assets/nest.png')
+![alt text](assets/nest.png)
 
 ## Описание
 
