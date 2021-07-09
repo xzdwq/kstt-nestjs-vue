@@ -1,4 +1,6 @@
+<div align="center">
 ![alt text](assets/banner.png)
+</div>
 
 ## Описание
 
