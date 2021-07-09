@@ -2,6 +2,8 @@
 <img src="assets/banner.png" />
 </div>
 
+![alt text](assets/banner.png)
+
 ## Описание
 
 Проект включает в себя три основные технологии: NestJS, VueJS и TailwindCSS  
