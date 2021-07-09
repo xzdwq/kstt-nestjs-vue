@@ -1,4 +1,4 @@
-![kstt banner](assets/banner.png?raw=true)
+![kstt banner](https://raw.githubusercontent.com/xzdwq/kstt-nestjs-vue/master/assets/banner.png)
 
 ## Описание
 
