@@ -24,7 +24,8 @@ module.exports = {
         },
         copy: {
           primary: 'var(--text-copy-primary)',
-          secondary: 'var(--text-copy-hover)',
+          secondary: 'var(--text-copy-secondary)',
+          hover: 'var(--text-copy-hover)',
         },
         transparent: 'transparent',
         current: 'currentColor',
@@ -35,6 +36,15 @@ module.exports = {
           450: '#202e78' //class="text-indigo-450"
         },
       },
+      keyframes: {
+        'swing': {
+          '0%,100%' : { transform: 'rotate(15deg)' },
+          '50%' : { transform: 'rotate(-15deg)' },
+        }
+      },
+      animation: {
+        'swing': 'swing 1s infinite'
+      }
     },
     container: {
       center: true,

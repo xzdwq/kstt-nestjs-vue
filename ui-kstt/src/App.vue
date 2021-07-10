@@ -1,10 +1,10 @@
 <template>
   <div
-    class="min-h-screen content-wrapper text-copy-primary bg-background-primary"
+    class="pt-1 min-h-screen content-wrapper text-copy-primary bg-background-primary"
     :class="getTheme"
   >
-    <div class="container">
-      <header-navbar />
+    <header-navbar />
+    <div class="container pt-4">
       <router-view />
     </div>
   </div>

@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import { themeSwitcherModule } from "@/store/modules/themeSwitcher";
+import { bellNotification } from "@/store/modules/bellNotification";
 
 export default createStore({
   state: {
@@ -11,6 +12,7 @@ export default createStore({
   actions: {
   },
   modules: {
-    themeSwitcherModule
+    themeSwitcherModule,
+    bellNotification
   }
 })

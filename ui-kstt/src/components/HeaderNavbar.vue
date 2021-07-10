@@ -1,22 +1,31 @@
 <template>
-<div>
-  <nav>
-    <div class="p-2">
-      <ul class="flex">
-        <li class="mr-6" v-for="link in links" :key="link">
-          <router-link class="text-blue-500 hover:text-blue-800" :to="link.href">
-            {{link.title}}
-          </router-link>
-        </li>
-      <theme-switcher :theme="theme" @themeChanged="updateTheme" />
-      </ul>
+  <nav class="md:container md:mx-auto flex justify-between p-3 border-2 border-transparent rounded-lg bg-background-secondary">
+    <ul class="flex">
+      <li
+        class="mr-6"
+        v-for="link in links"
+        :key="link"
+      >
+        <router-link
+          class="text-copy-primary hover:text-copy-hover select-none font-bold"
+          :to="link.href"
+        >
+          {{link.title}}
+        </router-link>
+      </li>
+    </ul>
+    <div class="flex w-auto">
+      <cog-settings />
+      <bell-notification />
+      <theme-switcher />
     </div>
   </nav>
-</div>
 </template>
 
 <script>
+import CogSettings from './CogSettings.vue'
 export default {
+  components: { CogSettings },
   name: 'header-navbar',
   data: () => ({
     theme: '',
