@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply overflow-hidden
+  }
   h1 {
     @apply text-2xl;
   }
@@ -75,4 +78,45 @@
 .content-wrapper > header,
 .content-wrapper > main {
   background-color: var(--bg-background-primary);
+}
+
+.pop-area {
+  max-height: calc(100vh - 100px);
+}
+
+.pop-enter-active {
+  animation: pop-in .5s;
+}
+
+.pop-leave-active {
+  animation: pop-in .5s reverse;
+}
+
+@keyframes pop-in {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(0%); }
+}
+
+@-webkit-keyframes pop-in {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(0%); }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #939393;
+  border-radius: 100vh;
+  border: none;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
 }

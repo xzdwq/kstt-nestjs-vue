@@ -1,7 +1,9 @@
 <template>
-  <a
-    href="#"
+<Popover v-slot="{ open }">
+  <PopoverButton
+    :class="open ? 'text-opacity-90' : ''"
     class="flex text-copy-primary hover:text-copy-hover mr-2"
+    @click="readNotification"
   >
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -25,18 +27,44 @@
     >
       <sup>{{ getNotification }}</sup>
     </span>
-  </a>
+  </PopoverButton>
+  <PopoverOverlay
+    class="bg-black"
+    :class='open ? "opacity-50 fixed inset-0" : "opacity-0"'
+  />
+  <transition name="pop">
+  <PopoverPanel
+    class="absolute z-10 rounded-md pop-area overflow-auto w-96 top-16 right-5 text-copy-primary bg-background-secondary"
+  >
+    <div class="relative grid gap-8 p-7 lg:grid-cols-2 text-right break-words">
+      <div>123</div>
+      <div>456</div>
+      <div>7891011213141516 sfsdhfj hjshdf hsdkfjhk jsdf</div>
+      <div>
+        ABC
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus tenetur nihil provident! Laboriosam rerum sint harum magnam itaque accusantium quia aspernatur error corrupti vitae, est adipisci quas sunt excepturi repellat. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reprehenderit accusantium inventore possimus animi aliquid corporis quod, commodi maxime? Provident harum error unde dignissimos distinctio nostrum veniam inventore, reprehenderit quis esse?
+      </div>
+    </div>
+  </PopoverPanel>
+  </transition>
+</Popover>
 </template>
 <script>
 import {
-  mapGetters
+  mapGetters,
+  mapMutations
 } from 'vuex'
 export default {
   name: 'bell-notification',
   computed: {
     ...mapGetters({
-      getNotification: 'bellNotification/getNotification'
+      getNotification: 'bellNotificationModule/getNotification'
     })
   },
+  methods: {
+    ...mapMutations({
+      readNotification: 'bellNotificationModule/readNotification'
+    })
+  }
 }
 </script>

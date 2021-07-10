@@ -1,4 +1,4 @@
-export const bellNotification = {
+export const bellNotificationModule = {
   namespaced: true,
   state: () => ({
     notification: 3
@@ -6,6 +6,11 @@ export const bellNotification = {
   getters: {
     getNotification(state: any) {
       return state.notification
+    }
+  },
+  mutations: {
+    readNotification(state: any) {
+      state.notification = 0;
     }
   }
 }

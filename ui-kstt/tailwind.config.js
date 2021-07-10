@@ -38,12 +38,12 @@ module.exports = {
       },
       keyframes: {
         'swing': {
-          '0%,100%' : { transform: 'rotate(15deg)' },
-          '50%' : { transform: 'rotate(-15deg)' },
+          '0%,100%' : { transform: 'rotate(10deg)' },
+          '50%' : { transform: 'rotate(-10deg)' },
         }
       },
       animation: {
-        'swing': 'swing 1s infinite'
+        'swing': 'swing 1.5s infinite'
       }
     },
     container: {
