@@ -93,13 +93,13 @@
 }
 
 @keyframes pop-in {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(0%); }
+  0% { right: -100%; }
+  100% { right: var(right-5); }
 }
 
 @-webkit-keyframes pop-in {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(0%); }
+  0% { right: -100%; }
+  100% { right: var(right-5); }
 }
 
 ::-webkit-scrollbar {

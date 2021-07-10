@@ -1,9 +1,9 @@
 <template lang="pug">
-div.text-4xl Hello 👋🏼
+div
+  p First block
 </template>
-
 <script>
 export default {
-  name: 'index'
+  name: 'modal'
 }
 </script>

@@ -1,7 +1,6 @@
-<template>
-  <div class="text-4xl">
-    About ❤
-  </div>
+<template lang="pug">
+div.text-4xl About ❤
+
 </template>
 <script>
 

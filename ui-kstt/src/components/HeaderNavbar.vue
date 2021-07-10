@@ -1,25 +1,15 @@
-<template>
-  <nav class="md:container md:mx-auto flex justify-between p-3 border-2 border-transparent rounded-lg bg-background-secondary">
-    <ul class="flex">
-      <li
-        class="mr-6"
-        v-for="link in links"
-        :key="link"
-      >
-        <router-link
-          class="text-copy-primary hover:text-copy-hover select-none font-bold"
-          :to="link.href"
-        >
-          {{link.title}}
-        </router-link>
-      </li>
-    </ul>
-    <div class="flex w-auto">
-      <cog-settings />
-      <bell-notification />
-      <theme-switcher />
-    </div>
-  </nav>
+<template lang="pug">
+nav(class="md:container md:mx-auto flex justify-between p-3 border-2 border-transparent rounded-lg bg-background-secondary")
+  ul.flex
+    li.mr-6(v-for="link in links" :key="link")
+      router-link(
+        class="text-copy-primary hover:text-copy-hover select-none font-bold"
+        :to="link.href"
+      ) {{link.title}}
+  div.flex.w-auto
+    cog-settings
+    bell-notification
+    theme-switcher
 </template>
 
 <script>
