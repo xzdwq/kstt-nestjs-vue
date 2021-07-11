@@ -1,5 +1,8 @@
 <template lang="pug">
-a(href="#" class="text-copy-primary hover:text-copy-hover" @click.prevent="setTheme")
+div(
+  class="text-copy-primary hover:text-copy-hover cursor-pointer"
+  @click.prevent="setTheme"
+)
   svg(
     v-if="getTheme === 'theme-light'"
       xmlns="http://www.w3.org/2000/svg"
