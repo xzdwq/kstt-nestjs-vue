@@ -1,7 +1,8 @@
 <template lang="pug">
 nav(class="md:container md:mx-auto flex justify-between p-3 border-2 border-transparent rounded-lg bg-background-secondary")
   ul.flex
-    li.mr-6(v-for="link in links" :key="link")
+    logo.mr-6
+    li.mr-4(v-for="link in links" :key="link")
       router-link(
         class="text-copy-primary hover:text-copy-hover select-none font-bold"
         :to="link.href"
