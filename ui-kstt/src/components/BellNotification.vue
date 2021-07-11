@@ -2,7 +2,7 @@
 div
   a(href="#"
     class="flex text-copy-primary hover:text-copy-hover mr-2"
-    @click="openPopupNotification"
+    @click="openPopupNotification(); readPopupNotification();"
   )
     svg(
       xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      openPopupNotification: 'bellNotificationModule/readNotification'
+      readPopupNotification: 'bellNotificationModule/readNotification'
     }),
     openPopupNotification() {
       this.popupNotificationShow = true
