@@ -2,11 +2,9 @@ import HeaderNavbar from "@/components/HeaderNavbar.vue";
 import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 import BellNotification from "@/components/BellNotification.vue";
 import CogSettings from "@/components/CogSettings.vue";
-import Modal from "@/components/utils/Modal.vue";
 
-import {
-  Popover, PopoverButton, PopoverPanel
-} from '@headlessui/vue'
+import Modal from "@/components/utils/Modal.vue";
+import PopupNotification from "@/components/utils/PopupNotification.vue";
 
 export default [
   HeaderNavbar,
@@ -15,6 +13,5 @@ export default [
   CogSettings,
 
   Modal,
-
-  Popover,PopoverButton, PopoverPanel
+  PopupNotification
 ];

@@ -84,22 +84,29 @@
   max-height: calc(100vh - 100px);
 }
 
-.pop-enter-active {
-  animation: pop-in .5s;
+.ltr-enter-active {
+  animation: ltr-in .5s;
 }
 
-.pop-leave-active {
-  animation: pop-in .5s reverse;
+.ltr-leave-active {
+  animation: ltr-in .5s reverse;
 }
 
-@keyframes pop-in {
+@keyframes ltr-in {
   0% { right: -100%; }
   100% { right: var(right-5); }
 }
 
-@-webkit-keyframes pop-in {
+@-webkit-keyframes ltr-in {
   0% { right: -100%; }
   100% { right: var(right-5); }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 
 ::-webkit-scrollbar {
