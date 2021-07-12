@@ -4,7 +4,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '@cfg/configuration';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { KS3Module } from '@ks3/ks3.module';
+import { UserModule } from '@src/user/user.module';
+import { NotificationModule } from '@src/notification/notification.module';
+import { KS3Module } from '@src/ks/ks3/ks3.module';
+import { DocumentStatusModule } from '@src/status/document/document_status.module'
 
 @Module({
   imports: [
@@ -36,7 +39,10 @@ import { KS3Module } from '@ks3/ks3.module';
         autoLoadEntities: true
       })
     }),
-    KS3Module
+    UserModule,
+    NotificationModule,
+    KS3Module,
+    DocumentStatusModule
   ],
   controllers: [
     AppController

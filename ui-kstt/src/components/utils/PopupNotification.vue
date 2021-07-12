@@ -5,8 +5,12 @@ transition(name="ltr")
       class="absolute z-10 rounded-md pop-area overflow-auto w-10/12 sm:w-96 top-16 right-5 text-copy-primary bg-background-secondary"
       @click.stop
     )
-      div(class="relative grid gap-8 p-7 lg:grid-cols-2 text-right break-words")
-        slot(name="list")
+      div(class="relative p-2 break-words")
+        notification-items(
+          v-for="item in list"
+          :item="item"
+          :key="item.id"
+        )
 </template>
 <script>
 export default {
@@ -15,6 +19,9 @@ export default {
     popupNotificationShow: {
       type: Boolean,
       default: false
+    },
+    list: {
+      type: Array
     }
   },
   methods: {

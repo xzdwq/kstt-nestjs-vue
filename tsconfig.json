@@ -16,9 +16,7 @@
     "allowJs": true,
     "paths": {
       "@cfg/*": ["configuration/*"],
-      "@auth/*": ["src/auth/*"],
-      "@db/*": ["src/database/*"],
-      "@ks3/*": ["src/ks3/*"]
+      "@src/*": ["src/*"]
     }
   },
   "include": [
