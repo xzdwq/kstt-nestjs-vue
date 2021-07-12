@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { NotificationService } from '@src/notification/notification.service'
 
 @Controller('api/notification')
@@ -7,8 +7,10 @@ export class NotificationController {
 
   @Get(':user_id')
   async getNotification(
-    @Param('user_id') user_id: number
+    @Param('user_id') user_id: number,
+    @Query('_page') page: number,
+    @Query('_limit') limit: number
   ): Promise<any> {
-    return await this.notificationService.get(user_id);
+    return await this.notificationService.get(user_id, page, limit);
   }
 }

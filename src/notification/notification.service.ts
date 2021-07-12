@@ -10,9 +10,15 @@ export class NotificationService {
     private notificationRepository: Repository<NotificationEntity>
   ){}
 
-  async get(user_id: number): Promise<object> {
-    const data = await this.notificationRepository.find(
+  async get(user_id: number, page: number, limit: number): Promise<object> {
+    // const total = await this.notificationRepository
+    //   .createQueryBuilder('notofication')
+    //   .where(`user_id = ${user_id}`)
+    //   .getCount();
+    const [data, total] = await this.notificationRepository.findAndCount(
       {
+        skip: limit * (page - 1),
+        take: limit,
         relations: ['user'],
         where: {
           user_id: user_id
@@ -22,6 +28,9 @@ export class NotificationService {
         }
       }
     )
-    return data;
+    return {
+      data: data,
+      total: total
+    }
   }
 }
