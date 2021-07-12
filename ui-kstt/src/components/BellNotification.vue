@@ -1,7 +1,7 @@
 <template lang="pug">
 div(
   class="flex text-copy-primary hover:text-copy-hover mr-2 cursor-pointer"
-  @click="openPopupNotification(); readPopupNotification();"
+  @click="openPopupNotification"
 )
   svg(
     xmlns="http://www.w3.org/2000/svg"
@@ -23,8 +23,7 @@ popup-notification(v-model:popupNotificationShow="popupNotificationShow" :list="
 <script>
 import {
   mapGetters,
-  mapActions,
-  mapMutations
+  mapActions
 } from 'vuex'
 export default {
   name: 'bell-notification',
@@ -43,13 +42,11 @@ export default {
     ...mapActions({
       fetchNotifications: 'bellNotificationModule/fetchNotifications'
     }),
-    ...mapMutations({
-      readPopupNotification: 'bellNotificationModule/readNotification'
-    }),
     openPopupNotification() {
       this.popupNotificationShow = true
       setTimeout(() => {
         this.$refs.popup_notification.observerNotification();
+        console.log(this.$refs)
       }, 500)
     }
   },

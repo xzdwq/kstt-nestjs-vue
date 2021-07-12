@@ -8,7 +8,8 @@ export const bellNotificationModule = {
     page: 1,
     limit: 10,
     totalPages: 0,
-    isLoading: false
+    isLoading: false,
+    readNewNotification: 0
   }),
   getters: {
     getCountNotifications(state: any) {
@@ -25,9 +26,6 @@ export const bellNotificationModule = {
     }
   },
   mutations: {
-    readNotification(state: any) {
-      state.notificationCount = 0
-    },
     setNotificationCount(state, count) {
       state.notificationCount = count
     },
@@ -42,6 +40,9 @@ export const bellNotificationModule = {
     },
     setIsLoading(state, isLoading) {
       state.isLoading = isLoading
+    },
+    setReadNewNotification(state, count) {
+      state.readNewNotification += count
     }
   },
   actions: {
