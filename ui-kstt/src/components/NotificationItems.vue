@@ -5,7 +5,7 @@ div(class="flex justify-between p-3 mb-2 border-2 border-transparent rounded-lg 
     p {{ item.text }}
     span.opacity-0 $_{{ item.id }}
   div
-    input(type="checkbox" class="form-checkbox" @change="readNotification($event, item)" :checked="item.status")
+    input(type="checkbox" class="form-checkbox cursor-pointer" @change="readNotification($event, item)" :checked="item.status")
 </template>
 <script>
 import moment from 'moment'

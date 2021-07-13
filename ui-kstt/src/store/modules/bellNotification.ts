@@ -10,11 +10,15 @@ export const bellNotificationModule = {
     totalPages: 0,
     isLoading: false,
     readNewNotification: 0,
-    idReadNotification: []
+    idReadNotification: [],
+    totalNotification: 0
   }),
   getters: {
     getCountNotifications(state: any) {
       return state.notificationCount
+    },
+    getTotalNotifications(state: any) {
+      return state.totalNotification
     },
     getNotifications(state: any) {
       return state.notification
@@ -35,6 +39,9 @@ export const bellNotificationModule = {
   mutations: {
     setNotificationCount(state, count) {
       state.notificationCount = count;
+    },
+    setTotalNotifications(state, count) {
+      state.totalNotification = count
     },
     setNotifications(state, notification) {
       state.notification = notification
@@ -75,6 +82,7 @@ export const bellNotificationModule = {
         commit('setNotificationCount', data.data.totalNotRead)
         commit('setTotalPages', Math.ceil(data.data.total / state.limit))
         commit('setNotifications', data.data.data)
+        commit('setTotalNotifications', data.data.total)
       }
       catch(e) { console.log(e) }
       finally { commit('setIsLoading', false); }

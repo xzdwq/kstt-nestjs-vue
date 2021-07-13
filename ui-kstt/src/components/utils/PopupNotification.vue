@@ -10,7 +10,7 @@ transition(name="ltr")
           notification-items(
             v-for="item in list"
             :item="item"
-            :key="item.id"
+            :key="item.uuid"
           )
       div.justify-center.inline-flex.items-center.rounded-md.h-4.w-full(ref="observer_notification")
         div(v-if="$store.state.bellNotificationModule.isLoading")
@@ -22,6 +22,8 @@ transition(name="ltr")
             circle(class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4")
             path(class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z")
           span loading...
+        div(v-if="notMoreNotification" class="absolute py-4")
+          span уведомлений больше нет
 </template>
 <script>
 import {
@@ -40,13 +42,20 @@ export default {
       type: Array
     }
   },
+  data() {
+    return {
+      notMoreNotification: false
+    }
+  },
   methods: {
     ...mapActions({
       fetchMoreNotification: 'bellNotificationModule/fetchMoreNotification'
     }),
     ...mapGetters({
       getPage: 'bellNotificationModule/getPage',
-      getTotalPage: 'bellNotificationModule/getTotalPage'
+      getTotalPage: 'bellNotificationModule/getTotalPage',
+      getNotifications: 'bellNotificationModule/getNotifications',
+      getTotalNotifications: 'bellNotificationModule/getTotalNotifications'
     }),
     hidePopupNotification() {
       this.$emit('update:popupNotificationShow', false)
@@ -59,12 +68,14 @@ export default {
       const callback = (entries, observer) => {
         if(entries[0].isIntersecting && this.getPage() < this.getTotalPage()) {
           this.fetchMoreNotification();
+        } else if(entries[0].isIntersecting && this.getTotalNotifications() === this.getNotifications().length) {
+          this.notMoreNotification = true
         }
       }
       const observer = new IntersectionObserver(callback, options)
       observer.observe(this.$refs.observer_notification)
     }
-  }
+  },
 }
 </script>
 <style lang="">
