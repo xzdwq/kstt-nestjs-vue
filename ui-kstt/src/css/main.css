@@ -109,6 +109,25 @@
   opacity: 0;
 }
 
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.item-notification-enter-active,
+.item-notification-leave-active {
+  transition: all .5s ease;
+}
+.item-notification-enter-from,
+.item-notification-leave-to {
+  opacity: 0;
+  transform: translateX(130px);
+}
+
+.item-notification-move {
+  transition: transform .8s ease;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;

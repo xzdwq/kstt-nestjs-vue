@@ -36,7 +36,7 @@ export default {
     ...mapGetters({
       getCountNotifications: 'bellNotificationModule/getCountNotifications',
       getNotifications: 'bellNotificationModule/getNotifications'
-    })
+    }),
   },
   methods: {
     ...mapActions({
@@ -46,7 +46,6 @@ export default {
       this.popupNotificationShow = true
       setTimeout(() => {
         this.$refs.popup_notification.observerNotification();
-        console.log(this.$refs)
       }, 500)
     }
   },

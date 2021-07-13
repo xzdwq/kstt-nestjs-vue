@@ -6,11 +6,12 @@ transition(name="ltr")
       @click.stop
     )
       div(class="relative p-2 break-words")
-        notification-items(
-          v-for="item in list"
-          :item="item"
-          :key="item.id"
-        )
+        transition-group(name="item-notification")
+          notification-items(
+            v-for="item in list"
+            :item="item"
+            :key="item.id"
+          )
       div.justify-center.inline-flex.items-center.rounded-md.h-4.w-full(ref="observer_notification")
         div(v-if="$store.state.bellNotificationModule.isLoading")
           svg(class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"

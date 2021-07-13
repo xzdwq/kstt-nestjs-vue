@@ -9,7 +9,8 @@ export const bellNotificationModule = {
     limit: 10,
     totalPages: 0,
     isLoading: false,
-    readNewNotification: 0
+    readNewNotification: 0,
+    idReadNotification: []
   }),
   getters: {
     getCountNotifications(state: any) {
@@ -23,11 +24,17 @@ export const bellNotificationModule = {
     },
     getTotalPage(state: any) {
       return state.totalPages
+    },
+    getReadNewNotification(state: any) {
+      return state.readNewNotification
+    },
+    getIdReadNotification(state: any) {
+      return state.idReadNotification
     }
   },
   mutations: {
     setNotificationCount(state, count) {
-      state.notificationCount = count
+      state.notificationCount = count;
     },
     setNotifications(state, notification) {
       state.notification = notification
@@ -43,6 +50,16 @@ export const bellNotificationModule = {
     },
     setReadNewNotification(state, count) {
       state.readNewNotification += count
+    },
+    setIdReadNotification(state, id) {
+      state.idReadNotification.push(id)
+    },
+    mutationReadNotification(state, id) {
+      const findById = state.notification.find(item => item.id === id)
+      findById.status = findById.status === 1 ? 0 : 1
+    },
+    sortNotification(state) {
+      state.notification.sort((a, b) => a.status - b.status);
     }
   },
   actions: {
@@ -55,7 +72,7 @@ export const bellNotificationModule = {
             _limit: state.limit
           }
         });
-        commit('setNotificationCount', data.data.total)
+        commit('setNotificationCount', data.data.totalNotRead)
         commit('setTotalPages', Math.ceil(data.data.total / state.limit))
         commit('setNotifications', data.data.data)
       }
@@ -77,6 +94,19 @@ export const bellNotificationModule = {
       }
       catch(e) { console.log(e) }
       finally { commit('setIsLoading', false); }
+    },
+    async fetchReadNotifications({ state, commit, getters }, params) {
+      const newStatus = params.status === 1 ? 0 : 1
+      await axios.post(`api/notification/${state.user_id || 1}`, {
+        params: {
+          notification_id: params.id,
+          status: newStatus
+        }
+      });
+      const currentStatus = params.status === 1 ? 1 : -1
+      commit('setNotificationCount', getters.getCountNotifications + currentStatus)
+      commit('mutationReadNotification', params.id)
+      commit('sortNotification')
     }
   }
 }
