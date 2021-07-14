@@ -27,6 +27,10 @@ module.exports = {
           secondary: 'var(--text-copy-secondary)',
           hover: 'var(--text-copy-hover)',
         },
+        'border-color': {
+          secondary: 'var(--border-border-color-secondary)',
+          primary: 'var(--border-border-color-primary)',
+        },
         transparent: 'transparent',
         current: 'currentColor',
         black: '#000',

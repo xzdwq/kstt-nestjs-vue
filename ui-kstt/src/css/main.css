@@ -49,7 +49,8 @@
 
   --text-copy-hover: #323a47;
 
-  --border-border-color-primary: white;
+  --border-border-color-primary: #e0e0e0;
+  --border-border-color-secondary: #fafafa;
 }
 
 .theme-dark {
@@ -64,7 +65,8 @@
 
   --text-copy-hover: #698098;
 
-  --border-border-color-primary: #1a202c;
+  --border-border-color-primary: #0D2438;
+  --border-border-color-secondary: #102C44;
 }
 
 .theme-dark nav .active {

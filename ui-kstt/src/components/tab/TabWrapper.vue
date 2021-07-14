@@ -1,13 +1,14 @@
 <template lang="pug">
-div
+div(class="h-full")
   ul(class="flex justify-between bg-background-primary text-gray-500")
     li(
-      class="flex w-full select-none cursor-pointer justify-center rounded-t-md p-1 mr-2"
+      class="flex text-center items-center w-full select-none cursor-pointer justify-center rounded-t-md p-1 ml-2 mr-2"
       v-for="title in tabTitles"
       :key="title"
       :class="{ 'text-copy-primary bg-background-secondary': title == selectedTitle }"
       @click="selectedTitle = title"
-    ) {{ title }}
+    )
+      span.leading-none.p-2(v-html="title")
   slot
 </template>
 <script>
