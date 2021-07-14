@@ -18,7 +18,8 @@ div(
 
 modal(v-model:modalShow="modalShow")
   template(v-slot:title) Конфигурации
-  template(v-slot:body)  Lorem ipsum dolor sit amet consectetur adipisicing elit. reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. reprehenderit.
+  template(v-slot:body)
+    tabs-panel
 </template>
 <script>
 export default {
