@@ -10,13 +10,12 @@ nav(class="md:container md:mx-auto flex justify-between p-3 border-2 border-tran
   div.flex.w-auto
     cog-settings
     bell-notification
+    locales-switcher
     theme-switcher
 </template>
 
 <script>
-import CogSettings from './CogSettings.vue'
 export default {
-  components: { CogSettings },
   name: 'header-navbar',
   data: () => ({
     theme: '',

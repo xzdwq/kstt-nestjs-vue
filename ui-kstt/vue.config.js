@@ -2,9 +2,11 @@ module.exports = {
   css: {
     sourceMap: true,
   },
+
   publicPath: '/',
   outputDir: '../public',
   lintOnSave: false,
+
   pages: {
     index: {
       entry: './src/main.ts',
@@ -12,6 +14,7 @@ module.exports = {
       filename: '../public/index.html',
     },
   },
+
   configureWebpack: {
     module: {
       rules: [

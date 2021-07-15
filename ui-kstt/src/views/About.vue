@@ -1,5 +1,6 @@
 <template lang="pug">
-div.text-4xl About ❤
+div.text-4xl
+  p {{ $t('about') }}
 
 </template>
 <script>
