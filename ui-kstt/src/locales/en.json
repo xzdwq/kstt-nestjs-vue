@@ -1,4 +1,8 @@
 {
   "welcome": "Hello 👋🏼 {user}",
-  "about": "About ❤"
+  "about-text": "About ❤",
+  "home-nav": "Home",
+  "about-nav": "About",
+  "logo-1": "NUCLEAR",
+  "logo-2": "power plant"
 }

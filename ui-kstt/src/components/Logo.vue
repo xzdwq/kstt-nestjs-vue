@@ -32,8 +32,8 @@ div(
         stroke-width="7"
       )
   div.font-bold.ml-2.text-xs.leading-none
-    p NUCLEAR
-    p power plant
+    p {{ $t('logo-1') }}
+    p {{ $t('logo-2') }}
 </template>
 <script>
 export default {

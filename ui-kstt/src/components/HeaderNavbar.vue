@@ -2,11 +2,15 @@
 nav(class="md:container md:mx-auto flex justify-between p-3 border-2 border-transparent rounded-lg bg-background-secondary")
   ul.flex
     logo
-    li.mr-4(v-for="link in links" :key="link")
+    li
       router-link(
-        class="text-copy-primary hover:text-copy-hover select-none font-bold"
-        :to="link.href"
-      ) {{link.title}}
+        class="text-copy-primary hover:text-copy-hover select-none font-bold mr-4"
+        :to="'/'"
+      ) {{ $t('home-nav') }}
+      router-link(
+        class="text-copy-primary hover:text-copy-hover select-none font-bold mr-4"
+        :to="'/about'"
+      ) {{ $t('about-nav') }}
   div.flex.w-auto
     cog-settings
     bell-notification
@@ -16,19 +20,6 @@ nav(class="md:container md:mx-auto flex justify-between p-3 border-2 border-tran
 
 <script>
 export default {
-  name: 'header-navbar',
-  data: () => ({
-    theme: '',
-    links: [
-      {
-        title: 'Home',
-        href: '/'
-      },
-      {
-        title: 'About',
-        href: '/about'
-      }
-    ]
-  })
+  name: 'header-navbar'
 }
 </script>
