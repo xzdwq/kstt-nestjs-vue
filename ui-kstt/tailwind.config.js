@@ -48,24 +48,27 @@ module.exports = {
       },
       animation: {
         'swing': 'swing 1.5s infinite'
+      },
+      minWidth: {
+        '0': '0',
+        '1/4': '25%',
+        '1/2': '50%',
+        '3/4': '75%',
+        'full': '100%',
+      },
+      width: {
+        'header-link': '90px'
+      },
+      maxWidth: {
+        '11/12': '97%'
+      },
+      maxHeight: {
+        '11/12': '97%'
       }
     },
     container: {
       center: true,
       padding: '1rem'
-    },
-    minWidth: {
-      '0': '0',
-      '1/4': '25%',
-      '1/2': '50%',
-      '3/4': '75%',
-      'full': '100%',
-    },
-    maxWidth: {
-      '11/12': '97%'
-    },
-    maxHeight: {
-      '11/12': '97%'
     }
   },
   variants: {

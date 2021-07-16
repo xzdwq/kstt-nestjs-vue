@@ -4,10 +4,6 @@ div.text-4xl
 </template>
 
 <script>
-import {
-  mapGetters
-} from 'vuex'
-
 export default {
   name: 'index'
 }

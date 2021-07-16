@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="flex text-copy-primary hover:text-copy-hover mr-10 cursor-pointer select-none"
+  class="flex text-copy-primary hover:text-copy-hover min-w-[100px] mr-10 cursor-pointer select-none"
   @click="$router.push('/')"
 )
   svg(

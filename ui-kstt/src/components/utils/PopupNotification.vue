@@ -2,7 +2,7 @@
 transition(name="ltr")
   div(class="flex fixed inset-0 bg-black bg-opacity-40" v-if="popupNotificationShow" @click="hidePopupNotification")
     div(
-      class="absolute z-10 rounded-md pop-area overflow-auto w-10/12 sm:w-96 top-16 right-5 text-copy-primary bg-background-secondary"
+      class="absolute z-10 rounded-md pop-area overflow-auto min-h-[60px] w-10/12 sm:w-96 top-16 right-5 text-copy-primary bg-background-secondary"
       @click.stop
     )
       div(class="relative p-2 break-words")
@@ -24,6 +24,8 @@ transition(name="ltr")
           span loading...
         div(v-if="notMoreNotification" class="absolute py-4")
           span уведомлений больше нет
+        div(v-else-if="!notMoreNotification && getTotalNotifications() == 0")
+          span уведомлений нет
 </template>
 <script>
 import {
@@ -68,7 +70,7 @@ export default {
       const callback = (entries, observer) => {
         if(entries[0].isIntersecting && this.getPage() < this.getTotalPage()) {
           this.fetchMoreNotification();
-        } else if(entries[0].isIntersecting && this.getTotalNotifications() === this.getNotifications().length) {
+        } else if(entries[0].isIntersecting && this.getTotalNotifications() === this.getNotifications().length && this.getTotalPage() > 0) {
           this.notMoreNotification = true
         }
       }
