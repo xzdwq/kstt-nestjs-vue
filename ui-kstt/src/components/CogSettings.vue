@@ -21,7 +21,8 @@ modal(v-model:modalShow="modalShow")
   template(v-slot:body)
     tabs-panel
   template(v-slot:bottom-toolbar)
-    def-button(@click="saveAndCloseModal") OK
+    def-button(class="text-white bg-[#ef476f]" @click="closeModal") Oтмена
+    def-button(class="text-white bg-[#06d6a0]" @click="saveAndCloseModal") OK
 </template>
 <script>
 import { createToast } from 'mosha-vue-toastify';
@@ -37,6 +38,9 @@ export default {
   methods: {
     openModal() {
       this.modalShow = true
+    },
+    closeModal() {
+      this.modalShow = false
     },
     async saveAndCloseModal() {
       try{
