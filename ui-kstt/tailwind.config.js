@@ -55,6 +55,7 @@ module.exports = {
         '1/2': '50%',
         '3/4': '75%',
         'full': '100%',
+        '28': '6rem'
       },
       width: {
         'header-link': '150px'

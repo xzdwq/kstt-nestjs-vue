@@ -10,6 +10,7 @@
   "save-error": "Ошибка сохранения",
   "no-more-notifications": "уведомлений больше нет",
   "no-notifications": "уведомлений нет",
+  "ks3-create": "Создать КС-3",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",
