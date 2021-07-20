@@ -23,9 +23,9 @@ transition(name="ltr")
             path(class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z")
           span loading...
         div(v-if="notMoreNotification" class="absolute py-4")
-          span уведомлений больше нет
+          span {{ $t('no-more-notifications') }}
         div(v-else-if="!notMoreNotification && getTotalNotifications() == 0")
-          span уведомлений нет
+          span {{ $t('no-notifications') }}
 </template>
 <script>
 import {
@@ -51,7 +51,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchMoreNotification: 'bellNotificationModule/fetchMoreNotification'
+      fetchMoreNotification: 'bellNotificationModule/fetchMoreNotification',
+      fetchNotifications: 'bellNotificationModule/fetchNotifications'
     }),
     ...mapGetters({
       getPage: 'bellNotificationModule/getPage',
@@ -60,6 +61,7 @@ export default {
       getTotalNotifications: 'bellNotificationModule/getTotalNotifications'
     }),
     hidePopupNotification() {
+      this.fetchNotifications();
       this.$emit('update:popupNotificationShow', false)
     },
     observerNotification() {
@@ -80,6 +82,3 @@ export default {
   },
 }
 </script>
-<style lang="">
-  
-</style>

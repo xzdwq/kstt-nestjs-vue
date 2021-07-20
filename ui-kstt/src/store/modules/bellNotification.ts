@@ -72,6 +72,7 @@ export const bellNotificationModule = {
   actions: {
     async fetchNotifications({ state, commit }) {
       try {
+        commit('setPage', 1)
         commit('setIsLoading', true);
         const data = await axios.get(`api/notification/${state.user_id || 1}`, {
           params: {

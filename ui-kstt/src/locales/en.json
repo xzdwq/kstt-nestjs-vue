@@ -8,6 +8,8 @@
   "configuration": "Configuration",
   "save-settings": "Settings have been saved",
   "save-error": "Save error",
+  "no-more-notifications": "no more notifications",
+  "no-notifications": "no notifications",
   "crypto": {
     "electonic-signature": "Electronic signature",
     "list-electonic-signature": "List of available<br>electronic signatures",

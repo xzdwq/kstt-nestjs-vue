@@ -8,6 +8,8 @@
   "configuration": "Конфигурации",
   "save-settings": "Настройки сохранены",
   "save-error": "Ошибка сохранения",
+  "no-more-notifications": "уведомлений больше нет",
+  "no-notifications": "уведомлений нет",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",
