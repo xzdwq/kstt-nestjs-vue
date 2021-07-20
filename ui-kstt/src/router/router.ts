@@ -3,13 +3,13 @@ import {
   createWebHistory,
   RouteRecordRaw
 } from 'vue-router'
-import Index from '@/views/Index.vue'
+import Register from '@/views/Register.vue'
 import About from '@/views/About.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    component: Index
+    component: Register
   },
   {
     path: '/about',

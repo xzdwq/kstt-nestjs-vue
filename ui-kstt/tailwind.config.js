@@ -57,7 +57,7 @@ module.exports = {
         'full': '100%',
       },
       width: {
-        'header-link': '90px'
+        'header-link': '150px'
       },
       maxWidth: {
         '11/12': '97%'

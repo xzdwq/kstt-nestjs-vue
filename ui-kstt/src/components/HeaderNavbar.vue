@@ -7,7 +7,7 @@ nav(class="md:container md:mx-auto flex justify-between p-3 border-2 border-tran
         router-link(
           class="text-copy-primary hover:text-copy-hover select-none font-bold mr-4"
           :to="'/'"
-        ) {{ $t('home-nav') }}
+        ) {{ $t('register-nav') }}
       div(class="w-header-link")
         router-link(
           class="text-copy-primary hover:text-copy-hover select-none font-bold mr-4"

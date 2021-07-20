@@ -24,7 +24,7 @@ transition(name="ltr")
           span loading...
         div(v-if="notMoreNotification" class="absolute py-4")
           span {{ $t('no-more-notifications') }}
-        div(v-else-if="!notMoreNotification && getTotalNotifications() == 0")
+        div(v-else-if="!notMoreNotification && getTotalNotifications == 0")
           span {{ $t('no-notifications') }}
 </template>
 <script>
@@ -46,33 +46,39 @@ export default {
   },
   data() {
     return {
-      notMoreNotification: false
+      notMoreNotification: false,
+      refresh: true
     }
   },
-  methods: {
-    ...mapActions({
-      fetchMoreNotification: 'bellNotificationModule/fetchMoreNotification',
-      fetchNotifications: 'bellNotificationModule/fetchNotifications'
-    }),
+  computed: {
     ...mapGetters({
       getPage: 'bellNotificationModule/getPage',
       getTotalPage: 'bellNotificationModule/getTotalPage',
       getNotifications: 'bellNotificationModule/getNotifications',
       getTotalNotifications: 'bellNotificationModule/getTotalNotifications'
     }),
-    hidePopupNotification() {
-      this.fetchNotifications();
+  },
+  methods: {
+    ...mapActions({
+      fetchMoreNotification: 'bellNotificationModule/fetchMoreNotification',
+      fetchNotifications: 'bellNotificationModule/fetchNotifications'
+    }),
+    async hidePopupNotification() {
+      this.notMoreNotification = false;
+      this.refresh = false;
+      await this.fetchNotifications();
       this.$emit('update:popupNotificationShow', false)
+      setTimeout(() => { this.refresh = true; }, 500)
     },
-    observerNotification() {
+    async observerNotification() {
       const options = {
         rootMrgin: '0px',
         threshold: 1.0
       }
       const callback = (entries, observer) => {
-        if(entries[0].isIntersecting && this.getPage() < this.getTotalPage()) {
+        if(entries[0].isIntersecting && this.refresh && this.getPage < this.getTotalPage) {
           this.fetchMoreNotification();
-        } else if(entries[0].isIntersecting && this.getTotalNotifications() === this.getNotifications().length && this.getTotalPage() > 0) {
+        } else if(entries[0].isIntersecting && this.getTotalNotifications === this.getNotifications.length && this.getTotalPage > 0) {
           this.notMoreNotification = true
         }
       }

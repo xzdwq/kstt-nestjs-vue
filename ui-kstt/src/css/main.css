@@ -130,6 +130,13 @@
   transition: transform .8s ease;
 }
 
+.router-link-active {
+  padding-bottom: 2px;
+  border-bottom: 2px solid var(--text-copy-primary);
+  color: var(--text-copy-primary);
+  transition: all .1s ease;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;

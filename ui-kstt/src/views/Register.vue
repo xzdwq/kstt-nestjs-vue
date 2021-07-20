@@ -5,6 +5,6 @@ div.text-4xl
 
 <script>
 export default {
-  name: 'index'
+  name: 'register'
 }
 </script>
