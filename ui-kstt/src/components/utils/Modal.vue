@@ -24,14 +24,10 @@ transition(name="fade")
         div(class="flex-1")
           slot(name="body")
         div(class="h-[50px] pt-2 flex justify-end")
-          def-button(@click="toast(); closeModal();") OK
+          slot(name="bottom-toolbar")
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { createToast } from 'mosha-vue-toastify';
-import 'mosha-vue-toastify/dist/style.css'
-
-export default defineComponent({
+<script>
+export default {
   name: 'modal',
   props: {
     modalShow: {
@@ -40,28 +36,9 @@ export default defineComponent({
     }
   },
   methods: {
-    closeModal() {
+    async closeModal() {
       this.$emit('update:modalShow', false)
     },
-  },
-  setup () {
-    const toast = () => {
-        createToast({
-            title: 'Настройки сохранены',
-            description: 'Конфигурации'
-          },
-          {
-            showCloseButton: false,
-            swipeClose: true,
-            hideProgressBar: true,
-            position: 'bottom-left',
-            type: 'success',
-            showIcon: true,
-            transition: 'bounce',
-            timeout: 3500
-          })
-    }
-    return { toast }
   }
-})
+}
 </script>

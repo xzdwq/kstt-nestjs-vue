@@ -5,5 +5,14 @@
   "about-nav": "Информация",
   "logo-1": "АЭС",
   "logo-2": "НПП",
-  "save-settings": "Настройки сохранены"
+  "configuration": "Конфигурации",
+  "save-settings": "Настройки сохранены",
+  "save-error": "Ошибка сохранения",
+  "crypto": {
+    "electonic-signature": "Электронная подпись",
+    "list-electonic-signature": "Список доступных<br>электронных подписей",
+    "type-signature": "Тип подписи",
+    "tsp-service": "TSP-сервис",
+    "placeholder-tsp-service": "укажите TSP-сервис"
+  }
 }

@@ -86,17 +86,51 @@ INSERT INTO [dbo].[notification]
   )
 VALUES
 (
-  'c35db6f4-e30d-11eb-ba80-0242ac130004'
+  NEWID()
   , 'Тестовое уведомление системы'
   , 'system'
   , 0
   , 1
   ),
   (
-  'fc0fbc78-e302-11eb-ba80-0242ac130004'
+  NEWID()
   , 'Вас назначили согласантом справки КС-3'
   , 'document'
   , 0
   , 1
   )
+GO
+
+INSERT INTO [dbo].[signature-type]
+  (
+    [uuid]
+    ,[name]
+    ,[name_en]
+    ,[type]
+  )
+VALUES
+(
+  NEWID()
+  ,'Простая ЭП'
+  ,'Simple ES'
+  ,-1
+),
+(
+  NEWID()
+  ,'CAdES-BES'
+  ,'CAdES-BES'
+  ,1
+),
+(
+  NEWID()
+  ,'CAdES-T'
+  ,'CAdES-T'
+  ,5
+),
+(
+  NEWID()
+  ,'CAdES-X Long Type'
+  ,'CAdES-X Long Type'
+  ,93
+)
 GO

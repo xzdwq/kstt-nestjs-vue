@@ -4,5 +4,15 @@
   "home-nav": "Home",
   "about-nav": "About",
   "logo-1": "NUCLEAR",
-  "logo-2": "power plant"
+  "logo-2": "power plant",
+  "configuration": "Configuration",
+  "save-settings": "Settings have been saved",
+  "save-error": "Save error",
+  "crypto": {
+    "electonic-signature": "Electronic signature",
+    "list-electonic-signature": "List of available<br>electronic signatures",
+    "type-signature": "Signature type",
+    "tsp-service": "TSP-service",
+    "placeholder-tsp-service": "specify TSP-service"
+  }
 }

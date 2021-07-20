@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import { localesSwitcherModule } from "@/store/modules/localesSwitcher";
 import { themeSwitcherModule } from "@/store/modules/themeSwitcher";
 import { bellNotificationModule } from "@/store/modules/bellNotification";
+import { cryptoConfigurationModule } from "@/store/modules/cryptoConfiguration"
 
 export default createStore({
   state: {
@@ -15,6 +16,7 @@ export default createStore({
   modules: {
     localesSwitcherModule,
     themeSwitcherModule,
-    bellNotificationModule
+    bellNotificationModule,
+    cryptoConfigurationModule
   }
 })

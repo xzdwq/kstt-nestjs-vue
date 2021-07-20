@@ -8,6 +8,7 @@ import { UserModule } from '@src/user/user.module';
 import { NotificationModule } from '@src/notification/notification.module';
 import { KS3Module } from '@src/ks/ks3/ks3.module';
 import { DocumentStatusModule } from '@src/status/document/document_status.module'
+import { CryptoConfigModule } from '@src/crypto/config/cryptoConfig.module';
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { DocumentStatusModule } from '@src/status/document/document_status.modul
     UserModule,
     NotificationModule,
     KS3Module,
-    DocumentStatusModule
+    DocumentStatusModule,
+    CryptoConfigModule
   ],
   controllers: [
     AppController

@@ -17,11 +17,16 @@ div(
     path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z")
 
 modal(v-model:modalShow="modalShow")
-  template(v-slot:title) Конфигурации
+  template(v-slot:title) {{ $t('configuration') }}
   template(v-slot:body)
     tabs-panel
+  template(v-slot:bottom-toolbar)
+    def-button(@click="saveAndCloseModal") OK
 </template>
 <script>
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
+
 export default {
   name: 'cog-settings',
   data() {
@@ -32,6 +37,42 @@ export default {
   methods: {
     openModal() {
       this.modalShow = true
+    },
+    async saveAndCloseModal() {
+      try{
+        await this.emitter.emit('onSaveCogForm')
+        this.modalShow = false
+        createToast({
+            title: this.$t('save-settings'),
+            description: this.$t('configuration')
+          },
+          {
+            showCloseButton: false,
+            swipeClose: true,
+            hideProgressBar: true,
+            position: 'bottom-left',
+            type: 'success',
+            showIcon: true,
+            transition: 'bounce',
+            timeout: 3500
+          })
+      } catch(e) {
+        this.modalShow = false
+        createToast({
+            title: this.$t('save-error'),
+            description: e.toString()
+          },
+          {
+            showCloseButton: false,
+            swipeClose: true,
+            hideProgressBar: true,
+            position: 'bottom-left',
+            type: 'danger',
+            showIcon: true,
+            transition: 'bounce',
+            timeout: 3500
+          })
+      }
     }
   }
 }

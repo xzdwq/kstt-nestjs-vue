@@ -1,4 +1,6 @@
 import { createApp } from "vue"
+import mitt from 'mitt';
+const emitter = mitt();
 import App from "@/App.vue"
 import router from "@/router/router"
 import store from "@/store/store"
@@ -10,6 +12,8 @@ import "@/css/main.css"
 
 
 const app = createApp(App)
+
+app.config.globalProperties.emitter = emitter
 
 components.forEach(component => {
   app.component(component.name, component)
