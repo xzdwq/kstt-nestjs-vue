@@ -26,13 +26,24 @@ div
     template(v-slot:bottom-toolbar)
       def-button(class="text-white bg-[#ef476f]" @click="closeModal") {{ $t('cancel') }}
       def-button(class="text-white bg-[#06d6a0]" @click="saveAndCloseModal") OK
+  div(class="pt-4")
+    div(
+      v-for="item in ks3"
+      :item="item"
+      :key="item.uuid"
+    ) {{ item.uuid }}
 </template>
 
 <script>
+import {
+  mapGetters,
+  mapActions
+} from 'vuex'
 export default {
   name: 'register',
   data() {
     return {
+      ks3: [],
       modalCfg: {
         modalShow: false,
         width: 'w-9/12',
@@ -49,7 +60,19 @@ export default {
     },
     async saveAndCloseModal() {
       await this.emitter.emit('onCreateNewKS3')
-    }
+    },
+    ...mapActions({
+      fetchKS3: 'ks3Module/fetchKS3'
+    }),
+  },
+  computed: {
+    ...mapGetters({
+      getKS3: 'ks3Module/getKS3'
+    }),
+  },
+  async mounted() {
+    await this.fetchKS3();
+    this.ks3 = await this.getKS3
   }
 }
 </script>

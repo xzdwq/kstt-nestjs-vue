@@ -10,7 +10,12 @@ export class KS3Service {
     private ks3Repository: Repository<KS3Entity>,
   ) {}
 
-  async findAll(): Promise<KS3Entity[]> {
-    return this.ks3Repository.find()
+  async findAll(): Promise<object> {
+    const [data, total] = await this.ks3Repository.findAndCount();
+
+    return {
+      data: data,
+      total: total
+    }
   }
 }

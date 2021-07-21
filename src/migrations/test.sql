@@ -134,3 +134,20 @@ VALUES
   ,93
 )
 GO
+
+INSERT INTO [dbo].[ks3] (
+      [uuid]
+      ,[document_number]
+      ,[reporting_period]
+      ,[project]
+      ,[user_id]
+      ,[status_id]
+) VALUES (
+  NEWID()
+  ,'223-лс'
+  ,'1.2020'
+  ,1
+  ,1
+  ,1
+)
+GO

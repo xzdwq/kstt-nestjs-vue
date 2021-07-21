@@ -120,12 +120,16 @@ export default {
     })
   },
   methods: {
+    clickDate() {
+      this.$refs.datePicker.$refs.inputRef.focus()
+      // console.log(this.documentPeriod);
+      // console.log(this.$refs.datePicker.$refs.inputRef.value);
+    },
     clickMonth() {
       // this.$refs.monthPicker.$refs.inputRef.click()
       this.$refs.monthPicker.$refs.inputRef.focus()
-    },
-    clickDate() {
-      this.$refs.datePicker.$refs.inputRef.focus()
+      // console.log(this.period);
+      // console.log(this.$refs.monthPicker.$refs.inputRef.value);
     }
   }
 }

@@ -3,6 +3,7 @@ import { localesSwitcherModule } from "@/store/modules/localesSwitcher";
 import { themeSwitcherModule } from "@/store/modules/themeSwitcher";
 import { bellNotificationModule } from "@/store/modules/bellNotification";
 import { cryptoConfigurationModule } from "@/store/modules/cryptoConfiguration"
+import { ks3Module } from "@/store/modules/ks3Module"
 
 export default createStore({
   state: {
@@ -17,6 +18,7 @@ export default createStore({
     localesSwitcherModule,
     themeSwitcherModule,
     bellNotificationModule,
-    cryptoConfigurationModule
+    cryptoConfigurationModule,
+    ks3Module
   }
 })
