@@ -25,7 +25,7 @@
     "placeholder-document-number": "indicate the document number",
     "date-preparation": "Date of preparation",
     "period": "Period",
-    "create-ks3": "Certificate KS-3 {number} has been successfully created",
+    "create-ks3": "Certificate KS-3 #{number} has been successfully created",
     "create-ks3-error": "Error creating certificate KS-3"
   },
   "validator": {
