@@ -11,11 +11,25 @@
   "no-more-notifications": "уведомлений больше нет",
   "no-notifications": "уведомлений нет",
   "ks3-create": "Создать КС-3",
+  "info-empty-value": "Заполните все поля",
+  "cancel": "Отмена",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",
     "type-signature": "Тип подписи",
     "tsp-service": "TSP-сервис",
     "placeholder-tsp-service": "укажите TSP-сервис"
+  },
+  "ks3": {
+    "document-number": "Номер дкумента",
+    "placeholder-document-number": "укажите номер документа",
+    "date-preparation": "Дата составления",
+    "period": "Период",
+    "create-ks3": "Справка КС-3 {number} успешно создана",
+    "create-ks3-error": "Ошибка создания справки КС-3"
+  },
+  "validator": {
+    "required": "данное поле обязательно к заполнению",
+    "minLenght": "минимум {count} символа"
   }
 }

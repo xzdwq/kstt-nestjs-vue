@@ -21,9 +21,10 @@ div
       span {{ $t('ks3-create') }}
   modal(v-model:modalCfg="modalCfg")
     template(v-slot:title) {{ $t('ks3-create') }}
-    template(v-slot:body) body component
+    template(v-slot:body)
+      create-ks3(ref="createKS3Form")
     template(v-slot:bottom-toolbar)
-      def-button(class="text-white bg-[#ef476f]" @click="closeModal") Oтмена
+      def-button(class="text-white bg-[#ef476f]" @click="closeModal") {{ $t('cancel') }}
       def-button(class="text-white bg-[#06d6a0]" @click="saveAndCloseModal") OK
 </template>
 
@@ -46,7 +47,9 @@ export default {
     closeModal() {
       this.modalCfg.modalShow = false
     },
-    async saveAndCloseModal() {}
+    async saveAndCloseModal() {
+      await this.emitter.emit('onCreateNewKS3')
+    }
   }
 }
 </script>

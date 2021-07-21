@@ -21,7 +21,7 @@ modal(v-model:modalCfg="modalCfg")
   template(v-slot:body)
     tabs-panel
   template(v-slot:bottom-toolbar)
-    def-button(class="text-white bg-[#ef476f]" @click="closeModal") Oтмена
+    def-button(class="text-white bg-[#ef476f]" @click="closeModal") {{ $t('cancel') }}
     def-button(class="text-white bg-[#06d6a0]" @click="saveAndCloseModal") OK
 </template>
 <script>
@@ -49,7 +49,6 @@ export default {
     async saveAndCloseModal() {
       try{
         await this.emitter.emit('onSaveCogForm')
-        this.modalCfg.modalShow = false
         createToast({
             title: this.$t('save-settings'),
             description: this.$t('configuration')
@@ -65,7 +64,6 @@ export default {
             timeout: 3500
           })
       } catch(e) {
-        this.modalCfg.modalShow = false
         createToast({
             title: this.$t('save-error'),
             description: e.toString()
@@ -80,7 +78,7 @@ export default {
             transition: 'bounce',
             timeout: 3500
           })
-      }
+      } finally { this.modalCfg.modalShow = false }
     }
   }
 }

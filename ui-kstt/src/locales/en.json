@@ -11,11 +11,25 @@
   "no-more-notifications": "no more notifications",
   "no-notifications": "no notifications",
   "ks3-create": "Create KS-3",
+  "info-empty-value": "Fill in all the fields",
+  "cancel": "Cancel",
   "crypto": {
     "electonic-signature": "Electronic signature",
     "list-electonic-signature": "List of available<br>electronic signatures",
     "type-signature": "Signature type",
     "tsp-service": "TSP-service",
     "placeholder-tsp-service": "specify TSP-service"
+  },
+  "ks3": {
+    "document-number": "Document number",
+    "placeholder-document-number": "indicate the document number",
+    "date-preparation": "Date of preparation",
+    "period": "Period",
+    "create-ks3": "Certificate KS-3 {number} has been successfully created",
+    "create-ks3-error": "Error creating certificate KS-3"
+  },
+  "validator": {
+    "required": "this field is required",
+    "minLenght": "at least {count} characters"
   }
 }
