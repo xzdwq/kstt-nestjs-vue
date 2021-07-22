@@ -60,6 +60,10 @@ import { enGB, ru } from 'date-fns/locale'
 import useVuelidate from '@vuelidate/core'
 import { required, helpers, minLength } from '@vuelidate/validators'
 
+import {
+  mapActions
+} from 'vuex'
+
 import { createToast } from 'mosha-vue-toastify';
 import 'mosha-vue-toastify/dist/style.css'
 export default {
@@ -100,22 +104,49 @@ export default {
     await this.emitter.on('onCreateNewKS3', () => {
       this.v$.$touch()
       if(this.v$.form.documentNumber.$errors.length === 0) {
-      let documentNumberEl = this.$refs.documentNumber
-        this.instance.parent.parent.parent.parent.data.modalCfg.modalShow = false
-        createToast({
-            title: this.$t('ks3.create-ks3', { number: documentNumberEl.value }),
-            description: this.$t('ks3-create')
-          },
-          {
-            showCloseButton: false,
-            swipeClose: true,
-            hideProgressBar: true,
-            position: 'bottom-left',
-            type: 'success',
-            showIcon: true,
-            transition: 'bounce',
-            timeout: 3500
-        })
+        const documentNumberEl = this.$refs.documentNumber
+        const data = {
+          documentNumber: documentNumberEl.value,
+          documentPeriod: this.documentPeriod,
+          documentPeriodRaw: this.$refs.datePicker.$refs.inputRef.value,
+          period: this.period,
+          periodRaw: this.$refs.monthPicker.$refs.inputRef.value
+        }
+        this.createKS3(data)
+          .then((data) => {
+            if(data.success) {
+              this.instance.parent.parent.parent.parent.data.modalCfg.modalShow = false
+              createToast({
+                  title: this.$t('ks3.create-ks3', { number: documentNumberEl.value }),
+                  description: this.$t('ks3-create')
+                },
+                {
+                  showCloseButton: false,
+                  swipeClose: true,
+                  hideProgressBar: true,
+                  position: 'bottom-left',
+                  type: 'success',
+                  showIcon: true,
+                  transition: 'bounce',
+                  timeout: 3500
+              })
+            } else {
+              createToast({
+                  title: this.$t('ks3.create-ks3-error')+' ('+ data.data.code+')',
+                  description: data.message
+                },
+                {
+                  showCloseButton: false,
+                  swipeClose: true,
+                  hideProgressBar: true,
+                  position: 'bottom-left',
+                  type: 'danger',
+                  showIcon: true,
+                  transition: 'bounce',
+                  timeout: 3500
+              })
+            }
+          })
       }
     })
   },
@@ -130,7 +161,11 @@ export default {
       this.$refs.monthPicker.$refs.inputRef.focus()
       // console.log(this.period);
       // console.log(this.$refs.monthPicker.$refs.inputRef.value);
-    }
+    },
+    
+    ...mapActions({
+      createKS3: 'ks3Module/createKS3'
+    }),
   }
 }
 </script>

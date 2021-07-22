@@ -1,6 +1,8 @@
 import {
+  Body,
   Controller,
-  Get
+  Get,
+  Post
 } from "@nestjs/common";
 import { KS3Service } from '@src/ks/ks3/ks3.service'
 
@@ -13,5 +15,9 @@ export class KS3Controller {
   @Get('/ks3')
   async getKS3() {
     return await this.ks3Service.findAll()
+  }
+  @Post('/ks3')
+  async createKS3(@Body() body: Object) {
+    return this.ks3Service.createKS3(body)
   }
 }

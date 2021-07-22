@@ -9,6 +9,8 @@ import { NotificationModule } from '@src/notification/notification.module';
 import { KS3Module } from '@src/ks/ks3/ks3.module';
 import { DocumentStatusModule } from '@src/status/document/document_status.module'
 import { CryptoConfigModule } from '@src/crypto/config/cryptoConfig.module';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpErrorFilter } from '@src/core/httperror.filter';
 
 @Module({
   imports: [
@@ -50,7 +52,10 @@ import { CryptoConfigModule } from '@src/crypto/config/cryptoConfig.module';
     AppController
   ],
   providers: [
-    AppService
+    AppService, {
+      provide: APP_FILTER,
+      useClass: HttpErrorFilter
+    }
   ],
 })
 export class AppModule {}

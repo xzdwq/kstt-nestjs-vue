@@ -9,6 +9,8 @@ export const ks3Module = {
     limit: 10,
     totalPages: 0,
     isLoading: false,
+    needLoad: true,
+    transitionType: 'fade'
   }),
   getters: {
     getKS3(state: any) {
@@ -16,6 +18,15 @@ export const ks3Module = {
     },
     getKS3Total(state: any) {
       return state.ks3Total
+    },
+    getIsLoading(state: any) {
+      return state.isLoading
+    },
+    getNeedLoad(state: any) {
+      return state.needLoad
+    },
+    getTransitionType(state: any) {
+      return state.transitionType
     }
   },
   mutations: {
@@ -28,16 +39,55 @@ export const ks3Module = {
     setIsLoading(state, isLoading) {
       state.isLoading = isLoading
     },
+    setNeedLoad(state, needLoad) {
+      state.needLoad = needLoad
+    },
+    addNewKS3(state, data) {
+      state.ks3.push(data)
+    },
+    setTransitionType(state, type) {
+      state.transitionType = type
+    }
   },
   actions: {
-    async fetchKS3({ state, commit}) {
+    async fetchKS3({ commit }) {
       try {
         commit('setIsLoading', true);
+        commit('setKS3', [])
         const data = await axios.get('api/ks3')
         commit('setKS3', data.data.data)
         commit('setKS3Total', data.data.total)
+        commit('setNeedLoad', false)
       } catch(e) { console.log(e) }
-      finally { commit('setIsLoading', false); }
+      finally { setTimeout(() => { commit('setIsLoading', false); }, 500) }
+    },
+    async createKS3({ commit, dispatch }, data) {
+      try {
+        commit('setTransitionType', 'item-notification')
+        commit('setIsLoading', true);
+        const newKS3 = await axios.post('api/ks3', {
+          data: data
+        })
+        commit('addNewKS3', newKS3.data.data)
+        // dispatch('fetchKS3')
+        return {
+          success: true,
+          data: newKS3
+        }
+      }
+      catch(e) {
+        return {
+          success: false,
+          data: e?.response?.data || [],
+          message: e?.response?.data?.message || e.toString()
+        }
+      }
+      finally {
+        setTimeout(() => {
+          commit('setIsLoading', false);
+          commit('setTransitionType', 'fade')
+        }, 500)
+      }
     }
   }
 }

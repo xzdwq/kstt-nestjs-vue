@@ -9,6 +9,7 @@ import TabsPanel from '@/components/tab/TabsPanel.vue';
 import EpForm from '@/components/cogform/EpForm.vue';
 import DefButton from '@/components/utils/DefButton.vue'
 import CreateKS3 from '@/components/createKS3form/CreateKS3.vue'
+import KS3Items from '@/components/KS3Items.vue'
 
 import Modal from "@/components/utils/Modal.vue";
 import PopupNotification from "@/components/utils/PopupNotification.vue";
@@ -25,6 +26,7 @@ export default [
   EpForm,
   DefButton,
   CreateKS3,
+  KS3Items,
 
   Modal,
   PopupNotification

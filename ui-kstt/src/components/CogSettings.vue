@@ -21,8 +21,8 @@ modal(v-model:modalCfg="modalCfg")
   template(v-slot:body)
     tabs-panel
   template(v-slot:bottom-toolbar)
-    def-button(class="text-white bg-[#ef476f]" @click="closeModal") {{ $t('cancel') }}
-    def-button(class="text-white bg-[#06d6a0]" @click="saveAndCloseModal") OK
+    def-button(class="min-w-28 text-white bg-[#ef476f]" @click="closeModal") {{ $t('cancel') }}
+    def-button(class="min-w-28 text-white bg-[#06d6a0]" @click="saveAndCloseModal") OK
 </template>
 <script>
 import { createToast } from 'mosha-vue-toastify';

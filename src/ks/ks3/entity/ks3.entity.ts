@@ -3,6 +3,7 @@ import { UserEntity } from '@src/user/entity/user.entity';
 import {
   Entity,
   Column,
+  Generated,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
@@ -15,11 +16,8 @@ export class KS3Entity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({
-    type: 'uuid',
-    nullable: false,
-    unique: true
-  })
+  @Column()
+  @Generated('uuid')
   uuid: string;
 
   @Column({
@@ -28,6 +26,11 @@ export class KS3Entity {
     unique: true
   })
   document_number: string;
+
+  @Column({
+    nullable: false,
+  })
+  date_preparation: Date
 
   @Column({
     length: 255,
