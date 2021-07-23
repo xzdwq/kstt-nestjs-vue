@@ -26,9 +26,9 @@ div
         :item="item"
         :key="item.uuid"
       )
-      div(v-if="getKS3.length === 0 && !getIsLoading" class="absolute flex w-full justify-center")
+      div(v-if="getKS3.length === 0 && !getIsLoading" class="absolute w-[calc(100%-55px)] flex justify-center")
         p {{ $t('no-data') }}
-      div(v-if="getKS3.length === 0 && getIsLoading" class="absolute flex items-center w-full justify-center")
+      div(v-if="getKS3.length === 0 && getIsLoading" class="absolute w-[calc(100%-55px)] flex items-center justify-center")
         svg-loading
         p {{ $t('loading') }}
 </template>

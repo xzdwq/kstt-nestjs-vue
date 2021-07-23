@@ -9,7 +9,7 @@ import BellNotification from "@/components/BellNotification.vue"
 import CogSettings from "@/components/CogSettings.vue"
 import NotificationItems from '@/components/NotificationItems.vue'
 import TabsPanel from '@/components/tab/TabsPanel.vue'
-import EpForm from '@/components/cogform/EpForm.vue'
+import SignatureForm from '@/components/cogform/SignatureForm.vue'
 import DefButton from '@/components/utils/DefButton.vue'
 import CreateKS3 from '@/components/createKS3form/CreateKS3.vue'
 import KS3Items from '@/components/KS3Items.vue'
@@ -41,7 +41,7 @@ export default [
   CogSettings,
   NotificationItems,
   TabsPanel,
-  EpForm,
+  SignatureForm,
   DefButton,
   CreateKS3,
   KS3Items,

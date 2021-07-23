@@ -31,7 +31,7 @@ import {
   mapActions
 } from 'vuex'
 export default {
-  name: 'ep-form',
+  name: 'signature-form',
   computed: {
     ...mapGetters({
       getSignatureType: 'cryptoConfigurationModule/getSignatureType',
