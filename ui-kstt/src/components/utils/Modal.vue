@@ -1,26 +1,13 @@
 <template lang="pug">
 transition(name="fade")
-  div(class="flex fixed z-10 inset-0 bg-black bg-opacity-40" v-if="modalCfg.modalShow")
+  div(class="flex fixed z-10 inset-0 bg-black bg-opacity-40" v-if="modalCfg.modalShow" v-scroll-lock)
     div(class="flex m-auto min-w-1/2 text-copy-primary bg-background-primary rounded-md p-4" :class="modalCfg.width, modalCfg.height")
       div(class="grid grid-rows-[max-content,1fr,max-content] min-h-full w-full")
         div(class="h-[40px]")
           div(class="flex flex-row justify-between")
             p(class="font-semibold select-none")
               slot(name="title")
-            svg(
-              class="w-6 h-6 cursor-pointer"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              @click="closeModal"
-            )
-              path(
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="3"
-                d="M6 18L18 6M6 6l12 12"
-              )
+            svg-close(@click="closeModal")
         div(class="flex-1")
           slot(name="body")
         div(class="h-[50px] pt-2 flex justify-end")

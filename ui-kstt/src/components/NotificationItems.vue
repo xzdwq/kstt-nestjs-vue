@@ -2,7 +2,7 @@
 div(class="flex justify-between p-3 mb-2 border-2 border-transparent rounded-lg bg-background-primary" :class="{ 'border-red-500' : item.status === 0}")
   div(ref="observer_notification_item")
     span {{ dateFormatter(item.create_at, 'DD.MM.YYYY H:m:ss') }}
-    p {{ item.text }}
+    p {{ this.$i18n.locale == 'ru' ? item.text_ru : item.text_en }}
     span.opacity-0 $_{{ item.id }}
   div
     input(type="checkbox" class="form-checkbox cursor-pointer" @change="readNotification($event, item)" :checked="item.status")

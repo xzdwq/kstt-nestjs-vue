@@ -1,8 +1,8 @@
 <template lang="pug">
 transition(name="ltr")
-  div(class="flex fixed inset-0 bg-black bg-opacity-40" v-if="popupNotificationShow" @click="hidePopupNotification")
+  div(class="flex fixed inset-0 bg-black bg-opacity-40" v-if="popupNotificationShow" @click="hidePopupNotification" v-scroll-lock)
     div(
-      class="absolute z-10 rounded-md pop-area overflow-auto min-h-[60px] w-10/12 sm:w-96 top-16 right-5 text-copy-primary bg-background-secondary"
+      class="absolute z-10 rounded-md pop-area overflow-auto h-full w-10/12 sm:w-96 top-16 right-5 text-copy-primary bg-background-secondary"
       @click.stop
     )
       div(class="relative p-2 break-words")
@@ -14,14 +14,8 @@ transition(name="ltr")
           )
       div.justify-center.inline-flex.items-center.rounded-md.h-4.w-full(ref="observer_notification")
         div(v-if="$store.state.bellNotificationModule.isLoading")
-          svg(class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-          )
-            circle(class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4")
-            path(class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z")
-          span loading...
+          svg-loading
+          span {{ $t('loading') }}
         div(v-if="notMoreNotification" class="absolute py-4")
           span {{ $t('no-more-notifications') }}
         div(v-else-if="!notMoreNotification && getTotalNotifications == 0")

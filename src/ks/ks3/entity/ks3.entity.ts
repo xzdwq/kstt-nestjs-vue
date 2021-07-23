@@ -33,10 +33,9 @@ export class KS3Entity {
   date_preparation: Date
 
   @Column({
-    length: 255,
     nullable: false
   })
-  reporting_period: string;
+  reporting_period: Date;
 
   @Column({
     nullable: false

@@ -31,8 +31,7 @@ div(class="bg-background-secondary h-full p-4 rounded-md")
         class="bg-gray-200 rounded"
       )
       div(@click="clickDate" class="cursor-pointer text-gray-500 absolute top-[9px] right-[10px]")
-        svg(class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg")
-          path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z")
+        svg-calendar
   div(class="md:flex md:items-center mb-6")
     label(for="period" class="w-[220px] block font-bold mb-1 md:mb-0 pr-4 text-copy-primary") {{ $t('ks3.period') }}:
     div(
@@ -40,7 +39,7 @@ div(class="bg-background-secondary h-full p-4 rounded-md")
     )
       datepicker(
         v-model="period"
-        :inputFormat="'MMMM yyyy'"
+        :inputFormat="'LLLL yyyy'"
         :locale="this.$i18n.locale == 'ru' ? ru : en"
         minimum-view="month"
         starting-view="month"
@@ -49,8 +48,7 @@ div(class="bg-background-secondary h-full p-4 rounded-md")
         class="bg-gray-200 rounded"
       )
       div(@click="clickMonth" class="cursor-pointer text-gray-500 absolute top-[9px] right-[10px]")
-        svg(class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg")
-          path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z")
+        svg-calendar
 </template>
 <script>
 import { ref, getCurrentInstance } from 'vue'

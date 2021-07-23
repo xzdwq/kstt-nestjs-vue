@@ -34,44 +34,50 @@ INSERT INTO [dbo].[ks3]
   [uuid]
   ,[document_number]
   ,[reporting_period]
-  ,[status]
+  ,[date_preparation]
+  ,[status_id]
   ,[project]
   ,[user_id]
   )
 VALUES
   (
-    '86c7f7ba-e2fc-11eb-ba80-0242ac130004'
+    NEWID()
     , '256-лс'
-    , '2.2021'
+    , GETDATE()
+	, GETDATE()
     , 1
     , 1
     , 1
   ),
   (
-    '86c7f7ba-e2fc-11eb-ba80-0242ac130004'
+    NEWID()
     , '1012-КТ'
-    , '12.2020'
+    , GETDATE()
+	, GETDATE()
     , 1
     , 1
-    , 3
+    , 2
   )
 GO
 
 INSERT INTO [dbo].[document_status]
   (
   [uuid]
-  ,[name]
+  ,[name_ru]
+  ,[name_en]
   ,[type]
   )
 VALUES
   (
-    '436360a8-e302-11eb-ba80-0242ac130004'
+    NEWID()
     , 'Согласование'
+    ,'Approval'
     , 'all'
   ),
   (
-    '85231bd2-e302-11eb-ba80-0242ac130004'
+    NEWID()
     , 'На подписании'
+    ,'On signing'
     , 'all'
   )
 GO
@@ -79,7 +85,8 @@ GO
 INSERT INTO [dbo].[notification]
   (
     [uuid]
-  ,[text]
+  ,[text_ru]
+  ,[text_en]
   ,[type]
   ,[status]
   ,[user_id]
@@ -88,6 +95,7 @@ VALUES
 (
   NEWID()
   , 'Тестовое уведомление системы'
+  ,'System test notification'
   , 'system'
   , 0
   , 1
@@ -95,6 +103,7 @@ VALUES
   (
   NEWID()
   , 'Вас назначили согласантом справки КС-3'
+  ,'You were appointed as a co-ordinator of the KS-3 certificate'
   , 'document'
   , 0
   , 1
@@ -104,7 +113,7 @@ GO
 INSERT INTO [dbo].[signature-type]
   (
     [uuid]
-    ,[name]
+    ,[name_ru]
     ,[name_en]
     ,[type]
   )

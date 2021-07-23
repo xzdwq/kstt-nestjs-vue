@@ -22,7 +22,7 @@ export class SignatureTypeEntity {
     length: 255,
     nullable: false
   })
-  name: string;
+  name_ru: string;
 
   @Column({
     length: 255,

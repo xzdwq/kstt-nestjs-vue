@@ -13,7 +13,7 @@ div
         v-for="item in getSignatureType"
         :value="item.id"
         :key="item.id"
-      ) {{ this.$i18n.locale == 'ru' ? item.name : item.name_en }}
+      ) {{ this.$i18n.locale == 'ru' ? item.name_ru : item.name_en }}
   div(class="md:flex md:items-center mb-6")
     label(for="tsp-service" class="w-[170px] block font-bold mb-1 md:mb-0 pr-4 text-copy-primary") {{ $t('crypto.tsp-service') }}:
     input(

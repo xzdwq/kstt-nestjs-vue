@@ -1,5 +1,5 @@
 <template lang="pug">
-nav(class="md:container md:mx-auto flex justify-between p-3 border-2 border-transparent rounded-lg bg-background-secondary")
+nav(class="sticky top-0 z-10 md:container md:mx-auto flex justify-between p-3 border-2 border-transparent rounded-lg bg-background-secondary")
   ul.flex
     logo
     li.flex

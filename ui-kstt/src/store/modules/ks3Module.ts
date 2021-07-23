@@ -68,7 +68,7 @@ export const ks3Module = {
         const newKS3 = await axios.post('api/ks3', {
           data: data
         })
-        commit('addNewKS3', newKS3.data.data)
+        commit('addNewKS3', newKS3.data.data[0])
         // dispatch('fetchKS3')
         return {
           success: true,

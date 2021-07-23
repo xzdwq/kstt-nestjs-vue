@@ -13,6 +13,9 @@
   "ks3-create": "Создать КС-3",
   "info-empty-value": "Заполните все поля",
   "cancel": "Отмена",
+  "status": "Статус",
+  "no-data": "Данные отстутсвуют",
+  "loading": "Загружаю данные ...",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",

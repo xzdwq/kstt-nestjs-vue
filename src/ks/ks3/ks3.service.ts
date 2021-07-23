@@ -31,8 +31,14 @@ export class KS3Service {
       project: '1'
     })
     await this.ks3Repository.save(newKS3)
+
+    const data = await this.ks3Repository.find({
+      relations: ['user', 'status'],
+      where: { id: newKS3.id }
+    })
+
     return {
-      data: newKS3
+      data: data
     }
   }
 }

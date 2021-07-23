@@ -23,7 +23,13 @@ export class NotificationEntity {
     length: 1024,
     nullable: false
   })
-  text: string;
+  text_ru: string;
+
+  @Column({
+    length: 1024,
+    nullable: false
+  })
+  text_en: string;
 
   @Column({
     length: 255,
