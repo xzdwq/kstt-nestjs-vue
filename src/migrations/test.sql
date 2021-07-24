@@ -81,7 +81,6 @@ INSERT INTO [dbo].[ks3]
   ,[document_number]
   ,[reporting_period]
   ,[date_preparation]
-  ,[status_id]
   ,[project]
   ,[user_id]
   ,[ks3_stage_workflow_id]
@@ -96,7 +95,6 @@ VALUES
     , 1
     , 1
     , 1
-    , 1
   ),
   (
     NEWID()
@@ -104,31 +102,9 @@ VALUES
     , GETDATE()
 	, GETDATE()
     , 1
-    , 1
     , 2
     , 1
-  )
-GO
-
-INSERT INTO [dbo].[document_status]
-  (
-  [uuid]
-  ,[name_ru]
-  ,[name_en]
-  ,[type]
-  )
-VALUES
-  (
-    NEWID()
-    , 'Согласование'
-    ,'Approval'
-    , 'all'
-  ),
-  (
-    NEWID()
-    , 'На подписании'
-    ,'On signing'
-    , 'all'
+    , 1
   )
 GO
 
@@ -191,22 +167,5 @@ VALUES
   ,'CAdES-X Long Type'
   ,'CAdES-X Long Type'
   ,93
-)
-GO
-
-INSERT INTO [dbo].[ks3] (
-      [uuid]
-      ,[document_number]
-      ,[reporting_period]
-      ,[project]
-      ,[user_id]
-      ,[status_id]
-) VALUES (
-  NEWID()
-  ,'223-лс'
-  ,'1.2020'
-  ,1
-  ,1
-  ,1
 )
 GO

@@ -1,4 +1,3 @@
-import { DocumentStatusEntity } from '@src/status/document/entity/document_status.entity';
 import { UserEntity } from '@src/user/entity/user.entity';
 import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3stageWorkflow.entity';
 import {
@@ -43,14 +42,6 @@ export class KS3Entity {
     nullable: false
   })
   reporting_period: Date;
-
-  @Column({
-    nullable: false
-  })
-  status_id: number;
-  @ManyToOne(() => DocumentStatusEntity, document_status => document_status.id, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'status_id' })
-  status: DocumentStatusEntity[];
 
   @Column({
     nullable: false

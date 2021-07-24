@@ -59,7 +59,7 @@ div(class="bg-background-secondary h-full p-4 rounded-md")
   stage-workflow(
     class="pt-4"
     :stageWorkflow="getStageWorkflow"
-    :activeStageWorkflow="1"
+    :activeStageWorkflow="activeStageWorkflow"
   )
 </template>
 <script>
@@ -100,7 +100,8 @@ export default {
         customCertificateNumber: '',
         documentNumber: '',
         customDocumentNumber: '',
-      }
+      },
+      activeStageWorkflow: 1
     }
   },
   validations() {
@@ -156,7 +157,8 @@ export default {
           documentPeriod: this.documentPeriod,
           documentPeriodRaw: this.$refs.datePicker.$refs.inputRef.value,
           period: this.period,
-          periodRaw: this.$refs.monthPicker.$refs.inputRef.value
+          periodRaw: this.$refs.monthPicker.$refs.inputRef.value,
+          ks3StageWorkflow: this.activeStageWorkflow
         }
         this.createKS3(data)
           .then((data) => {
