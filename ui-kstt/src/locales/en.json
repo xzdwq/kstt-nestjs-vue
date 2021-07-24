@@ -24,12 +24,15 @@
     "placeholder-tsp-service": "specify TSP-service"
   },
   "ks3": {
+    "certificate-number": "Certificate number",
     "document-number": "Document number",
     "placeholder-document-number": "indicate the document number",
     "date-preparation": "Date of preparation",
     "period": "Period",
     "create-ks3": "Certificate KS-3 #{number} has been successfully created",
-    "create-ks3-error": "Error creating certificate KS-3"
+    "create-ks3-error": "Error creating certificate KS-3",
+    "certificate-ks3-error": "Error getting the next certificate number KS-3",
+    "get-stage-workflow": "I'm trying to load the approval stages"
   },
   "validator": {
     "required": "this field is required",

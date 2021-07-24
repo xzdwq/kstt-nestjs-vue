@@ -1,5 +1,6 @@
 import { DocumentStatusEntity } from '@src/status/document/entity/document_status.entity';
 import { UserEntity } from '@src/user/entity/user.entity';
+import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3stageWorkflow.entity';
 import {
   Entity,
   Column,
@@ -24,6 +25,12 @@ export class KS3Entity {
     length: 255,
     nullable: false,
     unique: true
+  })
+  certificate_number: string;
+
+  @Column({
+    length: 255,
+    nullable: false,
   })
   document_number: string;
 
@@ -59,6 +66,15 @@ export class KS3Entity {
     default: 1
   })
   project: string;
+
+  @Column({
+    nullable: false,
+    default: 1
+  })
+  ks3_stage_workflow_id: number;
+  @ManyToOne(() => KS3StageWorkflow, stage => stage.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'ks3_stage_workflow_id' })
+  ks3_stage_workflow: KS3StageWorkflow[];
 
   @CreateDateColumn()
   create_at: Date;

@@ -24,12 +24,15 @@
     "placeholder-tsp-service": "укажите TSP-сервис"
   },
   "ks3": {
+    "certificate-number": "Номер справки",
     "document-number": "Номер документа",
     "placeholder-document-number": "укажите номер документа",
     "date-preparation": "Дата составления",
     "period": "Период",
     "create-ks3": "Справка КС-3 №{number} успешно создана",
-    "create-ks3-error": "Ошибка создания справки КС-3"
+    "create-ks3-error": "Ошибка создания справки КС-3",
+    "certificate-ks3-error": "Ошибка получения следующего номера справки КС-3",
+    "get-stage-workflow": "Пытаюсь загрузить стадии согласования"
   },
   "validator": {
     "required": "данное поле обязательно к заполнению",

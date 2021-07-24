@@ -16,6 +16,14 @@ export class KS3Controller {
   async getKS3() {
     return await this.ks3Service.findAll()
   }
+  @Get('/ks3/stageworkflow')
+  async getKS3StageWorkflow() {
+    return await this.ks3Service.getKS3StageWorkflow()
+  }
+  @Get('/ks3/newcrtificatenumber')
+  async getNewCrtificatenumber() {
+    return await this.ks3Service.getNewCrtificatenumber()
+  }
   @Post('/ks3')
   async createKS3(@Body() body: Object) {
     return this.ks3Service.createKS3(body)

@@ -1,10 +1,14 @@
 <template lang="pug">
 div(class="bg-background-secondary h-full p-4 rounded-md")
   div(class="md:flex md:items-center mb-6")
+    label(for="document-number" class="w-[220px] block font-bold mb-1 md:mb-0 pr-4 text-copy-primary") {{ $t('ks3.certificate-number') }}:
+    span(class="appearance-none w-full py-2 px-0") {{ form.customCertificateNumber }}
+      svg-loading(v-if="!form.certificateNumber")
+  div(class="md:flex md:items-center mb-6")
     label(for="document-number" class="w-[220px] block font-bold mb-1 md:mb-0 pr-4 text-copy-primary") {{ $t('ks3.document-number') }}:
     input(
       v-model="v$.form.documentNumber.$model"
-      ref="documentNumber"
+      @input="inputDocumentNumber"
       type="text"
       :placeholder="$t('ks3.placeholder-document-number')"
       name="document-number"
@@ -49,6 +53,14 @@ div(class="bg-background-secondary h-full p-4 rounded-md")
       )
       div(@click="clickMonth" class="cursor-pointer text-gray-500 absolute top-[9px] right-[10px]")
         svg-calendar
+  div(v-if="getIsLoadStageWorkflow" class="pl-20 flex items-center justify-center")
+    svg-loading
+    p {{ $t('ks3.get-stage-workflow') }}
+  stage-workflow(
+    class="pt-4"
+    :stageWorkflow="getStageWorkflow"
+    :activeStageWorkflow="1"
+  )
 </template>
 <script>
 import { ref, getCurrentInstance } from 'vue'
@@ -59,6 +71,7 @@ import useVuelidate from '@vuelidate/core'
 import { required, helpers, minLength } from '@vuelidate/validators'
 
 import {
+  mapGetters,
   mapActions
 } from 'vuex'
 
@@ -83,7 +96,10 @@ export default {
       ru: ru,
       en: enGB,
       form: {
-        documentNumber: ''
+        certificateNumber: '',
+        customCertificateNumber: '',
+        documentNumber: '',
+        customDocumentNumber: '',
       }
     }
   },
@@ -98,13 +114,45 @@ export default {
     }
   },
   async mounted() {
+    /**
+     * Получаем следующий номер справки КС-3
+     */
+    const newCertificateNumber = await this.certificateNumber()
+    if(newCertificateNumber.success) {
+      this.form.certificateNumber = newCertificateNumber.data
+      this.form.customCertificateNumber = newCertificateNumber.data
+    } else {
+      this.form.certificateNumber = '-'
+      this.form.customCertificateNumber = '-'
+      createToast({
+          title: this.$t('ks3.certificate-ks3-error')+' ('+ newCertificateNumber.data.code+')',
+          description: newCertificateNumber.message
+        },
+        {
+          showCloseButton: false,
+          swipeClose: true,
+          hideProgressBar: true,
+          position: 'bottom-left',
+          type: 'danger',
+          showIcon: true,
+          transition: 'bounce',
+          timeout: 3500
+      })
+    }
+    /**
+     * Получаем список этапов workflow справки КС-3
+     */
+    await this.fetchStageWorkflow()
+    /**
+     * Принимаем событие из эвентбуса на создание справки КС-3
+     */
     await this.emitter.all.clear()
     await this.emitter.on('onCreateNewKS3', () => {
       this.v$.$touch()
       if(this.v$.form.documentNumber.$errors.length === 0) {
-        const documentNumberEl = this.$refs.documentNumber
         const data = {
-          documentNumber: documentNumberEl.value,
+          certificateNumber: this.form.customCertificateNumber,
+          documentNumber: this.form.customDocumentNumber,
           documentPeriod: this.documentPeriod,
           documentPeriodRaw: this.$refs.datePicker.$refs.inputRef.value,
           period: this.period,
@@ -115,7 +163,7 @@ export default {
             if(data.success) {
               this.instance.parent.parent.parent.parent.data.modalCfg.modalShow = false
               createToast({
-                  title: this.$t('ks3.create-ks3', { number: documentNumberEl.value }),
+                  title: this.$t('ks3.create-ks3', { number: this.form.customDocumentNumber }),
                   description: this.$t('ks3-create')
                 },
                 {
@@ -148,21 +196,41 @@ export default {
       }
     })
   },
+  computed: {
+    ...mapGetters({
+      getStageWorkflow: 'ks3Module/getStageWorkflow',
+      getIsLoadStageWorkflow: 'ks3Module/getIsLoadStageWorkflow'
+    })
+  },
   methods: {
     clickDate() {
       this.$refs.datePicker.$refs.inputRef.focus()
-      // console.log(this.documentPeriod);
-      // console.log(this.$refs.datePicker.$refs.inputRef.value);
     },
     clickMonth() {
-      // this.$refs.monthPicker.$refs.inputRef.click()
       this.$refs.monthPicker.$refs.inputRef.focus()
-      // console.log(this.period);
-      // console.log(this.$refs.monthPicker.$refs.inputRef.value);
     },
-    
+    inputDocumentNumber(el) {
+      /**
+       * Either it
+       */
+      this.form.customDocumentNumber = el.target.value
+      /**
+       * Either it
+       */
+      // const re = /([^\/]|\/(?=.*\/))+/gm
+      // const checkReg = el.target.value.match(re)
+
+      // this.form.customDocumentNumber = checkReg[0].trim()
+      // if(checkReg.length === 2) {
+      //   this.form.customCertificateNumber = checkReg[1]
+      // } else {
+      //   this.form.customCertificateNumber = this.form.certificateNumber
+      // }
+    },
     ...mapActions({
-      createKS3: 'ks3Module/createKS3'
+      createKS3: 'ks3Module/createKS3',
+      certificateNumber: 'ks3Module/certificateNumber',
+      fetchStageWorkflow: 'ks3Module/fetchStageWorkflow'
     }),
   }
 }

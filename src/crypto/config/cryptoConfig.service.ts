@@ -14,6 +14,7 @@ export class CryptoConfigService {
     const [data, total] = await this.signatureTypeRepository.findAndCount();
 
     return {
+      success: true,
       data: data,
       total: total
     }

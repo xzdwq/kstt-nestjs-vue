@@ -30,6 +30,7 @@ export class NotificationService {
       }
     )
     return {
+      success: true,
       data: data,
       total: total,
       totalNotRead: totalNotRead
@@ -49,6 +50,7 @@ export class NotificationService {
       }
     })
     return {
+      success: true,
       data: res,
       total: null,
       totalNotRead: null

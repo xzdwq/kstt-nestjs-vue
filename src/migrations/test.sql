@@ -29,22 +29,71 @@ VALUES
   )
 GO
 
+INSERT INTO [dbo].[ks3-stage-workflow]
+  (
+    [name_ru]
+    ,[name_en]
+    ,[previous_stage]
+    ,[next_stage]
+  )
+VALUES
+  (
+    'Проект'
+    ,'Project'
+    ,NULL
+    ,2
+  ),
+  (
+    'Согласование и подписание КС-2'
+    ,'Coordination and signing of KS-2'
+    ,1
+    ,3
+  ),
+  (
+    'Приемка КС-2 завершена'
+    ,'Acceptance of KS-2 completed'
+    ,2
+    ,4
+  ),
+  (
+    'Проверка КС-3'
+    ,'Checking KS-3'
+    ,3
+    ,5
+  ),
+  (
+    'Подписание КС-3'
+    ,'Signing of KS-3'
+    ,4
+    ,6
+  ),
+  (
+    'Подписан'
+    ,'Signed'
+    ,5
+    ,NULL
+  )
+
 INSERT INTO [dbo].[ks3]
   (
   [uuid]
+  ,[certificate_number]
   ,[document_number]
   ,[reporting_period]
   ,[date_preparation]
   ,[status_id]
   ,[project]
   ,[user_id]
+  ,[ks3_stage_workflow_id]
   )
 VALUES
   (
     NEWID()
+    ,'001-a'
     , '256-лс'
     , GETDATE()
 	, GETDATE()
+    , 1
     , 1
     , 1
     , 1
@@ -57,6 +106,7 @@ VALUES
     , 1
     , 1
     , 2
+    , 1
   )
 GO
 

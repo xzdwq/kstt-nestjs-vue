@@ -16,6 +16,7 @@ export class HttpErrorFilter implements ExceptionFilter {
       ? exception.getStatus()
       : HttpStatus.INTERNAL_SERVER_ERROR;
     const errorResponse = {
+      success: false,
       code: status,
       timestamp: new Date().toLocaleDateString(),
       path: request.url,

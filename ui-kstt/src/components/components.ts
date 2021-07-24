@@ -13,6 +13,7 @@ import SignatureForm from '@/components/cogform/SignatureForm.vue'
 import DefButton from '@/components/utils/DefButton.vue'
 import CreateKS3 from '@/components/createKS3form/CreateKS3.vue'
 import KS3Items from '@/components/KS3Items.vue'
+import StageWorkflow from '@/components/StageWorkflow.vue'
 /**
  * SVG icons
  */
@@ -45,6 +46,7 @@ export default [
   DefButton,
   CreateKS3,
   KS3Items,
+  StageWorkflow,
 
   Loading,
   Bell,

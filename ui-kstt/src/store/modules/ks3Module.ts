@@ -10,7 +10,9 @@ export const ks3Module = {
     totalPages: 0,
     isLoading: false,
     needLoad: true,
-    transitionType: 'fade'
+    transitionType: 'fade',
+    stageWorkflow: [],
+    isLoadStageWorkflow: false
   }),
   getters: {
     getKS3(state: any) {
@@ -27,6 +29,12 @@ export const ks3Module = {
     },
     getTransitionType(state: any) {
       return state.transitionType
+    },
+    getStageWorkflow(state: any) {
+      return state.stageWorkflow
+    },
+    getIsLoadStageWorkflow(state: any) {
+      return state.isLoadStageWorkflow
     }
   },
   mutations: {
@@ -47,6 +55,12 @@ export const ks3Module = {
     },
     setTransitionType(state, type) {
       state.transitionType = type
+    },
+    setStageWorkflow(state, data) {
+      state.stageWorkflow = data
+    },
+    setIsLoadStageWorkflow(state, isLoad) {
+      state.isLoadStageWorkflow = isLoad
     }
   },
   actions: {
@@ -71,13 +85,13 @@ export const ks3Module = {
         commit('addNewKS3', newKS3.data.data[0])
         // dispatch('fetchKS3')
         return {
-          success: true,
+          success: newKS3.data.success,
           data: newKS3
         }
       }
       catch(e) {
         return {
-          success: false,
+          success: e?.response?.data?.success,
           data: e?.response?.data || [],
           message: e?.response?.data?.message || e.toString()
         }
@@ -87,6 +101,40 @@ export const ks3Module = {
           commit('setIsLoading', false);
           commit('setTransitionType', 'fade')
         }, 500)
+      }
+    },
+    async certificateNumber() {
+      try {
+        let newCertificateNumber;
+        const data = await axios.get('api/ks3/newcrtificatenumber')
+
+        data.data.data.length === 0
+          ? newCertificateNumber = 1
+          : newCertificateNumber = +data.data.data
+        return {
+          success: data.data.success,
+          data: newCertificateNumber
+        }
+      }
+      catch(e) {
+        return {
+          success: e?.response?.data?.success,
+          data: e?.response?.data || [],
+          message: e?.response?.data?.message || e.toString()
+        }
+      }
+    },
+    async fetchStageWorkflow({ commit }) {
+      try {
+        commit('setIsLoadStageWorkflow', true)
+        const data = await axios.get('api/ks3/stageworkflow')
+        commit('setStageWorkflow', data.data.data)
+      }
+      catch(e) {
+        console.log(e)
+      }
+      finally {
+        commit('setIsLoadStageWorkflow', false)
       }
     }
   }

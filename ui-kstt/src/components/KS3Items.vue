@@ -1,5 +1,6 @@
 <template lang="pug">
 div(class="p-3 mb-2 rounded-lg bg-background-secondary border-2 border-transparent")
+  p {{ $t('ks3.certificate-number') }}: {{ item.certificate_number }}
   p {{ $t('ks3.document-number') }}: {{ item.document_number }}
   p {{ $t('status') }}: {{ this.$i18n.locale == 'ru' ? item.status.name_ru : item.status.name_en }}
   p {{ $t('ks3.date-preparation') }}: {{ formatDate(item.date_preparation, this.$i18n.locale == 'ru' ? 'dd.MM.yyyy' : 'MM/dd/yyyy') }}
