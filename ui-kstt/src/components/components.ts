@@ -27,6 +27,7 @@ import Calendar from '@/components/svg/Calendar.vue'
 import Close from '@/components/svg/Close.vue'
 import DocumentAdd from '@/components/svg/DocumentAdd.vue'
 import Refresh from '@/components/svg/Refresh.vue'
+import Star from '@/components/svg/Star.vue'
 /**
  * Utils
  */
@@ -58,6 +59,7 @@ export default [
   Close,
   DocumentAdd,
   Refresh,
+  Star,
 
   Modal,
   PopupNotification

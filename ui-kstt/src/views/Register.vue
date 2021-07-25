@@ -45,7 +45,7 @@ export default {
       modalCfg: {
         modalShow: false,
         width: 'w-9/12',
-        height: 'h-3/4'
+        height: 'h-4/6'
       }
     }
   },

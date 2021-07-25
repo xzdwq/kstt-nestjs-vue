@@ -1,18 +1,47 @@
 <template lang="pug">
-div(class="p-3 mb-2 shadow-lg bg-background-secondary border-2 border-transparent")
-  div.flex
-    div.w-full
-      p {{ $t('ks3.certificate-number') }}: {{ item.certificate_number }}
-      p {{ $t('ks3.document-number') }}: {{ item.document_number }}
-      p {{ $t('status') }}: {{ this.$i18n.locale == 'ru' ? item.ks3_stage_workflow.name_ru : item.ks3_stage_workflow.name_en }}
-      p {{ $t('ks3.date-preparation') }}: {{ formatDate(item.date_preparation, this.$i18n.locale == 'ru' ? 'dd.MM.yyyy' : 'MM/dd/yyyy') }}
-      p {{ $t('ks3.period') }}: {{ formatDate(item.reporting_period, 'LLLL yyyy') }}
-    div(class="w-full relative justify-end flex")
-      div(v-if="getIsLoadStageWorkflow" class="pl-20 flex items-center justify-center")
-        svg-loading
-        p {{ $t('ks3.get-stage-workflow') }}
+div(class="p-1 pb-4 mb-2 shadow-lg bg-background-secondary border-2 border-transparent")
+  div(class="grid grid-cols-2 gap-1 grid-rows-4 w-full h-36")
+    //- header
+    div(class="col-span-2 w-full")
+      div.flex
+        //- section-1
+        div(class="w-60")
+          span(class="text-gray-400") # {{ item.certificate_number }}
+        //- section-2
+        div(class="w-full text-center")
+          span(class="text-gray-400") last action
+        //- section-3
+        div(class="w-80 flex justify-end")
+          svg-star(class="cursor-pointer")
+    //- left-middle-block
+    div
+      span {{ $t('ks3.document') }}: 
+      span(class="font-semibold") {{ item.document_number }}/{{ item.certificate_number }}  
+      span {{ $t('ks3.document-dated') }} 
+      span(class="font-semibold") {{ formatDate(item.date_preparation, this.$i18n.locale == 'ru' ? 'dd.MM.yyyy' : 'MM/dd/yyyy') }}
+    //- right-middle-block
+    div
+      div.flex
+        //- section-1
+        div(class="w-full") Excel
+        //- section-2
+        div(class="w-full") PDF
+        //- section-3
+        div(class="w-full") Register KS-2
+    //- left-bottom-block
+    div(class="w-full h-20")
+      span {{ $t('ks3.reporting-period') }}: 
+      span(class="font-semibold") {{ formatDate(item.reporting_period, 'LLLL yyyy') }}
+      br
+      span {{ $t('ks3.created') }}: 
+      span(class="font-semibold") {{ formatDate(item.create_at, this.$i18n.locale == 'ru' ? 'dd.MM.yyyy' : 'MM/dd/yyyy') }}
+      br
+      span {{ $t('ks3.author') }}: 
+      span(class="font-semibold") {{ item.user.full_name }}
+    //- right-bottom-block
+    div(class="w-full h-20")
       stage-workflow(
-        class="pt-4 absolute bottom-0"
+        class="pt-4"
         type="small"
         :stageWorkflow="getStageWorkflow"
         :activeStageWorkflow="item.ks3_stage_workflow.id"

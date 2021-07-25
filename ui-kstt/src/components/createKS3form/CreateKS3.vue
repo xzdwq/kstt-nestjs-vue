@@ -56,11 +56,6 @@ div(class="bg-background-secondary h-full p-4 rounded-md")
   div(v-if="getIsLoadStageWorkflow" class="pl-20 flex items-center justify-center")
     svg-loading
     p {{ $t('ks3.get-stage-workflow') }}
-  stage-workflow(
-    class="pt-4"
-    :stageWorkflow="getStageWorkflow"
-    :activeStageWorkflow="activeStageWorkflow"
-  )
 </template>
 <script>
 import { ref, getCurrentInstance } from 'vue'
