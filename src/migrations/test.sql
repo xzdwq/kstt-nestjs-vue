@@ -32,43 +32,57 @@ GO
 INSERT INTO [dbo].[ks3-stage-workflow]
   (
     [name_ru]
+    ,[short_name_ru]
     ,[name_en]
+    ,[short_name_en]
     ,[previous_stage]
     ,[next_stage]
   )
 VALUES
   (
     'Проект'
+    ,'Проект'
+    ,'Project'
     ,'Project'
     ,NULL
     ,2
   ),
   (
     'Согласование и подписание КС-2'
+    ,'Согл. и подп. КС-2'
     ,'Coordination and signing of KS-2'
+    ,'Coord. and sign. of KS-2'
     ,1
     ,3
   ),
   (
     'Приемка КС-2 завершена'
+    ,'Приемка КС-2 зав.'
     ,'Acceptance of KS-2 completed'
+    ,'Accept. of KS-2 compl.'
     ,2
     ,4
   ),
   (
     'Проверка КС-3'
+    ,'Пров. КС-3'
     ,'Checking KS-3'
+    ,'Check. KS-3'
     ,3
     ,5
   ),
   (
     'Подписание КС-3'
+    ,'Подп. КС-3'
     ,'Signing of KS-3'
+    ,'Sign. of KS-3'
     ,4
     ,6
   ),
   (
     'Подписан'
+    ,'Подписан'
+    ,'Signed'
     ,'Signed'
     ,5
     ,NULL

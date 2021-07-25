@@ -16,6 +16,10 @@
   "status": "Статус",
   "no-data": "No data",
   "loading": "Loading ...",
+  "stage": "Stage",
+  "task": "Task",
+  "agree": "Agree by",
+  "performers": "Performers",
   "crypto": {
     "electonic-signature": "Electronic signature",
     "list-electonic-signature": "List of available<br>electronic signatures",

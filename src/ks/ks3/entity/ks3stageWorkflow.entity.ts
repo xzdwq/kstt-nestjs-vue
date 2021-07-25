@@ -26,7 +26,19 @@ export class KS3StageWorkflow {
     length: 1024,
     nullable: false
   })
+  short_name_ru: string;
+
+  @Column({
+    length: 1024,
+    nullable: false
+  })
   name_en: string;
+
+  @Column({
+    length: 1024,
+    nullable: false
+  })
+  short_name_en: string;
 
   @Column({
     nullable: true

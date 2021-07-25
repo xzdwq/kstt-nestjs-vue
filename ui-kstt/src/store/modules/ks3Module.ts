@@ -124,11 +124,13 @@ export const ks3Module = {
         }
       }
     },
-    async fetchStageWorkflow({ commit }) {
+    async fetchStageWorkflow({ commit, getters }) {
       try {
-        commit('setIsLoadStageWorkflow', true)
-        const data = await axios.get('api/ks3/stageworkflow')
-        commit('setStageWorkflow', data.data.data)
+        if(getters.getStageWorkflow.length === 0) {
+          commit('setIsLoadStageWorkflow', true)
+          const data = await axios.get('api/ks3/stageworkflow')
+          commit('setStageWorkflow', data.data.data)
+        }
       }
       catch(e) {
         console.log(e)

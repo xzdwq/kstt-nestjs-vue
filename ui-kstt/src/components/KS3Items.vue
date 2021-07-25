@@ -13,6 +13,7 @@ div(class="p-3 mb-2 rounded-lg bg-background-secondary border-2 border-transpare
         p {{ $t('ks3.get-stage-workflow') }}
       stage-workflow(
         class="pt-4"
+        type="small"
         :stageWorkflow="getStageWorkflow"
         :activeStageWorkflow="item.ks3_stage_workflow.id"
       )

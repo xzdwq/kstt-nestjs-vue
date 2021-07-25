@@ -3,15 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "watch-ui": "vue-cli-service build --watch --mode development",
     "serve": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build --mode production",
-    "build-css": "tailwindcss build src/css/main.css -o ../public/js/css"
+    "build-css": "tailwindcss build src/css/main.css -o ../public/js/css",
+    "tailwatch": "npx tailwindcss -i src/css/main.css -o ../public/js/css/main.css --watch",
+    "watch-ui": "vue-cli-service build --watch --mode development"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.3.3",
+    "@tailwindcss/postcss7-compat": "^2.0.2",
     "@vuelidate/core": "^2.0.0-alpha.21",
     "@vuelidate/validators": "^2.0.0-alpha.18",
+    "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
     "copy-webpack-plugin": "^9.0.1",
     "core-js": "^3.6.5",
@@ -19,11 +22,14 @@
     "mitt": "^3.0.0",
     "moment": "^2.29.1",
     "mosha-vue-toastify": "^1.0.17",
+    "postcss": "^7.0.36",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
     "vue-i18n": "^9.1.7",
     "vue-router": "^4.0.0-0",
     "vue3-datepicker": "^0.2.5",
+    "vue3-popper": "^1.1.0",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
@@ -34,12 +40,10 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
-    "autoprefixer": "^9.8.6",
-    "postcss": "^7.0.36",
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.4",
     "typescript": "~4.1.5",
+    "vue-cli-plugin-tailwind": "~2.0.6",
     "webpack": "^4.0.0"
   },
   "browserslist": [

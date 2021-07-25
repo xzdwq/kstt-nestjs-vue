@@ -16,6 +16,10 @@
   "status": "Статус",
   "no-data": "Данные отстутсвуют",
   "loading": "Загружаю данные ...",
+  "stage": "Этап",
+  "task": "Задача",
+  "agree": "Согласовать до",
+  "performers": "Исполнители",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",
