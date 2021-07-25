@@ -1,18 +1,18 @@
 <template lang="pug">
-div(class="p-3 mb-2 rounded-lg bg-background-secondary border-2 border-transparent")
+div(class="p-3 mb-2 shadow-lg bg-background-secondary border-2 border-transparent")
   div.flex
-    div
+    div.w-full
       p {{ $t('ks3.certificate-number') }}: {{ item.certificate_number }}
       p {{ $t('ks3.document-number') }}: {{ item.document_number }}
       p {{ $t('status') }}: {{ this.$i18n.locale == 'ru' ? item.ks3_stage_workflow.name_ru : item.ks3_stage_workflow.name_en }}
       p {{ $t('ks3.date-preparation') }}: {{ formatDate(item.date_preparation, this.$i18n.locale == 'ru' ? 'dd.MM.yyyy' : 'MM/dd/yyyy') }}
       p {{ $t('ks3.period') }}: {{ formatDate(item.reporting_period, 'LLLL yyyy') }}
-    div
+    div(class="w-full relative justify-end flex")
       div(v-if="getIsLoadStageWorkflow" class="pl-20 flex items-center justify-center")
         svg-loading
         p {{ $t('ks3.get-stage-workflow') }}
       stage-workflow(
-        class="pt-4"
+        class="pt-4 absolute bottom-0"
         type="small"
         :stageWorkflow="getStageWorkflow"
         :activeStageWorkflow="item.ks3_stage_workflow.id"

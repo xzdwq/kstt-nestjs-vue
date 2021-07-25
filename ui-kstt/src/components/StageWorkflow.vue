@@ -4,7 +4,7 @@ div(class="flex text-sm")
     div(class="relative mb-2")
       div(
         class="mx-auto rounded-full text-lg flex items-center"
-        :class="{'bg-green-500 text-white': stage.id <= activeStageWorkflow, 'border-2 border-gray-500 text-gray-500': stage.id > activeStageWorkflow, 'bg-yellow-200': (activeStageWorkflow + 1) - stage.id === 0, 'w-10 h-10': type == 'medium', 'w-4 h-4': type == 'small'}"
+        :class="{'bg-green-500 text-white': stage.id <= activeStageWorkflow, 'border-2 border-gray-500 text-gray-500': stage.id > activeStageWorkflow, 'bg-gray-200': (activeStageWorkflow + 1) - stage.id === 0, 'w-10 h-10': type == 'medium', 'w-4 h-4': type == 'small'}"
       )
         span(v-if="type == 'medium'" class="text-center w-full pr-[1px] pb-[2px]") {{ stage.id }}
         Popper(
@@ -27,8 +27,8 @@ div(class="flex text-sm")
               span(class="text-gray-400") {{ $t('performers') }}: 
               span username
       div(
-        class="text-center"
-        :class="{'text-[14px]': type == 'medium', 'text-[10px] leading-[13px] pt-[10px]': type == 'small'}"
+        class="text-center font-semibold"
+        :class="{'text-[14px]': type == 'medium', 'text-[10px] leading-[13px] pt-[5px]': type == 'small', 'text-green-500': (activeStageWorkflow + 1) - stage.id > 0}"
       ) {{ getNameStage(stage) }}
       div(
         v-if="stage.id > 1"
@@ -82,10 +82,12 @@ export default {
 }
 </script>
 <style>
+  .popper {
+    width: 250px;
+  }
   .popper-cust {
     z-index: 1;
     font-size: 12px;
-    width: 350px;
     font-weight: bold;
     line-height: 15px;
     --popper-theme-background-color: #ffffff;
@@ -94,7 +96,7 @@ export default {
     --popper-theme-border-width: 1px;
     --popper-theme-border-style: solid;
     --popper-theme-border-color: #636363;
-    --popper-theme-border-radius: 6px;
+    --popper-theme-border-radius: 0px;
     --popper-theme-padding: 10px;
     --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
   }
