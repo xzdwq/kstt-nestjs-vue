@@ -19,7 +19,7 @@ div
     template(v-slot:bottom-toolbar)
       def-button(class="min-w-28 text-white bg-[#ef476f]" @click="closeModal") {{ $t('cancel') }}
       def-button(class="min-w-28 text-white bg-[#06d6a0]" @click="saveAndCloseModal") OK
-  div(class="pt-4 grid gap-4 xl:grid-cols-2")
+  div(class="pt-4 grid gap-2 lg:grid-cols-2")
     transition-group(:name="getTransitionType")
       ks3-items(
         v-for="item in getKS3"

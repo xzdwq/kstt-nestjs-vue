@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="p-1 pb-4 mb-2 rounded-md bg-background-secondary border-2 border-transparent")
+div(class="p-1 pb-4 rounded-md bg-background-secondary border-2 border-transparent")
   div(class="grid grid-cols-2 gap-1 grid-rows-4 w-full h-36")
     //- header
     div(class="col-span-2 w-full")
@@ -19,7 +19,7 @@ div(class="p-1 pb-4 mb-2 rounded-md bg-background-secondary border-2 border-tran
             class="p-1 cursor-pointer"
           )
     //- middle-block
-    div(class="pl-4 col-span-2 w-full ")
+    div(class="pl-4 mt-[-10px] col-span-2 w-full ")
       span {{ $t('ks3.document') }}: 
       span(class="font-semibold") {{ item.document_number }}/{{ item.certificate_number }}  
       span {{ $t('ks3.document-dated') }} 
@@ -32,8 +32,8 @@ div(class="p-1 pb-4 mb-2 rounded-md bg-background-secondary border-2 border-tran
       span {{ $t('ks3.created') }}: 
       span(class="font-semibold") {{ formatDate(item.create_at, this.$i18n.locale == 'ru' ? 'dd.MM.yyyy' : 'MM/dd/yyyy') }}
       br
-      span {{ $t('ks3.author') }}: 
-      span(class="font-semibold") {{ item.user.full_name }}
+      span(class="text-xs") {{ $t('ks3.author') }}: 
+      span(class="text-xs font-semibold") {{ item.user.full_name }}
     //- right-bottom-block
     div(class="flex justify-end h-20 ")
       stage-workflow(

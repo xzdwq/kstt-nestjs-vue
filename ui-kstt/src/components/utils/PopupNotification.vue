@@ -2,7 +2,7 @@
 transition(name="ltr")
   div(class="flex fixed inset-0 bg-black bg-opacity-40" v-if="popupNotificationShow" @click="hidePopupNotification" v-scroll-lock)
     div(
-      class="absolute z-10 rounded-md pop-area overflow-auto h-full w-10/12 sm:w-96 top-16 right-5 text-copy-primary bg-background-secondary"
+      class="absolute z-10 rounded-md pop-area overflow-auto h-full w-10/12 sm:w-96 top-16 right-5 text-copy-primary bg-background-primary"
       @click.stop
     )
       div(class="relative p-2 break-words")

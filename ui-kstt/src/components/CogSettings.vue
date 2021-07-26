@@ -23,7 +23,7 @@ export default {
     return {
       modalCfg: {
         modalShow: false,
-        width: 'w-8/12',
+        width: 'w-9/12 min-w-[500px] max-w-[700px]',
         height: 'h-4/6'
       }
     }
