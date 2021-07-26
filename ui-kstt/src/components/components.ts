@@ -14,6 +14,7 @@ import DefButton from '@/components/utils/DefButton.vue'
 import CreateKS3 from '@/components/createKS3form/CreateKS3.vue'
 import KS3Items from '@/components/KS3Items.vue'
 import StageWorkflow from '@/components/StageWorkflow.vue'
+import DefSearch from '@/components/utils/DefSearch.vue'
 /**
  * SVG icons
  */
@@ -29,6 +30,7 @@ import DocumentAdd from '@/components/svg/DocumentAdd.vue'
 import Refresh from '@/components/svg/Refresh.vue'
 import Star from '@/components/svg/Star.vue'
 import PaperClip from '@/components/svg/PaperClip.vue'
+import Search from '@/components/svg/Search.vue'
 /**
  * Utils
  */
@@ -49,6 +51,7 @@ export default [
   CreateKS3,
   KS3Items,
   StageWorkflow,
+  DefSearch,
 
   Loading,
   Bell,
@@ -62,6 +65,7 @@ export default [
   Refresh,
   Star,
   PaperClip,
+  Search,
 
   Modal,
   PopupNotification

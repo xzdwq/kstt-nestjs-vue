@@ -12,6 +12,10 @@ div
     )
       svg-document-add
       span {{ $t('ks3-create') }}
+    def-search(
+      class="px-2 w-96"
+      @update:searchQuery="setSearchQuery"
+    )
   modal(v-model:modalCfg="modalCfg")
     template(v-slot:title) {{ $t('ks3-create') }}
     template(v-slot:body)
@@ -36,7 +40,8 @@ div
 <script>
 import {
   mapGetters,
-  mapActions
+  mapActions,
+  mapMutations
 } from 'vuex'
 export default {
   name: 'register',
@@ -50,6 +55,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      setSearchQuery: 'ks3Module/setSearchQuery'
+    }),
     onCreateKS3() {
       this.modalCfg.modalShow = true
     },
@@ -74,7 +82,7 @@ export default {
       getIsLoading: 'ks3Module/getIsLoading',
       getNeedLoad: 'ks3Module/getNeedLoad',
       getTransitionType: 'ks3Module/getTransitionType'
-    }),
+    })
   },
   async mounted() {
     try{

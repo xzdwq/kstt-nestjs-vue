@@ -4,6 +4,7 @@ export const ks3Module = {
   namespaced: true,
   state: () => ({
     ks3: [],
+    searchQuery: '',
     ks3Total: 0,
     page: 1,
     limit: 10,
@@ -16,7 +17,13 @@ export const ks3Module = {
   }),
   getters: {
     getKS3(state: any) {
-      return state.ks3
+      return state.ks3.filter((item) => {
+        return (
+            item.document_number.toLowerCase().includes(state.searchQuery.toLowerCase())
+          || item.certificate_number.includes(state.searchQuery)
+          || item.user.full_name.toLowerCase().includes(state.searchQuery.toLowerCase())
+        )
+      })
     },
     getKS3Total(state: any) {
       return state.ks3Total
@@ -61,7 +68,10 @@ export const ks3Module = {
     },
     setIsLoadStageWorkflow(state, isLoad) {
       state.isLoadStageWorkflow = isLoad
-    }
+    },
+    setSearchQuery(state, searchQuery) {
+      state.searchQuery = searchQuery
+    },
   },
   actions: {
     async fetchKS3({ commit }) {

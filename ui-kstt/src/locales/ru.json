@@ -20,6 +20,7 @@
   "task": "Задача",
   "agree": "Согласовать до",
   "performers": "Исполнители",
+  "search": "Поиск",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",
