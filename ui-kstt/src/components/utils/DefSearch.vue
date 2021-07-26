@@ -1,12 +1,12 @@
 <template lang="pug">
 div(class="relative text-gray-400")
   input(
+    class="pl-11"
     @input="updateSearchRegister"
     type="search" name="search" :placeholder="$t('search')"
   )
   svg-search(
-    v-if="emptyValue"
-    class="absolute right-0 top-0 mt-[10px] mr-4"
+    class="absolute left-0 top-0 mt-[9px] ml-5"
   )
 </template>
 <script>

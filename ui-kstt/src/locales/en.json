@@ -15,6 +15,7 @@
   "cancel": "Cancel",
   "status": "Статус",
   "no-data": "No data",
+  "no-search-data": "No results found for: '{searchQuery}'",
   "loading": "Loading ...",
   "stage": "Stage",
   "task": "Task",

@@ -42,6 +42,12 @@ export const ks3Module = {
     },
     getIsLoadStageWorkflow(state: any) {
       return state.isLoadStageWorkflow
+    },
+    isEmptySearchQuery(state: any) {
+      return !!!state.searchQuery
+    },
+    getSearchQuery(state: any) {
+      return state.searchQuery
     }
   },
   mutations: {

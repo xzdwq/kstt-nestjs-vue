@@ -11,7 +11,7 @@ div
       @click="onCreateKS3"
     )
       svg-document-add
-      span {{ $t('ks3-create') }}
+      span(class="hidden md:block") {{ $t('ks3-create') }}
     def-search(
       class="px-2 w-96"
       @update:searchQuery="setSearchQuery"
@@ -30,8 +30,10 @@ div
         :item="item"
         :key="item.uuid"
       )
-      div(v-if="getKS3.length === 0 && !getIsLoading" class="absolute w-[calc(100%-55px)] flex justify-center")
+      div(v-if="getKS3.length === 0 && !getIsLoading && isEmptySearchQuery" class="absolute w-[calc(100%-55px)] flex justify-center")
         p {{ $t('no-data') }}
+      div(v-if="getKS3.length === 0 && !getIsLoading && !isEmptySearchQuery" class="absolute w-[calc(100%-55px)] flex justify-center")
+        p {{ $t('no-search-data', { searchQuery: getSearchQuery }) }}
       div(v-if="getKS3.length === 0 && getIsLoading" class="absolute w-[calc(100%-55px)] flex items-center justify-center")
         svg-loading
         p {{ $t('loading') }}
@@ -81,7 +83,9 @@ export default {
       getKS3: 'ks3Module/getKS3',
       getIsLoading: 'ks3Module/getIsLoading',
       getNeedLoad: 'ks3Module/getNeedLoad',
-      getTransitionType: 'ks3Module/getTransitionType'
+      getTransitionType: 'ks3Module/getTransitionType',
+      isEmptySearchQuery: 'ks3Module/isEmptySearchQuery',
+      getSearchQuery: 'ks3Module/getSearchQuery',
     })
   },
   async mounted() {
