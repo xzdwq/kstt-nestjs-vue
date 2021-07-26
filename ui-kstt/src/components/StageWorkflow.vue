@@ -4,7 +4,7 @@ div(class="flex text-sm")
     div(class="relative mb-2")
       div(
         class="mx-auto rounded-full text-lg flex items-center"
-        :class="{'bg-green-500 text-white': stage.id <= activeStageWorkflow, 'border-2 bg-gray-300 border-gray-300 text-gray-500': stage.id > activeStageWorkflow, 'bg-gray-200': (activeStageWorkflow + 1) - stage.id === 0, 'w-10 h-10': type == 'medium', 'w-4 h-4': type == 'small'}"
+        :class="{'bg-green-500 text-white': stage.id <= activeStageWorkflow, 'border-2 bg-gray-300 border-gray-300 text-gray-500': stage.id > activeStageWorkflow, 'bg-gray-300': (activeStageWorkflow + 1) - stage.id === 0, 'w-10 h-10': type == 'medium', 'w-4 h-4': type == 'small'}"
       )
         span(v-if="type == 'medium'" class="text-center w-full pr-[1px] pb-[2px]") {{ stage.id }}
         Popper(
@@ -33,7 +33,7 @@ div(class="flex text-sm")
       div(
         v-if="stage.id > 1"
         class="rounded absolute"
-        :class="{'bg-gray-300': (activeStageWorkflow + 1) - stage.id < 0, 'bg-green-500': (activeStageWorkflow + 1) - stage.id > 0, 'bg-yellow-200': (activeStageWorkflow + 1) - stage.id === 0, 'h-1 top-[20px] w-[calc(100%-2rem-1rem)]': type == 'medium', 'h-[1px] top-[8px] w-[calc(100%-.3rem-1rem)]': type == 'small'}"
+        :class="{'bg-gray-300': (activeStageWorkflow + 1) - stage.id < 0, 'bg-green-500': (activeStageWorkflow + 1) - stage.id > 0, 'bg-yellow-200': (activeStageWorkflow + 1) - stage.id === 0, 'h-1 top-[20px] w-[calc(100%-2rem-1rem)]': type == 'medium', 'h-[2px] top-[8px] w-[calc(100%-.3rem-1rem)]': type == 'small'}"
         style="transform: translate(-50%, -50%);"
       )
 </template>

@@ -1,7 +1,7 @@
 <template lang="pug">
 svg(
   class="w-6 h-6"
-  fill="none"
+  :fill="fill"
   stroke="currentColor"
   viewBox="0 0 24 24"
   xmlns="http://www.w3.org/2000/svg"
@@ -10,6 +10,12 @@ svg(
 </template>
 <script>
 export default {
-  name: 'svg-star'
+  name: 'svg-star',
+  props: {
+    fill: {
+      type: String,
+      default: 'none'
+    }
+  }
 }
 </script>

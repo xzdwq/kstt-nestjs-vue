@@ -1,35 +1,31 @@
 <template lang="pug">
-div(class="p-1 pb-4 mb-2 shadow-lg bg-background-secondary border-2 border-transparent")
+div(class="p-1 pb-4 mb-2 rounded-md bg-background-secondary border-2 border-transparent")
   div(class="grid grid-cols-2 gap-1 grid-rows-4 w-full h-36")
     //- header
     div(class="col-span-2 w-full")
       div.flex
-        //- section-1
-        div(class="w-60")
+        //- section-1(number)
+        div(class="w-60 pl-2 ")
           span(class="text-gray-400") # {{ item.certificate_number }}
         //- section-2
-        div(class="w-full text-center")
-          span(class="text-gray-400") last action
-        //- section-3
-        div(class="w-80 flex justify-end")
-          svg-star(class="cursor-pointer")
-    //- left-middle-block
-    div
+        div(class="w-full text-center ")
+          span(class="text-gray-400")
+        //- section-3(icons)
+        div(class="pr-2 w-80 flex justify-end ")
+          svg-papperclip(
+            class="p-1 cursor-pointer"
+          )
+          svg-star(
+            class="p-1 cursor-pointer"
+          )
+    //- middle-block
+    div(class="pl-4 col-span-2 w-full ")
       span {{ $t('ks3.document') }}: 
       span(class="font-semibold") {{ item.document_number }}/{{ item.certificate_number }}  
       span {{ $t('ks3.document-dated') }} 
       span(class="font-semibold") {{ formatDate(item.date_preparation, this.$i18n.locale == 'ru' ? 'dd.MM.yyyy' : 'MM/dd/yyyy') }}
-    //- right-middle-block
-    div
-      div.flex
-        //- section-1
-        div(class="w-full") Excel
-        //- section-2
-        div(class="w-full") PDF
-        //- section-3
-        div(class="w-full") Register KS-2
     //- left-bottom-block
-    div(class="w-full h-20")
+    div(class="w-full h-20 pl-4 ")
       span {{ $t('ks3.reporting-period') }}: 
       span(class="font-semibold") {{ formatDate(item.reporting_period, 'LLLL yyyy') }}
       br
@@ -39,7 +35,7 @@ div(class="p-1 pb-4 mb-2 shadow-lg bg-background-secondary border-2 border-trans
       span {{ $t('ks3.author') }}: 
       span(class="font-semibold") {{ item.user.full_name }}
     //- right-bottom-block
-    div(class="w-full h-20")
+    div(class="flex justify-end h-20 ")
       stage-workflow(
         class="pt-4"
         type="small"

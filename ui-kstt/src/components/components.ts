@@ -28,6 +28,7 @@ import Close from '@/components/svg/Close.vue'
 import DocumentAdd from '@/components/svg/DocumentAdd.vue'
 import Refresh from '@/components/svg/Refresh.vue'
 import Star from '@/components/svg/Star.vue'
+import PaperClip from '@/components/svg/PaperClip.vue'
 /**
  * Utils
  */
@@ -60,6 +61,7 @@ export default [
   DocumentAdd,
   Refresh,
   Star,
+  PaperClip,
 
   Modal,
   PopupNotification
