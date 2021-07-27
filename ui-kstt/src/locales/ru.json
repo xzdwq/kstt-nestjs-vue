@@ -22,6 +22,10 @@
   "agree": "Согласовать до",
   "performers": "Исполнители",
   "search": "Поиск",
+  "page": "Страница",
+  "outof": "из {total}",
+  "qtyrows": "Кол-во записей",
+  "paginator-info": "Строки с {startList} по {limitList} из {total}",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",

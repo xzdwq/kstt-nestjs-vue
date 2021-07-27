@@ -13,9 +13,14 @@ export class KS3Service {
     private ks3StageWorkflowRepository: Repository<KS3StageWorkflow>,
   ) {}
 
-  async findAll(): Promise<object> {
+  async findAll(page: number, limit: number): Promise<object> {
     const [data, total] = await this.ks3Repository.findAndCount({
-      relations: ['user', 'ks3_stage_workflow']
+      relations: ['user', 'ks3_stage_workflow'],
+      skip: limit * (page - 1),
+      take: limit,
+      order: {
+        create_at: 'DESC'
+      }
     });
 
     return {

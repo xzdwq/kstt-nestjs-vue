@@ -7,7 +7,7 @@ export const ks3Module = {
     searchQuery: '',
     ks3Total: 0,
     page: 1,
-    limit: 10,
+    limit: 6,
     totalPages: 0,
     isLoading: false,
     needLoad: true,
@@ -27,6 +27,12 @@ export const ks3Module = {
     },
     getKS3Total(state: any) {
       return state.ks3Total
+    },
+    getTotalPage(state: any) {
+      return state.totalPages
+    },
+    getLimit(state: any) {
+      return state.limit
     },
     getIsLoading(state: any) {
       return state.isLoading
@@ -48,6 +54,9 @@ export const ks3Module = {
     },
     getSearchQuery(state: any) {
       return state.searchQuery
+    },
+    getPage(state: any) {
+      return state.page
     }
   },
   mutations: {
@@ -56,6 +65,12 @@ export const ks3Module = {
     },
     setKS3Total(state, total) {
       state.ks3Total = total
+    },
+    setTotalPages(state, totalPages) {
+      state.totalPages = totalPages
+    },
+    setLimit(state, limit) {
+      state.limit = limit
     },
     setIsLoading(state, isLoading) {
       state.isLoading = isLoading
@@ -78,15 +93,25 @@ export const ks3Module = {
     setSearchQuery(state, searchQuery) {
       state.searchQuery = searchQuery
     },
+    setPage(state, page) {
+      state.page = page
+    }
   },
   actions: {
-    async fetchKS3({ commit }) {
+    async fetchKS3({ state, commit }) {
       try {
         commit('setIsLoading', true);
         commit('setKS3', [])
-        const data = await axios.get('api/ks3')
+        commit('setTotalPages', 0)
+        const data = await axios.get('api/ks3', {
+          params: {
+            _page: state.page,
+            _limit: state.limit
+          }
+        })
         commit('setKS3', data.data.data)
         commit('setKS3Total', data.data.total)
+        commit('setTotalPages', Math.ceil(data.data.total / state.limit))
         commit('setNeedLoad', false)
       } catch(e) { console.log(e) }
       finally { setTimeout(() => { commit('setIsLoading', false); }, 500) }
@@ -99,7 +124,7 @@ export const ks3Module = {
           data: data
         })
         commit('addNewKS3', newKS3.data.data[0])
-        // dispatch('fetchKS3')
+        dispatch('fetchKS3')
         return {
           success: newKS3.data.success,
           data: newKS3

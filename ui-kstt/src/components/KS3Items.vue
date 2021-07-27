@@ -19,21 +19,21 @@ div(class="p-1 pb-4 rounded-md bg-background-secondary border-2 border-transpare
             class="p-1 cursor-pointer"
           )
     //- middle-block
-    div(class="pl-4 mt-[-10px] col-span-2 w-full ")
+    div(class="pl-3 mt-[-10px] col-span-2 w-full ")
       span {{ $t('ks3.document') }}: 
       span(class="font-semibold") {{ item.document_number }}/{{ item.certificate_number }}  
       span {{ $t('ks3.document-dated') }} 
       span(class="font-semibold") {{ formatDate(item.date_preparation, this.$i18n.locale == 'ru' ? 'dd.MM.yyyy' : 'MM/dd/yyyy') }}
     //- left-bottom-block
-    div(class="w-full h-20 pl-4 ")
-      span {{ $t('ks3.reporting-period') }}: 
+    div(class="w-full h-20 pl-3 ")
+      span(class="text-sm") {{ $t('ks3.reporting-period') }}: 
       span(class="font-semibold") {{ formatDate(item.reporting_period, 'LLLL yyyy') }}
       br
-      span {{ $t('ks3.created') }}: 
+      span(class="text-sm") {{ $t('ks3.created') }}: 
       span(class="font-semibold") {{ formatDate(item.create_at, this.$i18n.locale == 'ru' ? 'dd.MM.yyyy' : 'MM/dd/yyyy') }}
       br
-      span(class="text-xs") {{ $t('ks3.author') }}: 
-      span(class="text-xs font-semibold") {{ item.user.full_name }}
+      span(class="text-sm") {{ $t('ks3.author') }}: 
+      span(class="text-sm font-semibold") {{ item.user.full_name }}
     //- right-bottom-block
     div(class="flex justify-end h-20 ")
       stage-workflow(

@@ -2,7 +2,8 @@ import {
   Body,
   Controller,
   Get,
-  Post
+  Post,
+  Query
 } from "@nestjs/common";
 import { KS3Service } from '@src/ks/ks3/ks3.service'
 
@@ -13,8 +14,11 @@ export class KS3Controller {
   ){}
 
   @Get('/ks3')
-  async getKS3() {
-    return await this.ks3Service.findAll()
+  async getKS3(
+    @Query('_page') page: number,
+    @Query('_limit') limit: number
+  ): Promise<any>{
+    return await this.ks3Service.findAll(page, limit)
   }
   @Get('/ks3/stageworkflow')
   async getKS3StageWorkflow() {

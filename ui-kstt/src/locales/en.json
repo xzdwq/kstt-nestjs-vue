@@ -22,6 +22,10 @@
   "agree": "Agree by",
   "performers": "Performers",
   "search": "Search",
+  "page": "Page",
+  "outof": "out of {total}",
+  "qtyrows": "Qty. records",
+  "paginator-info": "Records {startList} to {limitList} of {total}",
   "crypto": {
     "electonic-signature": "Electronic signature",
     "list-electonic-signature": "List of available<br>electronic signatures",
