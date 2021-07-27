@@ -15,7 +15,8 @@ div(class="h-full")
       span(class="hidden md:block") {{ $t('ks3-create') }}
     def-search(
       class="px-2 w-96"
-      @update:searchQuery="setSearchQuery"
+      delay="700"
+      @update:searchQuery="searchQuery"
     )
   modal(v-model:modalCfg="modalCfg")
     template(v-slot:title) {{ $t('ks3-create') }}
@@ -56,8 +57,7 @@ div(class="h-full")
 <script>
 import {
   mapGetters,
-  mapActions,
-  mapMutations
+  mapActions
 } from 'vuex'
 export default {
   name: 'register',
@@ -71,9 +71,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
-      setSearchQuery: 'ks3Module/setSearchQuery'
-    }),
     onCreateKS3() {
       this.modalCfg.modalShow = true
     },
@@ -87,6 +84,9 @@ export default {
     },
     async saveAndCloseModal() {
       await this.emitter.emit('onCreateNewKS3')
+    },
+    async searchQuery(query) {
+      this.fetchKS3(query)
     },
     ...mapActions({
       fetchKS3: 'ks3Module/fetchKS3'

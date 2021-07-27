@@ -88,9 +88,12 @@ export default {
       if(value > this.getTotalPage) this.currentPage = this.getTotalPage
     },
     jumpFirstPage() {
-      this.currentPage = 1
-      this.$store.commit(this.setPageModule, this.getTotalPage)
-      this.changeSettings()
+      let page = +this.currentPage
+      if(page != 1) {
+        this.currentPage = 1
+        this.$store.commit(this.setPageModule, this.getTotalPage)
+        this.changeSettings()
+      }
     },
     prevPage() {
       let page = +this.currentPage
@@ -109,9 +112,12 @@ export default {
       }
     },
     jumpLastPage() {
-      this.currentPage = this.getTotalPage
-      this.$store.commit(this.setPageModule, this.getTotalPage)
-      this.changeSettings()
+      let page = +this.currentPage
+      if(page != this.getTotalPage) {
+        this.currentPage = this.getTotalPage
+        this.$store.commit(this.setPageModule, this.getTotalPage)
+        this.changeSettings()
+      }
     }
   },
   computed: {

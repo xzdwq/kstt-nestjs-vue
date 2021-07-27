@@ -16,9 +16,10 @@ export class KS3Controller {
   @Get('/ks3')
   async getKS3(
     @Query('_page') page: number,
-    @Query('_limit') limit: number
+    @Query('_limit') limit: number,
+    @Query('_query') query: string
   ): Promise<any>{
-    return await this.ks3Service.findAll(page, limit)
+    return await this.ks3Service.findAll(page, limit, query)
   }
   @Get('/ks3/stageworkflow')
   async getKS3StageWorkflow() {

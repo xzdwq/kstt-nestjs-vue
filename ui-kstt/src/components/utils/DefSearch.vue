@@ -15,6 +15,7 @@ import {
 } from 'vuex'
 export default {
   name: 'def-search',
+  props: ['delay'],
   data() {
     return {
       emptyValue: true
@@ -29,11 +30,17 @@ export default {
         this.emptyValue = true
         this.setTransitionType('fade')
       }
-      this.$emit('update:searchQuery', event.target.value)
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        this.$emit('update:searchQuery', event.target.value)
+      }, +this.delay);
     },
     ...mapMutations({
       setTransitionType: 'ks3Module/setTransitionType'
     })
+  },
+  async mounted() {
+    this.timer;
   }
 }
 </script>

@@ -17,13 +17,14 @@ export const ks3Module = {
   }),
   getters: {
     getKS3(state: any) {
-      return state.ks3.filter((item) => {
-        return (
-            item.document_number.toLowerCase().includes(state.searchQuery.toLowerCase())
-          || item.certificate_number.includes(state.searchQuery)
-          || item.user.full_name.toLowerCase().includes(state.searchQuery.toLowerCase())
-        )
-      })
+      // return state.ks3.filter((item) => {
+      //   return (
+      //       item.document_number.toLowerCase().includes(state.searchQuery.toLowerCase())
+      //     || item.certificate_number.includes(state.searchQuery)
+      //     || item.user.full_name.toLowerCase().includes(state.searchQuery.toLowerCase())
+      //   )
+      // })
+      return state.ks3
     },
     getKS3Total(state: any) {
       return state.ks3Total
@@ -98,7 +99,7 @@ export const ks3Module = {
     }
   },
   actions: {
-    async fetchKS3({ state, commit }) {
+    async fetchKS3({ state, commit }, query) {
       try {
         commit('setIsLoading', true);
         commit('setKS3', [])
@@ -106,7 +107,8 @@ export const ks3Module = {
         const data = await axios.get('api/ks3', {
           params: {
             _page: state.page,
-            _limit: state.limit
+            _limit: state.limit,
+            _query: query
           }
         })
         commit('setKS3', data.data.data)

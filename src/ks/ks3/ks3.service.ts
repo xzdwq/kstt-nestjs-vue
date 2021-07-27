@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { KS3Entity } from '@src/ks/ks3/entity/ks3.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3stageWorkflow.entity';
@@ -13,11 +13,16 @@ export class KS3Service {
     private ks3StageWorkflowRepository: Repository<KS3StageWorkflow>,
   ) {}
 
-  async findAll(page: number, limit: number): Promise<object> {
+  async findAll(page: number, limit: number, query: string): Promise<object> {
+    if(!query) query = ''
     const [data, total] = await this.ks3Repository.findAndCount({
       relations: ['user', 'ks3_stage_workflow'],
       skip: limit * (page - 1),
       take: limit,
+      where: [
+        { certificate_number: Like(`%${query}%`) },
+        { document_number: Like(`%${query}%`) }
+      ],
       order: {
         create_at: 'DESC'
       }
