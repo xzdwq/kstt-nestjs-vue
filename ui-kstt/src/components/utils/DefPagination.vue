@@ -11,7 +11,7 @@ div(class="flex w-full")
       @click="prevPage"
     )
       svg-left
-    span(class="px-2") {{ $t('page') }}
+    span(class="px-2 lg:text-base text-xs") {{ $t('page') }}
     input(
       type="number"
       v-model="currentPage"
@@ -20,7 +20,7 @@ div(class="flex w-full")
       @input="inputPage"
       class="w-12 appearance-none text-copy-secondary p-[2px]"
     )
-    span(class="px-2") {{ $t('outof', {total: getTotalPage}) }}
+    span(class="px-2 lg:text-base text-xs") {{ $t('outof', {total: getTotalPage}) }}
     def-button(
       class="text-white bg-[#579bae] p-[2px]"
       @click="nextPage"
@@ -31,7 +31,7 @@ div(class="flex w-full")
       @click="jumpLastPage"
     )
       svg-doubleright
-    span(class="px-2") {{ $t('qtyrows') }}:
+    span(class="px-2 lg:text-base text-xs") {{ $t('qtyrows') }}:
     input(
       type="number"
       v-model="limitRecords"
@@ -45,7 +45,7 @@ div(class="flex w-full")
     )
       svg-check
   div(class="flex w-2/4 items-center justify-end")
-    span {{ paginatorInfo }}
+    span(class="lg:text-base text-xs") {{ paginatorInfo }}
 </template>
 <script>
 export default {
