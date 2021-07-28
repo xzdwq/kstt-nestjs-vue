@@ -87,6 +87,19 @@ VALUES
     ,5
     ,NULL
   )
+GO
+
+INSERT INTO [dbo].[project]
+  (
+    [name_ru]
+    ,[name_en]
+  )
+VALUES
+  (
+    'АЭС проект'
+    ,'Nuclear NPP'
+  )
+GO
 
 INSERT INTO [dbo].[ks3]
   (
@@ -95,7 +108,7 @@ INSERT INTO [dbo].[ks3]
   ,[document_number]
   ,[reporting_period]
   ,[date_preparation]
-  ,[project]
+  ,[project_id]
   ,[user_id]
   ,[ks3_stage_workflow_id]
   )

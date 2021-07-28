@@ -10,6 +10,7 @@ import { KS3Module } from '@src/ks/ks3/ks3.module';
 import { CryptoConfigModule } from '@src/crypto/config/cryptoConfig.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpErrorFilter } from '@src/core/httperror.filter';
+import { ProjectModule } from '@src/project/project.module';
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { HttpErrorFilter } from '@src/core/httperror.filter';
     UserModule,
     NotificationModule,
     KS3Module,
-    CryptoConfigModule
+    CryptoConfigModule,
+    ProjectModule
   ],
   controllers: [
     AppController

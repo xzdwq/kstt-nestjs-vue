@@ -32,11 +32,12 @@ export default {
       }
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
+        this.emitter.emit('onSearchNeedResetPage')
         this.$emit('update:searchQuery', event.target.value)
       }, +this.delay);
     },
     ...mapMutations({
-      setTransitionType: 'ks3Module/setTransitionType'
+      setTransitionType: 'ks3Module/setTransitionType',
     })
   },
   async mounted() {

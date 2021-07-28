@@ -102,8 +102,10 @@ export const ks3Module = {
     async fetchKS3({ state, commit }, query) {
       try {
         commit('setIsLoading', true);
-        commit('setKS3', [])
-        commit('setTotalPages', 0)
+        commit('setSearchQuery', query);
+        if(query) commit('setPage', 1)
+        // commit('setKS3', [])
+        // commit('setTotalPages', 0)
         const data = await axios.get('api/ks3', {
           params: {
             _page: state.page,

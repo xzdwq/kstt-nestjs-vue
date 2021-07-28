@@ -37,6 +37,7 @@ import DoubleRight from '@/components/svg/DoubleRight.vue'
 import DoubleLeft from '@/components/svg/DoubleLeft.vue'
 import Left from '@/components/svg/Left.vue'
 import Right from '@/components/svg/Right.vue'
+import NewsPaper from '@/components/svg/NewsPaper.vue'
 /**
  * Utils
  */
@@ -78,6 +79,7 @@ export default [
   DoubleLeft,
   Left,
   Right,
+  NewsPaper,
 
   Modal,
   PopupNotification

@@ -1,5 +1,6 @@
 import { UserEntity } from '@src/user/entity/user.entity';
 import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3stageWorkflow.entity';
+import { ProjectEntity } from '@src/project/entity/project.entity';
 import {
   Entity,
   Column,
@@ -52,11 +53,13 @@ export class KS3Entity {
   user: UserEntity[];
 
   @Column({
-    length: 255,
     nullable: false,
     default: 1
   })
-  project: string;
+  project_id: number;
+  @ManyToOne(() => ProjectEntity, project => project.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'project_id' })
+  project: ProjectEntity[];
 
   @Column({
     nullable: false,

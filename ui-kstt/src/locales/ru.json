@@ -26,6 +26,7 @@
   "outof": "из {total}",
   "qtyrows": "Кол-во записей",
   "paginator-info": "Строки с {startList} по {limitList} из {total}",
+  "back": "Назад",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",

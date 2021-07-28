@@ -14,7 +14,7 @@ div(class="h-full")
       svg-document-add
       span(class="hidden md:block") {{ $t('ks3-create') }}
     def-search(
-      class="px-2 w-96"
+      class="px-2 w-80"
       delay="700"
       @update:searchQuery="searchQuery"
     )
@@ -28,19 +28,19 @@ div(class="h-full")
   //- body table content
   div(class="h-[calc(100vh-165px)] overflow-y-scroll overflow-x-hidden")
     div(class="grid gap-2 lg:grid-cols-2")
-      transition-group(:name="getTransitionType")
-        ks3-items(
-          v-for="item in getKS3"
-          :item="item"
-          :key="item.uuid"
-        )
-        div(v-if="getKS3.length === 0 && !getIsLoading && isEmptySearchQuery" class="absolute w-[calc(100%-55px)] flex justify-center")
-          p {{ $t('no-data') }}
-        div(v-if="getKS3.length === 0 && !getIsLoading && !isEmptySearchQuery" class="absolute w-[calc(100%-55px)] flex justify-center")
-          p {{ $t('no-search-data', { searchQuery: getSearchQuery }) }}
-        div(v-if="getKS3.length === 0 && getIsLoading" class="absolute w-[calc(100%-55px)] flex items-center justify-center")
-          svg-loading
-          p {{ $t('loading') }}
+      //- transition-group(:name="getTransitionType")
+      ks3-items(
+        v-for="item in getKS3"
+        :item="item"
+        :key="item.uuid"
+      )
+      div(v-if="getKS3.length === 0 && !getIsLoading && isEmptySearchQuery" class="absolute w-[calc(100%-55px)] flex justify-center")
+        p {{ $t('no-data') }}
+      div(v-if="getKS3.length === 0 && !getIsLoading && !isEmptySearchQuery" class="absolute w-[calc(100%-55px)] flex justify-center")
+        p {{ $t('no-search-data', { searchQuery: getSearchQuery }) }}
+      div(v-if="getKS3.length === 0 && getIsLoading" class="absolute w-[calc(100%-55px)] flex items-center justify-center")
+        svg-loading
+        p {{ $t('loading') }}
   //- paginator
   def-pagination(
     class="pt-2"

@@ -12,11 +12,15 @@ div(class="p-1 pb-4 rounded-md bg-background-secondary border-2 border-transpare
           span(class="text-gray-400")
         //- section-3(icons)
         div(class="pr-2 w-80 flex justify-end ")
-          svg-papperclip(
-            class="p-1 cursor-pointer"
-          )
-          svg-star(
-            class="p-1 cursor-pointer"
+          //- svg-papperclip(
+          //-   class="p-1 cursor-pointer"
+          //- )
+          //- svg-star(
+          //-   class="p-1 cursor-pointer"
+          //- )
+          svg-newspaper(
+            class="cursor-pointer"
+            @click="$router.push(`/ks3/${item.id}`)"
           )
     //- middle-block
     div(class="pl-3 mt-[-10px] col-span-2 w-full ")

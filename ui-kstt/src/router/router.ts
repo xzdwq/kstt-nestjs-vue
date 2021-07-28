@@ -6,6 +6,7 @@ import {
 import PageNotFound from '@/views/PageNotFound.vue'
 import Register from '@/views/Register.vue'
 import About from '@/views/About.vue'
+import KS3Page from '@/views/KS3Page.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -15,6 +16,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     component: Register
+  },
+  {
+    path: '/ks3/:id',
+    component: KS3Page
   },
   {
     path: '/about',

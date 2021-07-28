@@ -44,7 +44,7 @@ div(class="flex w-full")
       @click="changeSettings"
     )
       svg-check
-  div(class="flex w-2/4 items-center justify-end")
+  div(class="flex w-1/4 lg:w-2/4 items-center justify-end")
     span(class="lg:text-base text-xs") {{ paginatorInfo }}
 </template>
 <script>
@@ -151,6 +151,9 @@ export default {
     this.currentPage = await this.getPage
     this.limitRecords = await this.getLimitRecords
     this.getTotalRecords
+    this.emitter.on('onSearchNeedResetPage', () => {
+      this.currentPage != 1 ? this.currentPage = 1 : null
+    })
   }
 }
 </script>

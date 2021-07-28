@@ -16,7 +16,7 @@ export class KS3Service {
   async findAll(page: number, limit: number, query: string): Promise<object> {
     if(!query) query = ''
     const [data, total] = await this.ks3Repository.findAndCount({
-      relations: ['user', 'ks3_stage_workflow'],
+      relations: ['user', 'ks3_stage_workflow', 'project'],
       skip: limit * (page - 1),
       take: limit,
       where: [
@@ -76,13 +76,12 @@ export class KS3Service {
       reporting_period: body.data.period,
       date_preparation: body.data.documentPeriod,
       user_id: 1,
-      project: '1',
       ks3_stage_workflow: body.data.ks3StageWorkflow
     })
     await this.ks3Repository.save(newKS3)
 
     const data = await this.ks3Repository.find({
-      relations: ['user', 'ks3_stage_workflow'],
+      relations: ['user', 'ks3_stage_workflow', 'project'],
       where: { id: newKS3.id }
     })
 
