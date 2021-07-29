@@ -27,7 +27,7 @@
   "qtyrows": "Qty. records",
   "paginator-info": "Records {startList} to {limitList} of {total}",
   "back": "Back",
-  "oops-data": "Nothing found by certificate number {id}",
+  "oops-data": "Nothing found by certificate id {id}",
   "crypto": {
     "electonic-signature": "Electronic signature",
     "list-electonic-signature": "List of available<br>electronic signatures",

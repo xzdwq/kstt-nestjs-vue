@@ -27,7 +27,7 @@
   "qtyrows": "Кол-во записей",
   "paginator-info": "Строки с {startList} по {limitList} из {total}",
   "back": "Назад",
-  "oops-data": "По номеру справки {id} ничего не найдено",
+  "oops-data": "По id справки {id} ничего не найдено",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",

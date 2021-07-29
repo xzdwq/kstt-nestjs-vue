@@ -11,41 +11,73 @@ div
   div(v-if="getKS3id.length > 0 && !getIsLoading" class="pt-2")
     div(class="md:flex md:items-center mb-6")
       //- Ноиер справки КС-3
-      label(for="certificate-number" class="w-[170px] block font-bold mb-1 md:mb-0 pr-4 text-copy-primary") {{ $t('ks3.certificate-number') }}:
-      div.relative
+      label(for="certificate-number" class="select-none min-w-[170px] block font-bold mb-1 md:mb-0 pr-4 text-copy-primary") {{ $t('ks3.certificate-number') }}:
+      div.relative.flex
         input(
           v-model="v$.form.certificate_number.$model"
           type="text"
           name="certificate-number"
-          class="bg-gray-200 appearance-none border-2 rounded w-32 py-2 pl-10 text-copy-secondary"
+          class="bg-gray-200 appearance-none border-2 rounded w-full md:w-32 py-2 pl-10 text-copy-secondary"
           :class="v$.form.certificate_number.$errors.length === 0 ? 'border-gray-200' : 'border-red-500'"
         )
         svg-refresh(
-          class="cursor-pointer absolute left-0 top-0 mt-[10px] ml-2",
+          class="cursor-pointer absolute left-0 top-0 mt-[10px] ml-2 text-gray-500",
           @click="resetDefaultValue('certificate_number', $event)"
         )
-      div(
-        class="w-8 text-red-500"
-      )
-        Popper(
-          arrow
-          :hover="true"
-          closeDelay="100"
-          class="pl-1 popper-cust"
+        div(
+          class="w-8 text-red-500 flex items-center"
         )
-          svg-exclamation(
-            class="cursor-pointer"
-            v-show="v$.form.certificate_number.$errors.length > 0"
+          Popper(
+            arrow
+            :hover="true"
+            closeDelay="100"
+            class="pl-1 popper-cust"
           )
-          template(#content)
-            div(
-              class="text-red-600 text-center"
-              v-for="(error, index) of v$.form.certificate_number.$errors"
-              :key="index"
+            svg-exclamation(
+              class="cursor-pointer"
+              v-show="v$.form.certificate_number.$errors.length > 0"
             )
-              div {{ error.$message }}
+            template(#content)
+              div(
+                class="select-none text-red-600 text-center"
+                v-for="(error, index) of v$.form.certificate_number.$errors"
+                :key="index"
+              )
+                div {{ error.$message }}
       //- Ноиер документа
-      label(for="certificate-number" class="w-[170px] block font-bold mb-1 md:mb-0 pr-4 text-copy-primary") {{ $t('ks3.document-number') }}:
+      label(for="document-number" class="select-none min-w-[170px] block font-bold mb-1 md:mb-0 pr-4 text-copy-primary") {{ $t('ks3.document-number') }}:
+      div(class="relative flex md:w-full")
+        input(
+          v-model="v$.form.document_number.$model"
+          type="text"
+          name="document-number"
+          class="bg-gray-200 appearance-none border-2 rounded w-full py-2 pl-10 text-copy-secondary"
+          :class="v$.form.document_number.$errors.length === 0 ? 'border-gray-200' : 'border-red-500'"
+        )
+        svg-refresh(
+          class="cursor-pointer absolute left-0 top-0 mt-[10px] ml-2 text-gray-500",
+          @click="resetDefaultValue('document_number', $event)"
+        )
+        div(
+          class="w-8 text-red-500 flex items-center"
+        )
+          Popper(
+            arrow
+            :hover="true"
+            closeDelay="100"
+            class="pl-1 popper-cust"
+          )
+            svg-exclamation(
+              class="cursor-pointer"
+              v-show="v$.form.document_number.$errors.length > 0"
+            )
+            template(#content)
+              div(
+                class="select-none text-red-600 text-center"
+                v-for="(error, index) of v$.form.document_number.$errors"
+                :key="index"
+              )
+                div {{ error.$message }}
   //- load
   div(
     v-if="getKS3id.length === 0 && !getIsLoading"
@@ -95,8 +127,7 @@ export default {
     return {
       form: {
         certificate_number: {
-          required: helpers.withMessage(this.$t('validator.required'), required),
-          minLength: helpers.withMessage(({$params}) => this.$t('validator.minLenght', {count: $params.min}), minLength(2))
+          required: helpers.withMessage(this.$t('validator.required'), required)
         },
         document_number: {
           required: helpers.withMessage(this.$t('validator.required'), required),
@@ -127,6 +158,7 @@ export default {
     const data = await this.fetchKS3id(this.id);
     if(data.success) {
       this.form.certificate_number = data.data[0].certificate_number
+      this.form.document_number = data.data[0].document_number
     } else {
       createToast({
           title: data.message,
