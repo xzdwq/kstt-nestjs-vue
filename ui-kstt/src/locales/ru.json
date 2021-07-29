@@ -27,6 +27,7 @@
   "qtyrows": "Кол-во записей",
   "paginator-info": "Строки с {startList} по {limitList} из {total}",
   "back": "Назад",
+  "oops-data": "По номеру справки {id} ничего не найдено",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",
@@ -36,6 +37,7 @@
   },
   "ks3": {
     "certificate-number": "Номер справки",
+    "placeholder-certificate-number": "укажите номер справки",
     "document-number": "Номер документа",
     "document": "Документ",
     "document-dated": " от ",
@@ -48,7 +50,8 @@
     "create-ks3": "Справка КС-3 №{number} успешно создана",
     "create-ks3-error": "Ошибка создания справки КС-3",
     "certificate-ks3-error": "Ошибка получения следующего номера справки КС-3",
-    "get-stage-workflow": "Пытаюсь загрузить стадии согласования"
+    "get-stage-workflow": "Пытаюсь загрузить стадии согласования",
+    "error-load-ks3id": "Ошибка получения данных по номеру справки КС-3"
   },
   "validator": {
     "required": "данное поле обязательно к заполнению",

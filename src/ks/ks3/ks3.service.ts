@@ -35,6 +35,20 @@ export class KS3Service {
     }
   }
 
+  async getKS3id(id: number): Promise<object> {
+    const [data, total] = await this.ks3Repository.findAndCount({
+      relations: ['user', 'ks3_stage_workflow', 'project'],
+      where: [
+        { id: id }
+      ]
+    })
+    return {
+      success: true,
+      data: data,
+      total: total
+    }
+  }
+
   async getKS3StageWorkflow(): Promise<object> {
     const [data, total] = await this.ks3StageWorkflowRepository.findAndCount()
     return {

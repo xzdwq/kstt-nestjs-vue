@@ -9,6 +9,7 @@ div(class="flex text-sm")
         span(v-if="type == 'medium'" class="text-center w-full pr-[1px] pb-[2px]") {{ stage.id }}
         Popper(
           arrow
+          placement="top"
           class="popper-cust flex absolute"
           :style="getPopperStyle"
         )

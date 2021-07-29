@@ -27,6 +27,7 @@
   "qtyrows": "Qty. records",
   "paginator-info": "Records {startList} to {limitList} of {total}",
   "back": "Back",
+  "oops-data": "Nothing found by certificate number {id}",
   "crypto": {
     "electonic-signature": "Electronic signature",
     "list-electonic-signature": "List of available<br>electronic signatures",
@@ -36,6 +37,7 @@
   },
   "ks3": {
     "certificate-number": "Certificate number",
+    "placeholder-certificate-number": "indicate the certificate number",
     "document-number": "Document number",
     "document": "Document",
     "document-dated": " dated ",
@@ -48,7 +50,8 @@
     "create-ks3": "Certificate KS-3 #{number} has been successfully created",
     "create-ks3-error": "Error creating certificate KS-3",
     "certificate-ks3-error": "Error getting the next certificate number KS-3",
-    "get-stage-workflow": "I'm trying to load the approval stages"
+    "get-stage-workflow": "I'm trying to load the approval stages",
+    "error-load-ks3id": "Error retrieving data by certificate number KS-3"
   },
   "validator": {
     "required": "this field is required",

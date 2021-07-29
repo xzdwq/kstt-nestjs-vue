@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query
 } from "@nestjs/common";
@@ -20,6 +21,12 @@ export class KS3Controller {
     @Query('_query') query: string
   ): Promise<any>{
     return await this.ks3Service.findAll(page, limit, query)
+  }
+  @Get('/ks3id/:id')
+  async getKS3id(
+    @Param() params
+  ): Promise<any>{
+    return await this.ks3Service.getKS3id(params.id)
   }
   @Get('/ks3/stageworkflow')
   async getKS3StageWorkflow() {

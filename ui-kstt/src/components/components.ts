@@ -38,6 +38,7 @@ import DoubleLeft from '@/components/svg/DoubleLeft.vue'
 import Left from '@/components/svg/Left.vue'
 import Right from '@/components/svg/Right.vue'
 import NewsPaper from '@/components/svg/NewsPaper.vue'
+import Exclamation from '@/components/svg/Exclamation.vue'
 /**
  * Utils
  */
@@ -80,6 +81,7 @@ export default [
   Left,
   Right,
   NewsPaper,
+  Exclamation,
 
   Modal,
   PopupNotification

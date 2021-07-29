@@ -210,19 +210,21 @@ export default {
       /**
        * Either it
        */
-      // this.form.customDocumentNumber = el.target.value
+      this.form.customDocumentNumber = el.target.value
       /**
        * Either it
        */
-      const re = /([^\/]|\/(?=.*\/))+/gm
-      const checkReg = el.target.value.match(re)
+      // try {
+      //   const re = /([^\/]|\/(?=.*\/))+/gm
+      //   const checkReg = el.target.value.match(re)
 
-      this.form.customDocumentNumber = checkReg[0].trim()
-      if(checkReg.length === 2) {
-        this.form.customCertificateNumber = checkReg[1]
-      } else {
-        this.form.customCertificateNumber = this.form.certificateNumber
-      }
+      //   this.form.customDocumentNumber = checkReg[0].trim()
+      //   if(checkReg.length === 2) {
+      //     this.form.customCertificateNumber = checkReg[1]
+      //   } else {
+      //     this.form.customCertificateNumber = this.form.certificateNumber
+      //   }
+      // } catch(e){}
     },
     ...mapActions({
       createKS3: 'ks3Module/createKS3',

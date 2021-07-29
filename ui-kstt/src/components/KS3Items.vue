@@ -5,13 +5,10 @@ div(class="p-1 pb-4 rounded-md bg-background-secondary border-2 border-transpare
     div(class="col-span-2 w-full")
       div.flex
         //- section-1(number)
-        div(class="w-60 pl-2 ")
+        div(class="w-full pl-2 ")
           span(class="text-gray-400") # {{ item.certificate_number }}
-        //- section-2
-        div(class="w-full text-center ")
-          span(class="text-gray-400")
         //- section-3(icons)
-        div(class="pr-2 w-80 flex justify-end ")
+        div(class="pr-2 w-56 flex justify-end ")
           //- svg-papperclip(
           //-   class="p-1 cursor-pointer"
           //- )

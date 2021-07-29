@@ -4,6 +4,7 @@ import { themeSwitcherModule } from "@/store/modules/themeSwitcher";
 import { bellNotificationModule } from "@/store/modules/bellNotification";
 import { cryptoConfigurationModule } from "@/store/modules/cryptoConfiguration"
 import { ks3Module } from "@/store/modules/ks3Module"
+import { ks3idModule } from "@/store/modules/ks3idModule"
 
 export default createStore({
   state: {
@@ -19,6 +20,7 @@ export default createStore({
     themeSwitcherModule,
     bellNotificationModule,
     cryptoConfigurationModule,
-    ks3Module
+    ks3Module,
+    ks3idModule
   }
 })
