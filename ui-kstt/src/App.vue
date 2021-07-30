@@ -4,7 +4,7 @@ div(
   :class="getTheme"
 )
   header-navbar
-  div(class="md:container py-2 xl:px-4 md:px-2 sm:px-2")
+  div(class="py-2 xl:px-4 md:px-2 sm:px-2")
     router-view
 </template>
 

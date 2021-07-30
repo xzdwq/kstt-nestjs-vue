@@ -96,9 +96,9 @@ export default {
     --popper-theme-text-color: #000000;
     --popper-theme-border-width: 1px;
     --popper-theme-border-style: solid;
-    --popper-theme-border-color: #636363;
-    --popper-theme-border-radius: 0px;
+    --popper-theme-border-color: #7a7a7a;
+    --popper-theme-border-radius: 5px;
     --popper-theme-padding: 10px;
-    --popper-theme-box-shadow: 0 6px 30px -6px rgba(0, 0, 0, 0.25);
+    --popper-theme-box-shadow: 0 6px 30px -6px rgb(54, 54, 54);
   }
 </style>
