@@ -7,6 +7,8 @@ import store from "@/store/store"
 import components from "@/components/components"
 import directives from '@/directives';
 
+import VueClickAway from "vue3-click-away";
+
 import i18n from '@/plugins/i18n'
 
 import "@/css/main.css"
@@ -28,4 +30,5 @@ app
   .use(store)
   .use(router)
   .use(i18n)
+  .use(VueClickAway)
   .mount('#app')

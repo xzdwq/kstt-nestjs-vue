@@ -55,7 +55,9 @@
   },
   "ks2": {
     "acts": "Acts KS-2",
-    "create": "Create"
+    "create": "Create",
+    "create-card": "Card KS-2",
+    "import-card": "Import KS-2"
   },
   "validator": {
     "required": "this field is required",

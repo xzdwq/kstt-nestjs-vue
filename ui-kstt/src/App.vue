@@ -1,10 +1,10 @@
 <template lang="pug">
 div(
-  class="pt-1 xl:px-4 md:px-2 sm:px-2 min-h-screen content-wrapper text-copy-primary bg-background-primary"
+  class="pt-1 px-2 min-h-screen content-wrapper text-copy-primary bg-background-primary"
   :class="getTheme"
 )
   header-navbar
-  div(class="py-2 xl:px-4 md:px-2 sm:px-2")
+  div(class="p-2")
     router-view
 </template>
 

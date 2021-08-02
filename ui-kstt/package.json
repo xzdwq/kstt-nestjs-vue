@@ -28,6 +28,7 @@
     "vue-class-component": "^8.0.0-0",
     "vue-i18n": "^9.1.7",
     "vue-router": "^4.0.0-0",
+    "vue3-click-away": "^1.2.1",
     "vue3-datepicker": "^0.2.5",
     "vue3-popper": "^1.1.0",
     "vuex": "^4.0.0-0"

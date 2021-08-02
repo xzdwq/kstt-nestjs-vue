@@ -17,8 +17,8 @@ div
   )
     p {{ $t('oops-data', {id: id}) }}
   div(v-if="getKS3id.length === 0 && getIsLoading" class="absolute w-[calc(100%-55px)] flex items-center justify-center")
-      svg-loading
-      p {{ $t('loading') }}
+    svg-loading
+    p {{ $t('loading') }}
 </template>
 <script>
 import {
