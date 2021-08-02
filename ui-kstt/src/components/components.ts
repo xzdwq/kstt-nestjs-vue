@@ -11,11 +11,13 @@ import NotificationItems from '@/components/NotificationItems.vue'
 import TabsPanel from '@/components/tab/TabsPanel.vue'
 import SignatureForm from '@/components/cogform/SignatureForm.vue'
 import DefButton from '@/components/utils/DefButton.vue'
-import CreateKS3 from '@/components/createKS3form/CreateKS3.vue'
+import CreateKS3 from '@/components/KS3/CreateKS3.vue'
 import KS3Items from '@/components/KS3Items.vue'
 import StageWorkflow from '@/components/StageWorkflow.vue'
 import DefSearch from '@/components/utils/DefSearch.vue'
 import DefPagination from '@/components/utils/DefPagination.vue'
+import MetaDataKS3 from '@/components/KS3/MetaDataKS3.vue'
+import KS2Form from '@/components/KS2/KS2Form.vue'
 /**
  * SVG icons
  */
@@ -39,6 +41,8 @@ import Left from '@/components/svg/Left.vue'
 import Right from '@/components/svg/Right.vue'
 import NewsPaper from '@/components/svg/NewsPaper.vue'
 import Exclamation from '@/components/svg/Exclamation.vue'
+import External from '@/components/svg/External.vue'
+import Down from '@/components/svg/Down.vue'
 /**
  * Utils
  */
@@ -61,6 +65,8 @@ export default [
   StageWorkflow,
   DefSearch,
   DefPagination,
+  MetaDataKS3,
+  KS2Form,
 
   Loading,
   Bell,
@@ -82,6 +88,8 @@ export default [
   Right,
   NewsPaper,
   Exclamation,
+  External,
+  Down,
 
   Modal,
   PopupNotification

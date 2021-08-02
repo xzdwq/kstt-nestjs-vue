@@ -53,6 +53,10 @@
     "get-stage-workflow": "I'm trying to load the approval stages",
     "error-load-ks3id": "Error retrieving data by certificate number KS-3"
   },
+  "ks2": {
+    "acts": "Acts KS-2",
+    "create": "Create"
+  },
   "validator": {
     "required": "this field is required",
     "minLenght": "at least {count} characters"

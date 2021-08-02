@@ -15,7 +15,7 @@ div(class="p-1 pb-4 rounded-md bg-background-secondary border-2 border-transpare
           //- svg-star(
           //-   class="p-1 cursor-pointer"
           //- )
-          svg-newspaper(
+          svg-external(
             class="cursor-pointer"
             @click="$router.push(`/ks3/${item.id}`)"
           )
