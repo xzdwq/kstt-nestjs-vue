@@ -9,6 +9,21 @@ div
       svg-left
       span(class="pr-2") {{ $t('back') }}
   metadata-ks3
+  //- загрузка схемы стадий согласования КС-3
+  div(
+    v-if="getIsLoadStageWorkflow"
+    class="absolute w-[calc(100%-55px)] flex items-center justify-center"
+  )
+    svg-loading
+    p {{ $t('ks3.get-stage-workflow') }}
+  //- схема стадий согласования КС-3
+  div(class="bg-background-secondary rounded mt-2 mb-2")
+    stage-workflow(
+      v-if="!getIsLoadStageWorkflow"
+      class="pt-4"
+      :stageWorkflow="getStageWorkflow"
+      :activeStageWorkflow="getActiveStageWorkflow"
+    )
   ks2-form
   //- load
   div(
@@ -22,7 +37,8 @@ div
 </template>
 <script>
 import {
-  mapGetters
+  mapGetters,
+  mapActions
 } from 'vuex'
 
 export default {
@@ -35,8 +51,22 @@ export default {
   computed: {
     ...mapGetters({
       getIsLoading: 'ks3idModule/getIsLoading',
-      getKS3id: 'ks3idModule/getKS3id'
+      getKS3id: 'ks3idModule/getKS3id',
+      getStageWorkflow: 'ks3idModule/getStageWorkflow',
+      getIsLoadStageWorkflow: 'ks3idModule/getIsLoadStageWorkflow',
+      getActiveStageWorkflow: 'ks3idModule/getActiveStageWorkflow',
     })
-  }
+  },
+  methods: {
+    ...mapActions({
+      fetchStageWorkflow: 'ks3idModule/fetchStageWorkflow'
+    }),
+  },
+  async mounted() {
+    /**
+     * Получаем список этапов workflow справки КС-3
+     */
+    await this.fetchStageWorkflow()
+  },
 }
 </script>

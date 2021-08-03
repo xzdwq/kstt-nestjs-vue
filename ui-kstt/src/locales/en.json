@@ -3,8 +3,8 @@
   "about-text": "About ❤",
   "register-nav": "Register KS-3",
   "about-nav": "About",
-  "logo-1": "NUCLEAR",
-  "logo-2": "power plant",
+  "logo-1": "Akkuyu NPP",
+  "logo-2": "KS-2/KS-3",
   "configuration": "Configuration",
   "save-settings": "Settings have been saved",
   "save-error": "Save error",
@@ -57,7 +57,12 @@
     "acts": "Acts KS-2",
     "create": "Create",
     "create-card": "Card KS-2",
-    "import-card": "Import KS-2"
+    "import-card": "Import KS-2",
+    "number": "Number",
+    "status": "Status",
+    "date_status": "Date of status",
+    "executor": "Executor",
+    "signatures": "Signatures"
   },
   "validator": {
     "required": "this field is required",

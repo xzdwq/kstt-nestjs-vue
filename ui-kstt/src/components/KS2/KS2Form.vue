@@ -26,11 +26,30 @@ div
               svg-upload(class="mr-2")
               div {{ $t('ks2.import-card') }}
       //- body
+      //- table
+      table(class="table-fixed w-full mt-2 text-sm")
+        thead
+          tr
+            th(class="w-1/4") {{ $t('ks2.number') }}
+            th(class="w-1/2") {{ $t('ks2.status') }}
+            th(class="w-1/2") {{ $t('ks2.date_status') }}
+            th(class="w-1/2") {{ $t('ks2.executor') }}
+            th(class="w-1/2") {{ $t('ks2.signatures') }}
+        tbody
+          tr(
+            v-for="item in getKS2id" :key="item.id"
+          )
+            td(class="p-1 border-2 border-gray-400") {{ item.number }}
+            td(class="p-1 border-2 border-gray-400") {{ item.status }}
+            td(class="p-1 border-2 border-gray-400") {{ item.date_status }}
+            td(class="p-1 border-2 border-gray-400") {{ item.executor }}
+            td(class="p-1 border-2 border-gray-400") {{ item.signatures }}
+
       div(
-        v-if="getKS2id.length > 0 && !getIsLoadingKS2"
+        v-if="getKS2id.length === 0 && !getIsLoadingKS2"
         class="py-2"
       )
-        span {{ getKS2id }}
+        p {{ $t('no-data') }}
       //- load
       div(v-if="getKS2id.length === 0 && getIsLoadingKS2" class="absolute w-[calc(100%-55px)] flex items-center justify-center")
         svg-loading
