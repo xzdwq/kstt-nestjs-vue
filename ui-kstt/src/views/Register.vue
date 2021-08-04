@@ -2,11 +2,15 @@
 div(class="h-full")
   //- toolbar
   div(class="md:mx-auto flex pb-2")
-    def-button(
-      class="text-white bg-[#579bae] flex justify-between"
-      @click="onRefreshKS3"
+    popper(arrow :hover="true" placement="bottom"
+      class="flex items-center pr-2 popper-tips"
+      :content="$t('refresh')"
     )
-      svg-refresh(:class="{'animate-spin z-0' : getIsLoading}")
+      def-button(
+        class="text-white bg-[#579bae] flex justify-between"
+        @click="onRefreshKS3"
+      )
+        svg-refresh(:class="{'animate-spin z-0' : getIsLoading}")
     def-button(
       class="text-white bg-[#06d6a0] flex justify-between"
       @click="onCreateKS3"

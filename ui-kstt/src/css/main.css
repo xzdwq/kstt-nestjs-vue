@@ -155,3 +155,18 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #a0aec0;
 }
+
+
+.popper-tips {
+  font-size: 14px;
+  line-height: 15px;
+  text-align: center;
+  --popper-theme-background-color: #ffffff;
+  --popper-theme-background-color-hover: #ffffff;
+  --popper-theme-text-color: #565656;
+  --popper-theme-border-width: 1px;
+  --popper-theme-border-style: solid;
+  --popper-theme-border-color: #7a7a7a;
+  --popper-theme-border-radius: 5px;
+  --popper-theme-padding: 10px;
+}

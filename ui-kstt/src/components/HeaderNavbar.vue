@@ -14,10 +14,31 @@ nav(class="z-10 md:mx-auto flex justify-between p-3 border-2 border-transparent 
     //-       :to="'/about'"
     //-     ) {{ $t('about-nav') }}
   div.flex.w-auto
-    cog-settings
-    bell-notification
-    theme-switcher
-    locales-switcher
+    popper(arrow :hover="true" placement="bottom"
+      class="flex pr-2 popper-tips"
+      :content="$t('user-group')"
+    )
+      user-group
+    popper(arrow :hover="true" placement="bottom"
+      class="flex pr-2 popper-tips"
+      :content="$t('configuration')"
+    )
+      cog-settings
+    popper(arrow :hover="true" placement="bottom"
+      class="flex pr-2 popper-tips"
+      :content="$t('notification')"
+    )
+      bell-notification
+    popper(arrow :hover="true" placement="bottom"
+      class="flex pr-2 popper-tips"
+      :content="$t('theme-switch')"
+    )
+      theme-switcher
+    popper(arrow :hover="true" placement="bottom"
+      class="flex items-center pr-2 popper-tips"
+      :content="$t('lang-switch')"
+    )
+      locales-switcher
 </template>
 
 <script>

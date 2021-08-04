@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="flex justify-between p-3 mb-2 border-2 border-transparent rounded-lg bg-background-secondary" :class="{ 'border-red-500' : item.status === 0}")
+div(class="flex justify-between p-3 mb-2 border-2 text-left text-base leading-normal border-transparent rounded-lg bg-background-secondary" :class="{ 'border-red-500' : item.status === 0}")
   div(ref="observer_notification_item")
     span {{ dateFormatter(item.create_at, 'DD.MM.YYYY H:m:ss') }}
     p {{ this.$i18n.locale == 'ru' ? item.text_ru : item.text_en }}

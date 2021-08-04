@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="h-full rounded-md bg-background-secondary")
+div(class="h-full rounded-md bg-background-secondary text-base leading-normal text-left")
   tab-wrapper
     tab(:title="$t('crypto.electonic-signature')")
       div(class="p-2 h-[38vh] overflow-y-scroll overflow-x-hidden")

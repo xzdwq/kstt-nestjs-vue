@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="text-copy-primary hover:text-copy-hover mr-2 cursor-pointer"
+  class="text-copy-primary hover:text-copy-hover cursor-pointer"
   @click.prevent="animateScale($event)"
 )
   svg-sun(v-if="getTheme === 'theme-light'")

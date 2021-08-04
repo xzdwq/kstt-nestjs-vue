@@ -15,10 +15,14 @@ div(class="p-1 pb-4 rounded-md bg-background-secondary border-2 border-transpare
           //- svg-star(
           //-   class="p-1 cursor-pointer"
           //- )
-          svg-external(
-            class="cursor-pointer"
-            @click="$router.push(`/ks3/${item.id}`)"
+          popper(arrow :hover="true" placement="bottom"
+            class="flex pr-2 popper-tips"
+            :content="$t('open-card')"
           )
+            svg-external(
+              class="cursor-pointer"
+              @click="$router.push(`/ks3/${item.id}`)"
+            )
     //- middle-block
     div(class="pl-3 mt-[-10px] col-span-2 w-full ")
       span {{ $t('ks3.document') }}: 

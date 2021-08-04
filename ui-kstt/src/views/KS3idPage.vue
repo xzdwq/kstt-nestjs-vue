@@ -2,12 +2,7 @@
 div
   //- toolbar
   div(class="flex")
-    def-button(
-      class="text-white bg-[#579bae] flex justify-between"
-      @click="$router.go(-1)"
-    )
-      svg-left
-      span(class="pr-2") {{ $t('back') }}
+    def-button-back
   metadata-ks3
   //- загрузка схемы стадий согласования КС-3
   div(
@@ -20,6 +15,7 @@ div
   div(class="bg-background-secondary rounded mt-2 mb-2")
     stage-workflow(
       v-if="!getIsLoadStageWorkflow"
+      type="medium"
       class="pt-4"
       :stageWorkflow="getStageWorkflow"
       :activeStageWorkflow="getActiveStageWorkflow"

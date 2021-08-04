@@ -65,26 +65,6 @@ export const ks2idModule = {
       try {
         commit('setIsLoading', true);
         commit('setKS2', []);
-        setTimeout(() => {
-          commit('setKS2', [
-            {
-              id: 1,
-              number: '123',
-              status: 'status',
-              date_status: "10.10.2010",
-              executor: "executor",
-              signatures: "none"
-            },
-            {
-              id: 2,
-              number: '1234',
-              status: 'status2',
-              date_status: "10.10.2020",
-              executor: "executor2",
-              signatures: "none2"
-            }
-          ]);
-        }, 500)
       } catch(e) { console.log(e) }
       finally { setTimeout(() => { commit('setIsLoading', false); }, 500) }
     }

@@ -19,6 +19,8 @@ import DefPagination from '@/components/utils/DefPagination.vue'
 import MetaDataKS3 from '@/components/KS3/MetaDataKS3.vue'
 import KS2Form from '@/components/KS2/KS2Form.vue'
 import DropdownMenu from '@/components/utils/DropdownMenu.vue'
+import UserGroup from '@/components/UserGroup.vue'
+import DefButtonBack from '@/components/utils/DefButtonBack.vue'
 /**
  * SVG icons
  */
@@ -46,6 +48,7 @@ import External from '@/components/svg/External.vue'
 import Down from '@/components/svg/Down.vue'
 import Upload from '@/components/svg/Upload.vue'
 import Document from '@/components/svg/Document.vue'
+import UsersGroup from '@/components/svg/UsersGroup.vue'
 /**
  * Utils
  */
@@ -71,6 +74,8 @@ export default [
   MetaDataKS3,
   KS2Form,
   DropdownMenu,
+  UserGroup,
+  DefButtonBack,
 
   Loading,
   Bell,
@@ -96,6 +101,7 @@ export default [
   Down,
   Upload,
   Document,
+  UsersGroup,
 
   Modal,
   PopupNotification

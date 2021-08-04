@@ -7,6 +7,7 @@ import PageNotFound from '@/views/PageNotFound.vue'
 import Register from '@/views/Register.vue'
 import About from '@/views/About.vue'
 import KS3idPage from '@/views/KS3idPage.vue'
+import UserGroupPage from '@/views/UserGroupPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +21,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/ks3/:id',
     component: KS3idPage
+  },
+  {
+    path: '/usergroup',
+    component: UserGroupPage
   },
   {
     path: '/about',

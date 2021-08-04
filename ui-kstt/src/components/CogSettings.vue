@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="flex text-copy-primary hover:text-copy-hover mr-2 cursor-pointer"
+  class="flex text-copy-primary hover:text-copy-hover cursor-pointer"
   @click="openModal"
 )
   svg-cog
