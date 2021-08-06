@@ -11,6 +11,7 @@ import { CryptoConfigModule } from '@src/crypto/config/cryptoConfig.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpErrorFilter } from '@src/core/httperror.filter';
 import { ProjectModule } from '@src/project/project.module';
+import { GroupModule } from '@src/group/group.module';
 
 @Module({
   imports: [
@@ -46,7 +47,8 @@ import { ProjectModule } from '@src/project/project.module';
     NotificationModule,
     KS3Module,
     CryptoConfigModule,
-    ProjectModule
+    ProjectModule,
+    GroupModule
   ],
   controllers: [
     AppController

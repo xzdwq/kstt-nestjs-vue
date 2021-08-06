@@ -19,7 +19,7 @@ export class NotificationService {
       {
         skip: limit * (page - 1),
         take: limit,
-        relations: ['user'],
+        relations: ['user', 'user.group'],
         where: {
           user_id: user_id
         },

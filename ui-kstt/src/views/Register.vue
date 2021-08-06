@@ -93,7 +93,8 @@ export default {
       this.fetchKS3(query)
     },
     ...mapActions({
-      fetchKS3: 'ks3Module/fetchKS3'
+      fetchKS3: 'ks3Module/fetchKS3',
+      fetchStageWorkflow: 'ks3Module/fetchStageWorkflow'
     }),
   },
   computed: {
@@ -111,6 +112,10 @@ export default {
       if(this.getNeedLoad) {
         await this.fetchKS3()
       }
+      /**
+       * Получаем список этапов workflow справки КС-3
+       */
+      await this.fetchStageWorkflow()
     } catch(e) { console.log(e) }
   }
 }

@@ -1,9 +1,12 @@
+import { GroupEntity } from '@src/group/entity/group.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  ManyToMany,
+  JoinTable
 } from 'typeorm';
 
 @Entity('user')
@@ -48,6 +51,20 @@ export class UserEntity {
     default: 1
   })
   role: number;
+
+  @ManyToMany(type => GroupEntity, group => group.id, { cascade: true })
+  @JoinTable({
+    name: 'user_group',
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'group_id',
+      referencedColumnName: 'id'
+    }
+  })
+  group: GroupEntity[];
 
   @CreateDateColumn()
   create_at: Date;

@@ -53,8 +53,7 @@ import { format } from 'date-fns'
 import { enGB, ru } from 'date-fns/locale'
 
 import {
-  mapGetters,
-  mapActions
+  mapGetters
 } from 'vuex'
 export default {
   name: 'ks3-items',
@@ -75,16 +74,7 @@ export default {
       getIsLoadStageWorkflow: 'ks3Module/getIsLoadStageWorkflow'
     })
   },
-  async mounted() {
-    /**
-     * Получаем список этапов workflow справки КС-3
-     */
-    await this.fetchStageWorkflow()
-  },
   methods: {
-    ...mapActions({
-      fetchStageWorkflow: 'ks3Module/fetchStageWorkflow'
-    }),
     formatDate(date, formatType) {
       return format(
         new Date(date),

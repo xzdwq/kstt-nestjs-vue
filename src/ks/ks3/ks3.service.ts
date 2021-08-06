@@ -16,7 +16,13 @@ export class KS3Service {
   async findAll(page: number, limit: number, query: string): Promise<object> {
     if(!query) query = ''
     const [data, total] = await this.ks3Repository.findAndCount({
-      relations: ['user', 'ks3_stage_workflow', 'project'],
+      relations: [
+        'user',
+        'user.group',
+        'ks3_stage_workflow',
+        'ks3_stage_workflow.group',
+        'project'
+      ],
       skip: limit * (page - 1),
       take: limit,
       where: [
@@ -37,7 +43,13 @@ export class KS3Service {
 
   async getKS3id(id: number): Promise<object> {
     const [data, total] = await this.ks3Repository.findAndCount({
-      relations: ['user', 'ks3_stage_workflow', 'project'],
+      relations: [
+        'user',
+        'user.group',
+        'ks3_stage_workflow',
+        'ks3_stage_workflow.group',
+        'project'
+      ],
       where: [
         { id: id }
       ]
@@ -50,7 +62,12 @@ export class KS3Service {
   }
 
   async getKS3StageWorkflow(): Promise<object> {
-    const [data, total] = await this.ks3StageWorkflowRepository.findAndCount()
+    const [data, total] = await this.ks3StageWorkflowRepository.findAndCount({
+      relations: [
+        'group',
+        'group.user'
+      ]
+    })
     return {
       success: true,
       data: data,
@@ -95,7 +112,13 @@ export class KS3Service {
     await this.ks3Repository.save(newKS3)
 
     const data = await this.ks3Repository.find({
-      relations: ['user', 'ks3_stage_workflow', 'project'],
+      relations: [
+        'user',
+        'user.group',
+        'ks3_stage_workflow',
+        'ks3_stage_workflow.group',
+        'project'
+      ],
       where: { id: newKS3.id }
     })
 

@@ -125,10 +125,10 @@ VALUES
   ),
   (
     NEWID()
+    , '002-a'
     , '1012-КТ'
     , GETDATE()
-	, GETDATE()
-    , 1
+	  , GETDATE()
     , 2
     , 1
     , 1
@@ -195,4 +195,41 @@ VALUES
   ,'CAdES-X Long Type'
   ,93
 )
+GO
+
+INSERT INTO [dbo].[group]
+  (
+    [name]
+  )
+VALUES
+  (
+    'ks3_project'
+  ),
+  (
+    'ks2_sign'
+  )
+GO
+
+INSERT INTO [dbo].[user_group]
+  (
+    [user_id]
+    ,[group_id]
+  )
+VALUES
+  (
+    1
+    ,1
+  )
+GO
+
+INSERT INTO [dbo].[ks3_stage_workflow_group]
+  (
+    [ks3_stage_workflow_id]
+    ,[group_id]
+  )
+VALUES
+  (
+    1
+	,1
+  )
 GO
