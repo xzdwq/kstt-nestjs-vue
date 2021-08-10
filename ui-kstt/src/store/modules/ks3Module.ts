@@ -175,6 +175,7 @@ export const ks3Module = {
           commit('setIsLoadStageWorkflow', true)
           const data = await axios.get('api/ks3/stageworkflow')
           commit('setStageWorkflow', data.data.data)
+          
         }
       }
       catch(e) {

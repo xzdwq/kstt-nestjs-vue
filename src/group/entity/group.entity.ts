@@ -25,7 +25,19 @@ export class GroupEntity {
     length: 255,
     nullable: false
   })
-  name: string;
+  code: string;
+
+  @Column({
+    length: 255,
+    nullable: false
+  })
+  name_ru: string;
+
+  @Column({
+    length: 255,
+    nullable: false
+  })
+  name_en: string;
 
   @ManyToMany(() => UserEntity, user => user.id, { cascade: true })
   @JoinTable({

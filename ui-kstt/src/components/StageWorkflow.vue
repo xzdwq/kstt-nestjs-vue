@@ -26,7 +26,7 @@ div(class="flex text-sm")
               span {{ $t('agree') }} --.--.--
             div
               span(class="text-gray-400") {{ $t('performers') }}: 
-              span username
+              span {{ getGroupUserStage(stage) }}
       div(
         class="text-center font-semibold"
         :class="{'text-[14px]': type == 'medium', 'text-[10px] leading-[13px] pt-[5px]': type == 'small', 'text-green-500': (activeStageWorkflow + 1) - stage.id > 0}"
@@ -74,13 +74,28 @@ export default {
           return stage.name_en
         }
       }
+    },
+    getGroupUserStage(stage) {
+      const groups = stage?.group
+      let executors = []
+      if(groups) {
+        groups.forEach((group) => {
+          if(group.user) {
+            const users = group.user
+            users.forEach((user) => {
+              executors.push(user.full_name)
+            })
+          }
+        })
+      }
+      return executors.length > 0 ? Array.from(new Set(executors)).join() : '-'
     }
   },
 }
 </script>
 <style>
   .popper-cust .popper {
-    width: 200px;
+    width: 250px;
   }
   .popper-cust {
     z-index: 1;

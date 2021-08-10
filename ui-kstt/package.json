@@ -19,6 +19,7 @@
     "copy-webpack-plugin": "^9.0.1",
     "core-js": "^3.6.5",
     "date-fns": "^2.22.1",
+    "jsplumb": "^2.15.6",
     "mitt": "^3.0.0",
     "moment": "^2.29.1",
     "mosha-vue-toastify": "^1.0.17",
