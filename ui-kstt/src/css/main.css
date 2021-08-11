@@ -158,6 +158,7 @@
 
 
 .popper-tips {
+  z-index: 1;
   font-size: 14px;
   line-height: 15px;
   text-align: center;

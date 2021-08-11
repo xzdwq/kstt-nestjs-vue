@@ -49,6 +49,11 @@ import Down from '@/components/svg/Down.vue'
 import Upload from '@/components/svg/Upload.vue'
 import Document from '@/components/svg/Document.vue'
 import UsersGroup from '@/components/svg/UsersGroup.vue'
+import Plus from '@/components/svg/Plus.vue'
+import ViewGrid from '@/components/svg/ViewGrid.vue'
+import ViewList from '@/components/svg/ViewList.vue'
+import UserPlus from '@/components/svg/UserPlus.vue'
+import UserMinus from '@/components/svg/UserMinus.vue'
 /**
  * Utils
  */
@@ -102,6 +107,11 @@ export default [
   Upload,
   Document,
   UsersGroup,
+  Plus,
+  ViewGrid,
+  ViewList,
+  UserPlus,
+  UserMinus,
 
   Modal,
   PopupNotification

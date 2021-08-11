@@ -67,8 +67,9 @@ export const ks3idModule = {
         commit('setIsLoading', false)
       }
     },
-    async fetchStageWorkflow({ commit, getters }) {
+    async fetchStageWorkflow({ commit, getters }, type) {
       try {
+        if(type == 'reload') commit('setStageWorkflow', [])
         if(getters.getStageWorkflow.length === 0) {
           commit('setIsLoadStageWorkflow', true)
           const data = await axios.get('api/ks3/stageworkflow')
