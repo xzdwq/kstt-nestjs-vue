@@ -213,32 +213,52 @@ VALUES
 )
 GO
 
+INSERT INTO [dbo].[group_type]
+  (
+    [name_ru]
+    ,[name_en]
+  )
+VALUES
+  (
+    'Параллельно'
+    ,'Parallel'
+  ),
+  (
+    'Последовательно'
+    ,'Consistently'
+  )
+
 INSERT INTO [dbo].[group]
   (
     [code]
     ,[name_ru]
     ,[name_en]
+    ,[type_id]
   )
 VALUES
   (
     'AKKU_KS_CONTROL'
     ,'Группа контроля'
     ,'Control group'
+    ,2
   ),
   (
     'AKKU_KS_SIGNER'
     ,'Группа подписания (КС-2/КС-3)'
     ,'Signing group (KS-2/KS-3)'
+    ,1
   ),
   (
     'AKKU_KS2_SIGNER'
     ,'Группа подписания актов КС-2'
     ,'Group of signing acts KS-2'
+    ,1
   ),
   (
     'AKKU_KS3_SIGNER'
     ,'Группа подписания справок КС-3'
     ,'Certificate signing group KS-3'
+    ,2
   )
 GO
 
@@ -263,6 +283,22 @@ VALUES
   (
     4
     ,4
+  ),
+  (
+    1
+    ,3
+  ),
+  (
+    2
+    ,3
+  ),
+  (
+    1
+    ,4
+  ),
+  (
+    4
+    ,2
   )
 GO
 

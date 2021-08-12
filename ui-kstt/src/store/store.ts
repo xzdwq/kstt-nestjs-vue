@@ -6,6 +6,7 @@ import { cryptoConfigurationModule } from "@/store/modules/cryptoConfiguration"
 import { ks3Module } from "@/store/modules/ks3Module"
 import { ks3idModule } from "@/store/modules/ks3idModule"
 import { ks2idModule } from "@/store/modules/ks2idModule"
+import { groupModule } from "@/store/modules/groupModule"
 
 export default createStore({
   state: {
@@ -23,6 +24,7 @@ export default createStore({
     cryptoConfigurationModule,
     ks3Module,
     ks3idModule,
-    ks2idModule
+    ks2idModule,
+    groupModule
   }
 })

@@ -52,7 +52,7 @@ export class UserEntity {
   })
   role: number;
 
-  @ManyToMany(type => GroupEntity, group => group.id, { cascade: true })
+  @ManyToMany(() => GroupEntity, group => group.id, { cascade: true })
   @JoinTable({
     name: 'user_group',
     joinColumn: {

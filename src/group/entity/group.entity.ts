@@ -1,4 +1,3 @@
-import { UserEntity } from '@src/user/entity/user.entity';
 import {
   Entity,
   Column,
@@ -7,8 +6,12 @@ import {
   UpdateDateColumn,
   Generated,
   ManyToMany,
-  JoinTable
+  JoinTable,
+  ManyToOne,
+  JoinColumn
 } from 'typeorm';
+import { UserEntity } from '@src/user/entity/user.entity';
+import { GroupTypeEntity } from '@src/group/entity/group_type.entity';
 
 @Entity('group')
 export class GroupEntity {
@@ -38,6 +41,15 @@ export class GroupEntity {
     nullable: false
   })
   name_en: string;
+
+  @Column({
+    nullable: false,
+    default: 1
+  })
+  type_id: number;
+  @ManyToOne(() => GroupTypeEntity, group_type => group_type.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'type_id' })
+  type: GroupTypeEntity;
 
   @ManyToMany(() => UserEntity, user => user.id, { cascade: true })
   @JoinTable({

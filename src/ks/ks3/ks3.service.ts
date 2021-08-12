@@ -65,7 +65,8 @@ export class KS3Service {
     const [data, total] = await this.ks3StageWorkflowRepository.findAndCount({
       relations: [
         'group',
-        'group.user'
+        'group.user',
+        'group.type'
       ]
     })
     return {
