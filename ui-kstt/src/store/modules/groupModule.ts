@@ -42,6 +42,15 @@ export const groupModule = {
       finally {
         commit('setIsLoading', false)
       }
+    },
+    async correctStageGroup({ commit }, params) {
+      const data = await axios.post('api/group', {
+        params: {
+          group: params.group,
+          stage: params.stage
+        }
+      })
+      console.log(data)
     }
   }
 }

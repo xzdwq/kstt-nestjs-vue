@@ -13,9 +13,9 @@ transition(name="ltr")
             :key="item.uuid"
           )
       div.justify-center.inline-flex.items-center.rounded-md.h-4.w-full(ref="observer_notification")
-        div(v-if="$store.state.bellNotificationModule.isLoading")
+        div(v-if="$store.state.bellNotificationModule.isLoading" class="flex")
           svg-loading
-          span {{ $t('loading') }}
+          div {{ $t('loading') }}
         div(v-if="notMoreNotification" class="absolute py-4")
           span {{ $t('no-more-notifications') }}
         div(v-else-if="!notMoreNotification && getTotalNotifications == 0")

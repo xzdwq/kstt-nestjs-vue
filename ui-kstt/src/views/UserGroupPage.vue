@@ -34,7 +34,7 @@ div
   //- схема стадий согласования КС-3
   div(
     v-show="activeGrid == 'grid'"
-    class="relative overflow-x-scroll break-words bg-background-secondary rounded mt-2 mb-2 p-2 w-full h-full"
+    class="relative h-[calc(100vh-130px)] overflow-scroll break-words bg-background-secondary rounded mt-2 mb-2 p-2 w-full"
   )
     div(
       ref="usergroup_graph"
@@ -129,7 +129,7 @@ div
       component(:is="modalCfg.component" v-model:modalCfg="modalCfg")
     template(v-slot:bottom-toolbar)
       def-button(class="min-w-28 text-white bg-[#ef476f]" @click="closeModal") {{ $t('cancel') }}
-      def-button(class="min-w-28 text-white bg-[#06d6a0]") OK
+      def-button(class="min-w-28 text-white bg-[#06d6a0]" @click="saveAndCloseModal") OK
 </template>
 <script>
 var jsPlumbInstance;
@@ -167,7 +167,8 @@ export default {
         data: null,
         modalShow: false,
         width: 'w-9/12 min-w-[500px] max-w-[700px]',
-        height: 'h-[80%] sm:h-[70%] lg:h-4/6 '
+        height: 'h-[80%] sm:h-[70%] lg:h-4/6 ',
+        tmpGroupCheck: []
       }
     }
   },
@@ -181,7 +182,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchStageWorkflow: 'ks3idModule/fetchStageWorkflow'
+      fetchStageWorkflow: 'ks3idModule/fetchStageWorkflow',
+      correctStageGroup: 'groupModule/correctStageGroup',
     }),
     async onRefreshUsergroup() {
       this.isLoadForRefresh = true
@@ -224,6 +226,14 @@ export default {
       this.modalCfg.modalShow = true
     },
     closeModal() {
+      this.modalCfg.modalShow = false
+    },
+    async saveAndCloseModal() {
+      const params = {
+        group: this.modalCfg.tmpGroupCheck,
+        stage: this.modalCfg.tmpGroupCheck[0].stage_id
+      }
+      this.correctStageGroup(params)
       this.modalCfg.modalShow = false
     },
     async onConnection() {

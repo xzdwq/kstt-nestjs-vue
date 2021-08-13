@@ -1,6 +1,8 @@
 import {
+  Body,
   Controller,
-  Get
+  Get,
+  Post
 } from "@nestjs/common";
 
 import { GroupService } from '@src/group/group.service'
@@ -14,5 +16,15 @@ export class GroupController {
   @Get('/group')
   async getGroup(): Promise<any> {
     return await this.groupService.findAll()
+  }
+
+  @Post('/group')
+  async addGroupInStage(
+    @Body() params
+  ) {
+    console.log(params)
+    return {
+      data: params
+    }
   }
 }

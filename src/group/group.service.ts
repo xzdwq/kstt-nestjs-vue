@@ -10,7 +10,12 @@ export class GroupService {
     private groupRepository: Repository<GroupEntity>,
   ) {}
   async findAll(): Promise<object> {
-    const [data, total] = await this.groupRepository.findAndCount()
+    const [data, total] = await this.groupRepository.findAndCount({
+      relations: [
+        'user',
+        'type'
+      ]
+    })
     return {
       success: true,
       data: data,
