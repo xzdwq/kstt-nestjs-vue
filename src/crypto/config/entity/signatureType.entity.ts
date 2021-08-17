@@ -6,7 +6,7 @@ import {
   UpdateDateColumn
 } from 'typeorm';
 
-@Entity('signature-type')
+@Entity('signature_type')
 export class SignatureTypeEntity {
   @PrimaryGeneratedColumn()
   id: number;

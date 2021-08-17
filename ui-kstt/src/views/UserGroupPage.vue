@@ -33,7 +33,7 @@ div
     p {{ $t('no-data') }}
   //- схема стадий согласования КС-3
   div(
-    v-show="activeGrid == 'grid'"
+    v-show="activeGrid == 'grid' && getStageWorkflow.length > 0"
     class="relative h-[calc(100vh-130px)] overflow-scroll break-words bg-background-secondary rounded mt-2 mb-2 p-2 w-full"
   )
     div(
@@ -75,16 +75,16 @@ div
             )
               div(class="flex items-center justify-end text-center")
                 //- toolbar
-                div(
-                  class="pl-1 text-[#9CA3FF] cursor-pointer h-6"
-                  @click="onAddUser(group.id)"
-                )
-                  svg-pencilalt
-                div(
-                  class="pl-1 text-[#9CA3FF] cursor-pointer h-6"
-                  @click="onDelGroup(group.id, stage.id)"
-                )
-                  svg-trash
+                //- div(
+                //-   class="pl-1 text-[#9CA3FF] cursor-pointer h-6"
+                //-   @click="onAddUser(group.id)"
+                //- )
+                //-   svg-pencilalt
+                //- div(
+                //-   class="pl-1 text-[#9CA3FF] cursor-pointer h-6"
+                //-   @click="onDelGroup(group.id, stage.id)"
+                //- )
+                //-   svg-trash
               div(class="flex items-center justify-center text-center")
                 div {{ this.$i18n.locale == 'ru' ? group.name_ru : group.name_en }}
               //- Метки
@@ -119,7 +119,7 @@ div
                     svg-trash
   //- схема управления группами и пользователями
   div(
-    v-show="activeGrid == 'list'"
+    v-show="activeGrid == 'list' && getStageWorkflow.length > 0"
     class="break-words overflow-x-scroll bg-background-secondary rounded mt-2 mb-2 p-2 w-full h-full"
   )
   //- модальное окно
@@ -174,15 +174,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getStageWorkflow: 'ks3idModule/getStageWorkflow',
-      getIsLoadStageWorkflow: 'ks3idModule/getIsLoadStageWorkflow',
-      getActiveStageWorkflow: 'ks3idModule/getActiveStageWorkflow',
+      getStageWorkflow: 'usergroupModule/getStageWorkflow',
+      getIsLoadStageWorkflow: 'usergroupModule/getIsLoadStageWorkflow',
       getLocales: 'localesSwitcherModule/getLocales'
     })
   },
   methods: {
     ...mapActions({
-      fetchStageWorkflow: 'ks3idModule/fetchStageWorkflow',
+      fetchStageWorkflow: 'usergroupModule/fetchStageWorkflow',
       correctStageGroup: 'groupModule/correctStageGroup',
     }),
     async onRefreshUsergroup() {
@@ -200,7 +199,7 @@ export default {
     },
     onAddGroup(stage) {
       const modalBody = {
-        title: this.$t('add-group', { stage: this.$i18n.locale == 'ru' ? stage.name_ru : stage.name_en }),
+        title: this.$t('manager-stage-group', { stage: this.$i18n.locale == 'ru' ? stage.name_ru : stage.name_en }),
         component: 'add-group-in-stage',
         data: {
           type: 'add-group-in-stage',
@@ -208,7 +207,6 @@ export default {
         }
       }
       this.onOpenModal(modalBody)
-      console.log('stage_id: '+stage.id);
     },
     onAddUser(group_id) {
       console.log('group_id: '+group_id);
@@ -231,10 +229,11 @@ export default {
     async saveAndCloseModal() {
       const params = {
         group: this.modalCfg.tmpGroupCheck,
-        stage: this.modalCfg.tmpGroupCheck[0].stage_id
+        stage_id: this.modalCfg.tmpGroupCheck[0].stage_id
       }
-      this.correctStageGroup(params)
+      await this.correctStageGroup(params)
       this.modalCfg.modalShow = false
+      await this.onRefreshUsergroup()
     },
     async onConnection() {
       await jsPlumb.ready(() => {

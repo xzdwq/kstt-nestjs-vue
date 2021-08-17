@@ -35,7 +35,7 @@
   "back": "Назад",
   "oops-data": "По id справки {id} ничего не найдено",
   "user-group": "Управление группами и пользователями",
-  "add-group": "Добавить группу в этап \"{stage}\"",
+  "manager-stage-group": "Управление группами в этапе \"{stage}\"",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",

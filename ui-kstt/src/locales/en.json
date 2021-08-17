@@ -35,7 +35,7 @@
   "back": "Back",
   "oops-data": "Nothing found by certificate id {id}",
   "user-group": "Group and user management",
-  "add-group": "Add group in \"{stage}\" stage",
+  "manager-stage-group": "Group management in the \"{stage}\" stage",
   "crypto": {
     "electonic-signature": "Electronic signature",
     "list-electonic-signature": "List of available<br>electronic signatures",

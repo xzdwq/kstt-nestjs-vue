@@ -41,4 +41,11 @@ export class KS3Controller {
   async createKS3(@Body() body: Object) {
     return this.ks3Service.createKS3(body)
   }
+  @Post('/ks3/stagegroup')
+  async addGroupInStage(
+    @Body() body
+  ): Promise<any> {
+    const params = body.params
+    return this.ks3Service.setStageGroup(params)
+  }
 }

@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Repository, Like } from 'typeorm';
 import { KS3Entity } from '@src/ks/ks3/entity/ks3.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3stageWorkflow.entity';
+import { GroupService } from '@src/group/group.service';
 
 @Injectable()
 export class KS3Service {
@@ -11,28 +12,41 @@ export class KS3Service {
     private ks3Repository: Repository<KS3Entity>,
     @InjectRepository(KS3StageWorkflow)
     private ks3StageWorkflowRepository: Repository<KS3StageWorkflow>,
+    @Inject(GroupService)
+    private groupService: GroupService,
   ) {}
 
   async findAll(page: number, limit: number, query: string): Promise<object> {
     if(!query) query = ''
+    // const [data, total] = await this.ks3Repository.findAndCount({
+    //   relations: [
+    //     'user',
+    //     'user.group',
+    //     'ks3_stage_workflow',
+    //     'ks3_stage_workflow.group',
+    //     'project'
+    //   ],
+    //   skip: limit * (page - 1),
+    //   take: limit,
+    //   where: [
+    //     { certificate_number: Like(`%${query}%`) },
+    //     { document_number: Like(`%${query}%`) }
+    //   ],
+    //   order: {
+    //     create_at: 'DESC'
+    //   }
+    // });
+
     const [data, total] = await this.ks3Repository.findAndCount({
       relations: [
         'user',
-        'user.group',
-        'ks3_stage_workflow',
-        'ks3_stage_workflow.group',
-        'project'
-      ],
-      skip: limit * (page - 1),
-      take: limit,
-      where: [
-        { certificate_number: Like(`%${query}%`) },
-        { document_number: Like(`%${query}%`) }
-      ],
-      order: {
-        create_at: 'DESC'
-      }
-    });
+        'project',
+        'workflow',
+        'workflow.stage',
+        'workflow.stage.group',
+        'workflow.stage.group.users'
+      ]
+    })
 
     return {
       success: true,
@@ -45,10 +59,11 @@ export class KS3Service {
     const [data, total] = await this.ks3Repository.findAndCount({
       relations: [
         'user',
-        'user.group',
-        'ks3_stage_workflow',
-        'ks3_stage_workflow.group',
-        'project'
+        'project',
+        'workflow',
+        'workflow.stage',
+        'workflow.stage.group',
+        'workflow.stage.group.users'
       ],
       where: [
         { id: id }
@@ -108,7 +123,7 @@ export class KS3Service {
       reporting_period: body.data.period,
       date_preparation: body.data.documentPeriod,
       user_id: 1,
-      ks3_stage_workflow: body.data.ks3StageWorkflow
+      workflow_id: body.data.ks3StageWorkflow
     })
     await this.ks3Repository.save(newKS3)
 
@@ -126,6 +141,31 @@ export class KS3Service {
     return {
       success: true,
       data: data
+    }
+  }
+
+  async setStageGroup(params): Promise<object> {
+    const stage_id = params.stage_id
+    const wfstage = await this.ks3StageWorkflowRepository.findOne(stage_id, {
+      relations: ['group']
+    })
+
+    for(const pg of params.group) {
+      const matchIndex = wfstage.group.findIndex(x => x.id === pg.id)
+      if(matchIndex >= 0) {
+        // если группу исключили из стадии
+        if(!pg.check) wfstage.group.splice(matchIndex, 1);
+      } else {
+        // если группу добавили в стадию
+        if(pg.check) {
+          const getGroupById = await this.groupService.findOne(pg.id)
+          wfstage.group.push(getGroupById['data'])
+        }
+      }
+    }
+    const result = await this.ks3StageWorkflowRepository.save(wfstage)
+    return {
+      data: result
     }
   }
 }

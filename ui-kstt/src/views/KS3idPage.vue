@@ -62,7 +62,7 @@ export default {
     /**
      * Получаем список этапов workflow справки КС-3
      */
-    await this.fetchStageWorkflow()
+    // await this.fetchStageWorkflow()
   },
 }
 </script>

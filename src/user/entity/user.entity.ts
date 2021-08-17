@@ -1,4 +1,5 @@
 import { GroupEntity } from '@src/group/entity/group.entity';
+import { WorkflowStageGroupUserEntity } from '@src/workflow/entity/workflow_stage_group_user.entity';
 import {
   Entity,
   Column,
@@ -6,7 +7,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
-  JoinTable
+  JoinTable,
+  OneToMany
 } from 'typeorm';
 
 @Entity('user')

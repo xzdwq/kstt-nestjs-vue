@@ -1,5 +1,5 @@
 import { UserEntity } from '@src/user/entity/user.entity';
-import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3stageWorkflow.entity';
+import { WorkflowEntity } from '@src/workflow/entity/workflow.entity';
 import { ProjectEntity } from '@src/project/entity/project.entity';
 import {
   Entity,
@@ -63,12 +63,12 @@ export class KS3Entity {
 
   @Column({
     nullable: false,
-    default: 1
+    unique: true
   })
-  ks3_stage_workflow_id: number;
-  @ManyToOne(() => KS3StageWorkflow, stage => stage.id, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'ks3_stage_workflow_id' })
-  ks3_stage_workflow: KS3StageWorkflow[];
+  workflow_id: number;
+  @ManyToOne(() => WorkflowEntity, wf => wf.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'workflow_id' })
+  workflow: WorkflowEntity[];
 
   @CreateDateColumn()
   create_at: Date;

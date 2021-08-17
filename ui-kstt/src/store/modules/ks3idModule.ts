@@ -50,7 +50,8 @@ export const ks3idModule = {
         commit('setIsLoading', true)
         const data = await axios.get(`api/ks3id/${id}`)
         commit('setKS3id', data.data.data)
-        commit('setActiveStageWorkflow', data.data.data[0].ks3_stage_workflow_id)
+        commit('setStageWorkflow', data.data.data[0].workflow.stage)
+        commit('setActiveStageWorkflow', data.data.data[0].workflow.curret_stage)
         return {
           success: true,
           data: data.data.data
@@ -65,22 +66,6 @@ export const ks3idModule = {
       }
       finally {
         commit('setIsLoading', false)
-      }
-    },
-    async fetchStageWorkflow({ commit, getters }, type) {
-      try {
-        if(type == 'reload') commit('setStageWorkflow', [])
-        if(getters.getStageWorkflow.length === 0) {
-          commit('setIsLoadStageWorkflow', true)
-          const data = await axios.get('api/ks3/stageworkflow')
-          commit('setStageWorkflow', data.data.data)
-        }
-      }
-      catch(e) {
-        console.log(e)
-      }
-      finally {
-        commit('setIsLoadStageWorkflow', false)
       }
     }
   }

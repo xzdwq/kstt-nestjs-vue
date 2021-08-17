@@ -1,17 +1,19 @@
-import { GroupEntity } from '@src/group/entity/group.entity';
 import {
-  Entity,
   Column,
-  Generated,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
+  Entity,
+  Generated,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
-  ManyToMany,
-  JoinTable,
 } from 'typeorm';
+import { WorkflowEntity } from '@src/workflow/entity/workflow.entity';
+import { WorkflowStageGroupEntity } from '@src/workflow/entity/workflow_stage_group.entity';
 
-@Entity('ks3_stage_workflow')
-export class KS3StageWorkflow {
+@Entity('workflow_stage')
+export class WorkflowStageEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -58,19 +60,28 @@ export class KS3StageWorkflow {
   })
   order_execution_stage: number;
 
-  @ManyToMany(type => GroupEntity, group => group.id, { cascade: true })
-  @JoinTable({
-    name: 'ks3_stage_workflow_group',
-    joinColumn: {
-      name: 'ks3_stage_workflow_id',
-      referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
-      name: 'group_id',
-      referencedColumnName: 'id'
-    }
+  @Column({
+    nullable: false,
+    default: 0
   })
-  group: GroupEntity[];
+  action: boolean;
+
+  @Column({
+    nullable: false,
+    default: 0
+  })
+  complete: boolean;
+
+  @Column({
+    nullable: false
+  })
+  workflow_id: number;
+  @ManyToOne(() => WorkflowEntity, wf => wf.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'workflow_id' })
+  workflow: WorkflowEntity[];
+
+  @OneToMany(() => WorkflowStageGroupEntity, stage_group => stage_group.stage)
+  group: WorkflowStageGroupEntity[];
 
   @CreateDateColumn()
   create_at: Date;

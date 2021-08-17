@@ -4,9 +4,9 @@ div(class="flex text-sm")
     div(class="relative mb-2")
       div(
         class="mx-auto rounded-full text-lg flex items-center"
-        :class="{'bg-transparent text-copy-primary rounded-none border-4 border-dotted border-green-500': stage.id == activeStageWorkflow && type != 'small', 'bg-green-500': stage.id == activeStageWorkflow && type == 'small', 'bg-green-500 text-white': stage.id < activeStageWorkflow, 'border-2 bg-gray-300 border-gray-300 text-gray-500': stage.id > activeStageWorkflow, 'bg-gray-300': (activeStageWorkflow + 1) - stage.id === 0, 'w-10 h-10': type == 'medium', 'w-4 h-4': type == 'small'}"
+        :class="{'bg-transparent text-copy-primary rounded-none border-4 border-dotted border-green-500': stage.order_execution_stage == activeStageWorkflow && type != 'small', 'bg-green-500': stage.order_execution_stage == activeStageWorkflow && type == 'small', 'bg-green-500 text-white': stage.order_execution_stage < activeStageWorkflow, 'border-2 bg-gray-300 border-gray-300 text-gray-500': stage.order_execution_stage > activeStageWorkflow, 'bg-gray-300': (activeStageWorkflow + 1) - stage.order_execution_stage === 0, 'w-10 h-10': type == 'medium', 'w-4 h-4': type == 'small'}"
       )
-        span(v-if="type == 'medium'" class="text-center w-full pr-[1px] pb-[2px]") {{ stage.id }}
+        span(v-if="type == 'medium'" class="text-center w-full pr-[1px] pb-[2px]") {{ stage.order_execution_stage }}
         popper(
           arrow
           placement="top"
@@ -29,12 +29,12 @@ div(class="flex text-sm")
               span {{ getGroupUserStage(stage) }}
       div(
         class="text-center font-semibold"
-        :class="{'text-[14px]': type == 'medium', 'text-[10px] leading-[13px] pt-[5px]': type == 'small', 'text-green-500': (activeStageWorkflow + 1) - stage.id > 0}"
+        :class="{'text-[14px]': type == 'medium', 'text-[10px] leading-[13px] pt-[5px]': type == 'small', 'text-green-500': (activeStageWorkflow + 1) - stage.order_execution_stage > 0}"
       ) {{ getNameStage(stage) }}
       div(
-        v-if="stage.id > 1"
+        v-if="stage.order_execution_stage > 1"
         class="rounded absolute"
-        :class="{'bg-gray-300': (activeStageWorkflow + 1) - stage.id <= 0, 'bg-green-500': (activeStageWorkflow + 1) - stage.id > 0, 'h-1 top-[20px] w-[calc(100%-2rem-1rem)]': type == 'medium', 'h-[2px] top-[8px] w-[calc(100%-.3rem-1rem)]': type == 'small'}"
+        :class="{'bg-gray-300': (activeStageWorkflow + 1) - stage.order_execution_stage <= 0, 'bg-green-500': (activeStageWorkflow + 1) - stage.order_execution_stage > 0, 'h-1 top-[20px] w-[calc(100%-2rem-1rem)]': type == 'medium', 'h-[2px] top-[8px] w-[calc(100%-.3rem-1rem)]': type == 'small'}"
         style="transform: translate(-50%, -50%);"
       )
 </template>
@@ -80,10 +80,11 @@ export default {
       let executors = []
       if(groups) {
         groups.forEach((group) => {
-          if(group.user) {
-            const users = group.user
+          if(group.users) {
+            const users = group.users
             users.forEach((user) => {
-              executors.push(user.full_name)
+              // executors.push(user.full_name)
+              executors.push(user.uuid)
             })
           }
         })

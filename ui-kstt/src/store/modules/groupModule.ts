@@ -44,13 +44,12 @@ export const groupModule = {
       }
     },
     async correctStageGroup({ commit }, params) {
-      const data = await axios.post('api/group', {
+      await axios.post('api/ks3/stagegroup', {
         params: {
           group: params.group,
-          stage: params.stage
+          stage_id: params.stage_id
         }
       })
-      console.log(data)
     }
   }
 }

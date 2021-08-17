@@ -12,6 +12,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpErrorFilter } from '@src/core/httperror.filter';
 import { ProjectModule } from '@src/project/project.module';
 import { GroupModule } from '@src/group/group.module';
+import { WorkflowModule } from '@src/workflow/workflow.module';
 
 @Module({
   imports: [
@@ -48,7 +49,8 @@ import { GroupModule } from '@src/group/group.module';
     KS3Module,
     CryptoConfigModule,
     ProjectModule,
-    GroupModule
+    GroupModule,
+    WorkflowModule
   ],
   controllers: [
     AppController

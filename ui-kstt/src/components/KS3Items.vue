@@ -44,8 +44,8 @@ div(class="p-1 pb-4 rounded-md bg-background-secondary border-2 border-transpare
       stage-workflow(
         class="pt-4"
         type="small"
-        :stageWorkflow="getStageWorkflow"
-        :activeStageWorkflow="item.ks3_stage_workflow.id"
+        :stageWorkflow="item.workflow.stage"
+        :activeStageWorkflow="item.workflow.current_stage"
       )
 </template>
 <script>

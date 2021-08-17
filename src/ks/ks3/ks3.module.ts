@@ -4,13 +4,15 @@ import { KS3Entity } from '@src/ks/ks3/entity/ks3.entity';
 import { KS3Controller } from '@src/ks/ks3/ks3.controller';
 import { KS3Service } from '@src/ks/ks3/ks3.service';
 import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3stageWorkflow.entity';
+import { GroupModule } from '@src/group/group.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       KS3Entity,
       KS3StageWorkflow
-    ])
+    ]),
+    GroupModule
   ],
   providers: [
     KS3Service

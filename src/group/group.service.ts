@@ -9,6 +9,14 @@ export class GroupService {
     @InjectRepository(GroupEntity)
     private groupRepository: Repository<GroupEntity>,
   ) {}
+  async findOnlyGroup() {
+    const [data, total] = await this.groupRepository.findAndCount()
+    return {
+      success: true,
+      data: data,
+      total: total
+    }
+  }
   async findAll(): Promise<object> {
     const [data, total] = await this.groupRepository.findAndCount({
       relations: [
@@ -20,6 +28,14 @@ export class GroupService {
       success: true,
       data: data,
       total: total
+    }
+  }
+  async findOne(group_id: number): Promise<object> {
+    const data = await this.groupRepository.findOne(group_id)
+    return {
+      success: true,
+      data: data,
+      total: 1
     }
   }
 }
