@@ -4,6 +4,7 @@ import { WorkflowEntity } from '@src/workflow/entity/workflow.entity';
 import { WorkflowStageEntity } from '@src/workflow/entity/workflow_stage.entity';
 import { WorkflowStageGroupEntity } from '@src/workflow/entity/workflow_stage_group.entity';
 import { WorkflowStageGroupUserEntity } from '@src/workflow/entity/workflow_stage_group_user.entity';
+import { WorkflowService } from '@src/workflow/workflow.service';
 
 @Module({
   imports: [
@@ -15,8 +16,12 @@ import { WorkflowStageGroupUserEntity } from '@src/workflow/entity/workflow_stag
     ])
   ],
   providers: [
+    WorkflowService
   ],
   controllers: [
   ],
+  exports: [
+    WorkflowService
+  ]
 })
 export class WorkflowModule {}

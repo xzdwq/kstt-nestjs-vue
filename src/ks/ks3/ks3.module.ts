@@ -5,6 +5,7 @@ import { KS3Controller } from '@src/ks/ks3/ks3.controller';
 import { KS3Service } from '@src/ks/ks3/ks3.service';
 import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3stageWorkflow.entity';
 import { GroupModule } from '@src/group/group.module';
+import { WorkflowModule } from '@src/workflow/workflow.module';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { GroupModule } from '@src/group/group.module';
       KS3Entity,
       KS3StageWorkflow
     ]),
-    GroupModule
+    GroupModule,
+    WorkflowModule
   ],
   providers: [
     KS3Service

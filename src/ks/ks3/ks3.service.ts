@@ -4,6 +4,7 @@ import { KS3Entity } from '@src/ks/ks3/entity/ks3.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3stageWorkflow.entity';
 import { GroupService } from '@src/group/group.service';
+import { WorkflowService } from '@src/workflow/workflow.service';
 
 @Injectable()
 export class KS3Service {
@@ -14,28 +15,12 @@ export class KS3Service {
     private ks3StageWorkflowRepository: Repository<KS3StageWorkflow>,
     @Inject(GroupService)
     private groupService: GroupService,
+    @Inject(WorkflowService)
+    private workflowService: WorkflowService
   ) {}
 
   async findAll(page: number, limit: number, query: string): Promise<object> {
     if(!query) query = ''
-    // const [data, total] = await this.ks3Repository.findAndCount({
-    //   relations: [
-    //     'user',
-    //     'user.group',
-    //     'ks3_stage_workflow',
-    //     'ks3_stage_workflow.group',
-    //     'project'
-    //   ],
-    //   skip: limit * (page - 1),
-    //   take: limit,
-    //   where: [
-    //     { certificate_number: Like(`%${query}%`) },
-    //     { document_number: Like(`%${query}%`) }
-    //   ],
-    //   order: {
-    //     create_at: 'DESC'
-    //   }
-    // });
 
     const [data, total] = await this.ks3Repository.findAndCount({
       relations: [
@@ -44,8 +29,18 @@ export class KS3Service {
         'workflow',
         'workflow.stage',
         'workflow.stage.group',
+        'workflow.stage.group.type',
         'workflow.stage.group.users'
-      ]
+      ],
+      skip: limit * (page - 1),
+      take: limit,
+      where: [
+        { certificate_number: Like(`%${query}%`) },
+        { document_number: Like(`%${query}%`) }
+      ],
+      order: {
+        create_at: 'DESC'
+      }
     })
 
     return {
@@ -63,6 +58,7 @@ export class KS3Service {
         'workflow',
         'workflow.stage',
         'workflow.stage.group',
+        'workflow.stage.group.type',
         'workflow.stage.group.users'
       ],
       where: [
@@ -117,23 +113,40 @@ export class KS3Service {
   }
 
   async createKS3(body): Promise<object> {
-    const newKS3 = await this.ks3Repository.create({
+    // 1. Создаем новый workflow и получаем его id
+    const newWorkflow = await this.workflowService.onCreateWorkflow()
+    // 2. Создаем стадии согласования для вновь созданного workflow копируя их из таблицы по умолчанию
+    const stageDefault = await this.ks3StageWorkflowRepository.find()
+    const newWorkflowStage = await this.workflowService.onCreateWorkflowStage(stageDefault, newWorkflow.id)
+    // 3. Создаем группы и присваиваем их ранее созданным сталиям по логике как из таблицы по умолчанию
+    const stageGroupDefault = await this.ks3StageWorkflowRepository.find({
+      relations: ['group']
+    })
+    const newWorkflowGroup = await this.workflowService.onCreateWorkflowGroup(newWorkflowStage, stageGroupDefault)
+    // 4. Создаем пользователей и присваиваем их в ранее созданные группы по логике как из таблицы по умолчанию
+    const getGroupDefault: any = await this.groupService.findAll()
+    const groupDefault = getGroupDefault.data;
+    await this.workflowService.onCreateWorkflowUser(newWorkflowGroup, groupDefault)
+    // 5. Создаем новую карточку КС-3 и присваиваем ей ранее созданный workflow_id
+    const createNewKS3 = await this.ks3Repository.create({
       certificate_number: body.data.certificateNumber,
       document_number: body.data.documentNumber,
       reporting_period: body.data.period,
       date_preparation: body.data.documentPeriod,
       user_id: 1,
-      workflow_id: body.data.ks3StageWorkflow
+      workflow_id: newWorkflow.id
     })
-    await this.ks3Repository.save(newKS3)
+    const newKS3 = await this.ks3Repository.save(createNewKS3)
 
     const data = await this.ks3Repository.find({
       relations: [
         'user',
-        'user.group',
-        'ks3_stage_workflow',
-        'ks3_stage_workflow.group',
-        'project'
+        'project',
+        'workflow',
+        'workflow.stage',
+        'workflow.stage.group',
+        'workflow.stage.group.type',
+        'workflow.stage.group.users'
       ],
       where: { id: newKS3.id }
     })
