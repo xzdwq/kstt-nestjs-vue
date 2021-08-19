@@ -47,7 +47,8 @@ export const groupModule = {
       await axios.post('api/ks3/stagegroup', {
         params: {
           group: params.group,
-          stage_id: params.stage_id
+          stage_id: params.stage_id,
+          workflow_id: params.workflow_id
         }
       })
     }

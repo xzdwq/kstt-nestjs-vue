@@ -27,6 +27,10 @@ const routes: Array<RouteRecordRaw> = [
     component: UserGroupPage
   },
   {
+    path: '/usergroup/:workflow_id',
+    component: UserGroupPage
+  },
+  {
     path: '/about',
     component: About
   }

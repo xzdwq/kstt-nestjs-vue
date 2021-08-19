@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { getConnection, getManager, Repository } from "typeorm";
 
 import { WorkflowEntity } from '@src/workflow/entity/workflow.entity';
 import { WorkflowStageEntity } from '@src/workflow/entity/workflow_stage.entity';
@@ -116,5 +116,85 @@ export class WorkflowService {
       const newUser = await this.workflowStageGroupUserRepository.save(workflowStageGroupUser)
 
       return newUser
+    }
+    async onGetWorkflowStageById(workflow_id) {
+      const [data, total] = await this.workflowStageRepository.findAndCount({
+        relations: [
+          'group',
+          'group.type',
+          'group.users'
+        ],
+        where: {
+          workflow_id: workflow_id
+        }
+      })
+      return {
+        data: data,
+        total: total
+      }
+    }
+
+    async onSetStageGroup(stage_id, workflow_id, params, groupDefault) {
+      // Получаем стадию с группами
+      const stagegroup = await this.workflowStageRepository.findOne(stage_id, {
+        relations: ['group'],
+        where: {
+          workflow_id: workflow_id
+        }
+      })
+      let data = {
+        stage_id: stage_id,
+        workflow_id: workflow_id,
+        add: [],
+        remove: []
+      }
+      for(const pg of params.group) {
+        const match = stagegroup.group.find(x => x.code === pg.code)
+        if(match) {
+          // stagegroup.group = stagegroup.group.filter((g) => g.id !== match.id)
+          // если группу исключили из стадии
+          if(!pg.check) {
+            const delGroup = stagegroup.group.filter((g) => g.id === match.id)
+            // Удаляем пользователей из группы
+            const user = await this.workflowStageGroupUserRepository.find({
+              where: {
+                workflow_stage_group: +delGroup[0].id
+              }
+            })
+            await this.workflowStageGroupUserRepository.remove(user)
+            // Удаляем группу
+            const group = await this.workflowStageGroupRepository.find({
+              where: {
+                id: +delGroup[0].id
+              }
+            })
+            const removeGroup = await this.workflowStageGroupRepository.remove(group)
+            data.remove.push(removeGroup[0])
+          }
+        } else {
+          // если группу добавили в стадию
+          if(pg.check) {
+            const getGroupByCode = groupDefault.data.find(x => x.code === pg.code)
+            const addGroup = await this.workflowStageGroupRepository.create({
+              code: getGroupByCode.code,
+              name_ru: getGroupByCode.name_ru,
+              name_en: getGroupByCode.name_en,
+              type_id: getGroupByCode.type_id,
+              stage_id: stage_id,
+            })
+            const newGroup = await this.workflowStageGroupRepository.save(addGroup)
+            // После добавления группы добавляем в нее пользователей из таблицы по умолчанию
+            getGroupByCode.user.forEach((u) => {
+              const newGroupUser = this.workflowStageGroupUserRepository.create({
+                workflow_stage_group: newGroup
+              })
+              this.workflowStageGroupUserRepository.save(newGroupUser)
+            })
+            data.add.push(newGroup)
+          }
+        }
+      }
+
+      return data
     }
 }

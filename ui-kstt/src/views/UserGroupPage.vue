@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   //- toolbar
-  div(class="flex")
+  div(class="flex items-center")
     def-button-back
     def-button(
         class="text-white bg-[#579bae] flex justify-between"
@@ -18,6 +18,8 @@ div
       @click="onChancheViewGrid('list')"
     )
       svg-view-list
+    div(v-if="getKs3ByWfId[0]" class="pl-2") {{ $t('approval-route', { document_number: getKs3ByWfId[0]?.document_number }) }}
+    div(v-else class="pl-2") {{ $t('route-default') }}
   //- body
   //- загрузка схемы стадий согласования КС-3
   div(
@@ -99,7 +101,7 @@ div
               :ref="`user_${stage_idx}_${group_idx}`"
               class="mr-2 ml-20 w-[300px] border-4 border-[#9CA3FF] rounded-md"
             )
-              div(v-if="group?.user" class="w-full")
+              div(v-if="group?.user || group?.users" class="w-full")
                 //- toolbar
                 div(
                   class="pl-1 text-[#9CA3FF] cursor-pointer h-6"
@@ -107,7 +109,7 @@ div
                 )
                   svg-user-plus
                 div(
-                  v-for="(user, user_idx) in group.user"
+                  v-for="(user, user_idx) in group.user || group.users"
                   :key="`${stage_idx}_${group_idx}_${user_idx}`"
                   class="p-2 flex items-center justify-between w-full"
                 )
@@ -176,7 +178,8 @@ export default {
     ...mapGetters({
       getStageWorkflow: 'usergroupModule/getStageWorkflow',
       getIsLoadStageWorkflow: 'usergroupModule/getIsLoadStageWorkflow',
-      getLocales: 'localesSwitcherModule/getLocales'
+      getLocales: 'localesSwitcherModule/getLocales',
+      getKs3ByWfId: 'usergroupModule/getKs3ByWfId',
     })
   },
   methods: {
@@ -188,7 +191,7 @@ export default {
       this.isLoadForRefresh = true
       setTimeout(() => { this.isLoadForRefresh = false }, 500)
       jsPlumbInstance.deleteEveryConnection();
-      await this.fetchStageWorkflow('reload')
+      await this.fetchStageWorkflow({ type: 'reload', workflow_id: this.$route.params.workflow_id })
       await this.onConnection()
     },
     onChancheViewGrid(type) {
@@ -201,6 +204,7 @@ export default {
       const modalBody = {
         title: this.$t('manager-stage-group', { stage: this.$i18n.locale == 'ru' ? stage.name_ru : stage.name_en }),
         component: 'add-group-in-stage',
+        workflow_id: this.$route.params.workflow_id,
         data: {
           type: 'add-group-in-stage',
           stage: stage
@@ -217,11 +221,12 @@ export default {
     onDelUser(group_id, user_id) {
       console.log('group_id: '+group_id+' user_id: '+user_id);
     },
-    onOpenModal({ title, component, data }) {
+    onOpenModal({ title, component, data, workflow_id }) {
       this.modalCfg.title = title;
       this.modalCfg.component = component;
       this.modalCfg.data = data;
-      this.modalCfg.modalShow = true
+      this.modalCfg.workflow_id = workflow_id;
+      this.modalCfg.modalShow = true;
     },
     closeModal() {
       this.modalCfg.modalShow = false
@@ -229,7 +234,8 @@ export default {
     async saveAndCloseModal() {
       const params = {
         group: this.modalCfg.tmpGroupCheck,
-        stage_id: this.modalCfg.tmpGroupCheck[0].stage_id
+        stage_id: this.modalCfg.tmpGroupCheck[0].stage_id,
+        workflow_id: this.modalCfg.tmpGroupCheck[0].workflow_id
       }
       await this.correctStageGroup(params)
       this.modalCfg.modalShow = false
@@ -260,7 +266,7 @@ export default {
                 ]
               })
               // Связь группа - пользователь
-              if(group?.user) {
+              if(group?.user || group?.users) {
                 jsPlumbInstance.connect({
                   source: this.$refs[`group_${stage_idx}_${group_idx}`],
                   target: this.$refs[`user_${stage_idx}_${group_idx}`],
@@ -283,9 +289,9 @@ export default {
   async mounted() {
     setTimeout(() => { this.isLoadForRefresh = false }, 500)
     /**
-     * Получаем список этапов workflow справки КС-3
+     * Получаем список этапов workflow справки КС-3ks3_id
      */
-    await this.fetchStageWorkflow()
+    await this.fetchStageWorkflow({ type: '', workflow_id: this.$route.params.workflow_id })
     /**
      * Отрисовка коннект-линий между блоками
      */
@@ -294,6 +300,11 @@ export default {
   watch: {
     getLocales() {
       setTimeout(() => { jsPlumbInstance.repaintEverything() }, 0)
+    },
+    async $route(to, from) {
+      if(to.path.split('/')[1] === 'usergroup' && from.path.split('/')[1] === 'usergroup') {
+        await this.onRefreshUsergroup()
+      }
     }
   }
 }

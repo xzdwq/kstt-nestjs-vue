@@ -4,7 +4,8 @@ export const usergroupModule = {
   namespaced: true,
   state: () => ({
     isLoadStageWorkflow: false,
-    stageWorkflow: []
+    stageWorkflow: [],
+    ks3ByWfId: []
   }),
   getters: {
     getIsLoadStageWorkflow(state) {
@@ -13,6 +14,9 @@ export const usergroupModule = {
     getStageWorkflow(state: any) {
       return state.stageWorkflow
     },
+    getKs3ByWfId(state: any) {
+      return state.ks3ByWfId;
+    }
   },
   mutations: {
     setIsLoadStageWorkflow(state, loading) {
@@ -21,15 +25,23 @@ export const usergroupModule = {
     setStageWorkflow(state, data) {
       state.stageWorkflow = data
     },
+    setKs3ByWfId(state, ks3ByWfId) {
+      state.ks3ByWfId = ks3ByWfId;
+    }
   },
   actions: {
-    async fetchStageWorkflow({ commit, getters }, type) {
+    async fetchStageWorkflow({ commit, getters }, params) {
       try {
-        if(type == 'reload') commit('setStageWorkflow', [])
+        /*if(params.type == 'reload' || params.workflow_id)*/ commit('setStageWorkflow', [])
         if(getters.getStageWorkflow.length === 0) {
           commit('setIsLoadStageWorkflow', true)
-          const data = await axios.get('api/ks3/stageworkflow')
+          const data = await axios.get('api/ks3/stageworkflow', {
+            params: {
+              _workflow_id: params.workflow_id || ''
+            }
+          })
           commit('setStageWorkflow', data.data.data)
+          commit('setKs3ByWfId', data.data.ks3 || [])
         }
       }
       catch(e) {

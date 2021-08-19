@@ -69,7 +69,7 @@ export class WorkflowStageGroupEntity {
   @JoinColumn({ name: 'stage_id' })
   stage: WorkflowStageEntity[];
 
-  @OneToMany(() => WorkflowStageGroupUserEntity, user => user.workflow_stage_group)
+  @OneToMany(() => WorkflowStageGroupUserEntity, user => user.workflow_stage_group, { onDelete: 'CASCADE' })
   users: WorkflowStageGroupUserEntity[];
 
   @CreateDateColumn()

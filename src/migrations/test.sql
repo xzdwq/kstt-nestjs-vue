@@ -615,8 +615,8 @@ VALUES
   ),
 -- 2 wf
   (
-    'AKKU_KS_CONTROL 2'
-    ,'Группа контроля 2'
+    'AKKU_KS_CONTROL'
+    ,'Группа контроля'
     ,'Control group'
     ,2
     ,0
@@ -624,8 +624,8 @@ VALUES
 	,7
   ),
   (
-    'AKKU_KS_CONTROL 2'
-    ,'Группа контроля 2'
+    'AKKU_KS_CONTROL'
+    ,'Группа контроля'
     ,'Control group'
     ,2
     ,0

@@ -36,6 +36,10 @@
   "oops-data": "По id справки {id} ничего не найдено",
   "user-group": "Управление группами и пользователями",
   "manager-stage-group": "Управление группами в этапе \"{stage}\"",
+  "stage-agreement": "Стадии согласования",
+  "correction-wf-route": "Корректировка маршрута согласования",
+  "approval-route": "Маршрут согласования для \"{document_number}\"",
+  "route-default": "Маршрут по умолчанию",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",

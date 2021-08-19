@@ -36,6 +36,10 @@
   "oops-data": "Nothing found by certificate id {id}",
   "user-group": "Group and user management",
   "manager-stage-group": "Group management in the \"{stage}\" stage",
+  "stage-agreement": "Stage of agreement",
+  "correction-wf-route": "Correction of the approval route",
+  "approval-route": "Approval route for \"{document_number}\"",
+  "route-default": "Default route",
   "crypto": {
     "electonic-signature": "Electronic signature",
     "list-electonic-signature": "List of available<br>electronic signatures",

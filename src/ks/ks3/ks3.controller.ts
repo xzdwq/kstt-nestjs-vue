@@ -30,8 +30,10 @@ export class KS3Controller {
     return await this.ks3Service.getKS3id(params.id)
   }
   @Get('/ks3/stageworkflow')
-  async getKS3StageWorkflow() {
-    return await this.ks3Service.getKS3StageWorkflow()
+  async getKS3StageWorkflow(
+    @Query('_workflow_id') workflow_id: number,
+  ): Promise<any> {
+    return await this.ks3Service.getKS3StageWorkflow(workflow_id)
   }
   @Get('/ks3/newcrtificatenumber')
   async getNewCrtificatenumber() {

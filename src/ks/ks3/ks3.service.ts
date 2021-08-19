@@ -72,18 +72,34 @@ export class KS3Service {
     }
   }
 
-  async getKS3StageWorkflow(): Promise<object> {
-    const [data, total] = await this.ks3StageWorkflowRepository.findAndCount({
-      relations: [
-        'group',
-        'group.user',
-        'group.type'
-      ]
-    })
-    return {
-      success: true,
-      data: data,
-      total: total
+  async getKS3StageWorkflow(workflow_id): Promise<object> {
+    if(workflow_id) {
+      const workflowStageById = await this.workflowService.onGetWorkflowStageById(workflow_id)
+      const ks3info = await this.ks3Repository.find({
+        where: {
+          workflow_id: workflow_id
+        }
+      })
+      return {
+        success: true,
+        data: workflowStageById.data,
+        total: workflowStageById.total,
+        ks3: ks3info
+      }
+    }
+    else {
+      const [data, total] = await this.ks3StageWorkflowRepository.findAndCount({
+        relations: [
+          'group',
+          'group.user',
+          'group.type'
+        ]
+      })
+      return {
+        success: true,
+        data: data,
+        total: total
+      }
     }
   }
 
@@ -159,24 +175,33 @@ export class KS3Service {
 
   async setStageGroup(params): Promise<object> {
     const stage_id = params.stage_id
-    const wfstage = await this.ks3StageWorkflowRepository.findOne(stage_id, {
-      relations: ['group']
-    })
-
-    for(const pg of params.group) {
-      const matchIndex = wfstage.group.findIndex(x => x.id === pg.id)
-      if(matchIndex >= 0) {
-        // если группу исключили из стадии
-        if(!pg.check) wfstage.group.splice(matchIndex, 1);
-      } else {
-        // если группу добавили в стадию
-        if(pg.check) {
-          const getGroupById = await this.groupService.findOne(pg.id)
-          wfstage.group.push(getGroupById['data'])
+    const workflow_id = params.workflow_id
+    let result
+    if(workflow_id) {
+      // WF
+      const getGroupAll = await this.groupService.findAll();
+      result = await this.workflowService.onSetStageGroup(stage_id, workflow_id, params, getGroupAll)
+    } else {
+      // Default
+      const stagegroup = await this.ks3StageWorkflowRepository.findOne(stage_id, {
+        relations: ['group']
+      })
+      for(const pg of params.group) {
+        const matchIndex = stagegroup.group.findIndex(x => x.id === pg.id)
+        if(matchIndex >= 0) {
+          // если группу исключили из стадии
+          if(!pg.check) stagegroup.group.splice(matchIndex, 1);
+        } else {
+          // если группу добавили в стадию
+          if(pg.check) {
+            const getGroupById = await this.groupService.findOne(pg.id)
+            stagegroup.group.push(getGroupById['data'])
+          }
         }
       }
+      result = await this.ks3StageWorkflowRepository.save(stagegroup)
     }
-    const result = await this.ks3StageWorkflowRepository.save(wfstage)
+
     return {
       data: result
     }

@@ -19,7 +19,7 @@ div(class="bg-background-secondary h-full p-2 rounded-md overflow-y-scroll")
               div(class="px-1") {{ this.$i18n.locale == 'ru' ? group.type.name_ru : group.type.name_en }}
             //- чекбокс
             div(class="pl-1")
-              input(type="checkbox" class="form-checkbox cursor-pointer" :checked="matchGroup(group.id)" @change="chancgeCheckbox($event, group)")
+              input(type="checkbox" class="form-checkbox cursor-pointer" :checked="matchGroup(group.id, group.code)" @change="chancgeCheckbox($event, group)")
         //- участники группы
         div(class="flex flex-wrap text-sm text-copy-secondary pt-2")
           div(
@@ -58,16 +58,18 @@ export default {
     ...mapActions({
       fetchGroup: 'groupModule/fetchGroup'
     }),
-    matchGroup(id) {
-      const match = this.modalCfg.data.stage.group.find(i => i.id === id)?.id
+    matchGroup(id, code) {
+      const match = this.modalCfg.data.stage.group.find(i => i.code === code)?.code
       this.modalCfg.tmpGroupCheck.push(
         {
           id: id,
-          check: id === match,
-          stage_id: this.modalCfg.data.stage.id
+          code: code,
+          check: code === match,
+          stage_id: this.modalCfg.data.stage.id,
+          workflow_id: this.modalCfg.workflow_id ? +this.modalCfg.workflow_id : null,
         }
       )
-      return id === match
+      return code === match
     },
     chancgeCheckbox(e, group) {
       const checked = e.target.checked

@@ -13,10 +13,21 @@ div
     p {{ $t('ks3.get-stage-workflow') }}
   //- схема стадий согласования КС-3
   div(class="bg-background-secondary rounded mt-2 mb-2")
+    div(class="w-full flex items-center")
+      div(class="w-full flex justify-center font-bold ml-16") {{ $t('stage-agreement') }}
+      div(class="flex justify-end")
+        popper(arrow :hover="true" placement="top"
+          class="flex popper-tips"
+          :content="$t('correction-wf-route')"
+        )
+          def-button(
+            @click="$router.push(`/usergroup/${getKS3id[0].workflow_id}`)"
+          )
+            svg-pencilalt
     stage-workflow(
       v-if="!getIsLoadStageWorkflow"
       type="medium"
-      class="pt-4"
+      class="py-4"
       :stageWorkflow="getStageWorkflow"
       :activeStageWorkflow="getActiveStageWorkflow"
     )
@@ -56,7 +67,7 @@ export default {
   methods: {
     ...mapActions({
       fetchStageWorkflow: 'ks3idModule/fetchStageWorkflow'
-    }),
+    })
   },
   async mounted() {
     /**
