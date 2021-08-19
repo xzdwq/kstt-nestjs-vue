@@ -134,7 +134,7 @@ export class KS3Service {
     // 2. Создаем стадии согласования для вновь созданного workflow копируя их из таблицы по умолчанию
     const stageDefault = await this.ks3StageWorkflowRepository.find()
     const newWorkflowStage = await this.workflowService.onCreateWorkflowStage(stageDefault, newWorkflow.id)
-    // 3. Создаем группы и присваиваем их ранее созданным сталиям по логике как из таблицы по умолчанию
+    // 3. Создаем группы и присваиваем их ранее созданным стадиям по логике как из таблицы по умолчанию
     const stageGroupDefault = await this.ks3StageWorkflowRepository.find({
       relations: ['group']
     })

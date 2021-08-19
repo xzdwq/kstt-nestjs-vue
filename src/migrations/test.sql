@@ -322,7 +322,7 @@ VALUES
 	,4
   )
 GO
-
+/* --
 INSERT INTO [dbo].[workflow]
   (
     [current_stage]
@@ -713,3 +713,4 @@ VALUES
     , 2
   )
 GO
+*/

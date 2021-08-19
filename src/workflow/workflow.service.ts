@@ -105,7 +105,11 @@ export class WorkflowService {
           if(i.code === j.code) {
             j.user.forEach((u) => {
               data.push({
-                // TODO: full_name ...
+                full_name: u.full_name,
+                email: u.email,
+                department: u.department,
+                position: u.position,
+                role: u.role,
                 workflow_stage_group: i.id
               })
             })
@@ -186,6 +190,11 @@ export class WorkflowService {
             // После добавления группы добавляем в нее пользователей из таблицы по умолчанию
             getGroupByCode.user.forEach((u) => {
               const newGroupUser = this.workflowStageGroupUserRepository.create({
+                full_name: u.full_name,
+                email: u.email,
+                department: u.department,
+                position: u.position,
+                role: u.role,
                 workflow_stage_group: newGroup
               })
               this.workflowStageGroupUserRepository.save(newGroupUser)

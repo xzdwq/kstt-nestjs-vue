@@ -20,6 +20,36 @@ export class WorkflowStageGroupUserEntity {
   uuid: string;
 
   @Column({
+    length: 255,
+    nullable: false
+  })
+  full_name: string;
+
+  @Column({
+    length: 100,
+    nullable: false
+  })
+  email: string;
+
+  @Column({
+    length: 1024,
+    nullable: true
+  })
+  department: string;
+
+  @Column({
+    length: 1024,
+    nullable: true
+  })
+  position: string;
+
+  @Column({
+    nullable: false,
+    default: 1
+  })
+  role: number;
+
+  @Column({
     nullable: false,
     default: 0
   })
