@@ -45,6 +45,8 @@
   "cascade": "Cascading",
   "delete-confirm": "Are you sure you want to remove the \"{group}\" from the \"{stage}\" stage?",
   "confirm": "Confirm action",
+  "ks2-upload": "Import of the file КС-2 {file} completed successfully",
+  "upload-error": "File upload error",
   "crypto": {
     "electonic-signature": "Electronic signature",
     "list-electonic-signature": "List of available<br>electronic signatures",

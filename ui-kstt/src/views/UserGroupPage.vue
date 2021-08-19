@@ -112,7 +112,7 @@ div
                 div(
                   v-for="(user, user_idx) in group.user || group.users"
                   :key="`${stage_idx}_${group_idx}_${user_idx}`"
-                  class="p-2 flex items-center justify-between w-full"
+                  class="pl-2 flex items-center justify-between w-full"
                 )
                   div {{ user_idx + 1 }}. {{ user.full_name }}
                   div(

@@ -25,6 +25,13 @@ div
             )
               svg-upload(class="mr-2")
               div {{ $t('ks2.import-card') }}
+              input(
+                ref="importKS2file"
+                type="file"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                @change="onImportKS2Upload"
+                hidden
+              )
       //- body
       //- table
       div(
@@ -42,6 +49,9 @@ import {
   mapGetters,
   mapActions
 } from 'vuex'
+import axios from "axios";
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
 
 export default {
   name: 'ks2-form',
@@ -65,8 +75,56 @@ export default {
     async onCreateKS2() {
       console.log(123);
     },
+    onRefresh() {
+      this.fetchKS2()
+    },
     async onImportKS2() {
-      console.log(456);
+      let importKS2file = this.$refs.importKS2file;
+      importKS2file.click();
+    },
+    async onImportKS2Upload(event) {
+      const file = event.target.files[0];
+      let formData = new FormData();
+      formData.append('file', file);
+      await axios.post( 'api/ks2/upload',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      ).then((e) => {
+        this.onRefresh()
+        createToast({
+            title: this.$t('ks2-upload', {file: file.name})
+          },
+          {
+            showCloseButton: false,
+            swipeClose: true,
+            hideProgressBar: true,
+            position: 'bottom-left',
+            type: 'success',
+            showIcon: true,
+            transition: 'bounce',
+            timeout: 3500
+          })
+      })
+      .catch((e) => {
+        createToast({
+            title: this.$t('upload-error'),
+            description: e.toString()
+          },
+          {
+            showCloseButton: false,
+            swipeClose: true,
+            hideProgressBar: true,
+            position: 'bottom-left',
+            type: 'danger',
+            showIcon: true,
+            transition: 'bounce',
+            timeout: 3500
+          })
+      });
     }
   },
   async mounted() {
