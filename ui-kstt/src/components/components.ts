@@ -21,7 +21,9 @@ import KS2Form from '@/components/KS2/KS2Form.vue'
 import DropdownMenu from '@/components/utils/DropdownMenu.vue'
 import UserGroup from '@/components/UserGroup.vue'
 import DefButtonBack from '@/components/utils/DefButtonBack.vue'
-import AddGroupInStageFrom from '@/components/usergroup/AddGroupInStageFrom.vue'
+import AddGroupInStageForm from '@/components/usergroup/AddGroupInStageForm.vue'
+import EditGroupInStageForm from '@/components/usergroup/EditGroupInStageForm.vue'
+import DeleteGroupInStage from '@/components/usergroup/DeleteGroupInStage.vue'
 /**
  * SVG icons
  */
@@ -58,6 +60,7 @@ import UserMinus from '@/components/svg/UserMinus.vue'
 import Trash from '@/components/svg/Trash.vue'
 import ViewGridPlus from '@/components/svg/ViewGridPlus.vue'
 import Pencilalt from '@/components/svg/Pencilalt.vue'
+import Question from '@/components/svg/Question.vue'
 /**
  * Utils
  */
@@ -85,7 +88,9 @@ export default [
   DropdownMenu,
   UserGroup,
   DefButtonBack,
-  AddGroupInStageFrom,
+  AddGroupInStageForm,
+  EditGroupInStageForm,
+  DeleteGroupInStage,
 
   Loading,
   Bell,
@@ -120,6 +125,7 @@ export default [
   Trash,
   ViewGridPlus,
   Pencilalt,
+  Question,
 
   Modal,
   PopupNotification

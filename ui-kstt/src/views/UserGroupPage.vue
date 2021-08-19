@@ -73,24 +73,24 @@ div
           )
             div(
               :ref="`group_${stage_idx}_${group_idx}`"
-              class="grid grid-rows-3 border-4 border-[#9CA3FF] min-h-[70px] w-[200px]"
+              class="flex flex-col border-4 border-[#9CA3FF] min-h-[80px] w-[200px]"
             )
               div(class="flex items-center justify-end text-center")
                 //- toolbar
-                //- div(
-                //-   class="pl-1 text-[#9CA3FF] cursor-pointer h-6"
-                //-   @click="onAddUser(group.id)"
-                //- )
-                //-   svg-pencilalt
-                //- div(
-                //-   class="pl-1 text-[#9CA3FF] cursor-pointer h-6"
-                //-   @click="onDelGroup(group.id, stage.id)"
-                //- )
-                //-   svg-trash
-              div(class="flex items-center justify-center text-center")
+                div(
+                  class="pl-1 text-[#9CA3FF] cursor-pointer h-6"
+                  @click="onEditGroup(stage, group)"
+                )
+                  svg-pencilalt
+                div(
+                  class="pl-1 text-[#9CA3FF] cursor-pointer h-6"
+                  @click="onDelGroup(group, stage)"
+                )
+                  svg-trash
+              div(class="flex items-center justify-center text-center h-full")
                 div {{ this.$i18n.locale == 'ru' ? group.name_ru : group.name_en }}
               //- Метки
-              div(class="pb-1 pr-1 flex items-center justify-end text-center")
+              div(class="py-1 pr-1 flex items-center justify-end text-center")
                 div(
                   class="text-[10px] text-copy-secondary rounded-3xl"
                   :class="group.type.id == 1 ? 'bg-green-200' : 'bg-red-200'"
@@ -103,11 +103,12 @@ div
             )
               div(v-if="group?.user || group?.users" class="w-full")
                 //- toolbar
-                div(
-                  class="pl-1 text-[#9CA3FF] cursor-pointer h-6"
-                  @click="onAddUser(group.id)"
-                )
-                  svg-user-plus
+                div.flex
+                  div(
+                    class="flex pl-1 text-[#9CA3FF] cursor-pointer h-6"
+                    @click="onAddUser(group.id)"
+                  )
+                    svg-user-plus
                 div(
                   v-for="(user, user_idx) in group.user || group.users"
                   :key="`${stage_idx}_${group_idx}_${user_idx}`"
@@ -168,9 +169,11 @@ export default {
         component: null,
         data: null,
         modalShow: false,
-        width: 'w-9/12 min-w-[500px] max-w-[700px]',
-        height: 'h-[80%] sm:h-[70%] lg:h-4/6 ',
-        tmpGroupCheck: []
+        width: null,
+        height: null,
+        tmpGroupCheck: [],
+        tmpGroupType: [],
+        tmpDelGroup: {}
       }
     }
   },
@@ -186,6 +189,7 @@ export default {
     ...mapActions({
       fetchStageWorkflow: 'usergroupModule/fetchStageWorkflow',
       correctStageGroup: 'groupModule/correctStageGroup',
+      updateGroupType: 'groupModule/updateGroupType'
     }),
     async onRefreshUsergroup() {
       this.isLoadForRefresh = true
@@ -205,9 +209,28 @@ export default {
         title: this.$t('manager-stage-group', { stage: this.$i18n.locale == 'ru' ? stage.name_ru : stage.name_en }),
         component: 'add-group-in-stage',
         workflow_id: this.$route.params.workflow_id,
+        width: 'w-9/12 min-w-[500px] max-w-[700px]',
+        height: 'h-[80%] sm:h-[70%] lg:h-4/6 ',
         data: {
           type: 'add-group-in-stage',
-          stage: stage
+          stage: stage,
+          group: null
+        }
+      }
+      this.onOpenModal(modalBody)
+    },
+    onEditGroup(stage, group) {
+      const modalBody = {
+        title: this.$t('edit-group', { group: this.$i18n.locale == 'ru' ? group.name_ru : group.name_en, stage: this.$i18n.locale == 'ru' ? stage.name_ru : stage.name_en }),
+        component: 'edit-group-in-stage',
+        workflow_id: this.$route.params.workflow_id,
+        width: 'w-9/12 min-w-[500px] max-w-[700px]',
+        height: this.$route.params.workflow_id ? 'h-[40%] ' : 'h-[30%]',
+        data: {
+          type: 'edit-group-in-stage',
+          stage: stage,
+          group: group,
+          cascade: false
         }
       }
       this.onOpenModal(modalBody)
@@ -215,31 +238,75 @@ export default {
     onAddUser(group_id) {
       console.log('group_id: '+group_id);
     },
-    onDelGroup(group_id, stage_id) {
-      console.log('on del group_id: '+group_id+' in stage_id: '+stage_id);
+    async onDelGroup(group, stage) {
+      const modalBody = {
+        title: this.$t('confirm'),
+        question: this.$t('delete-confirm', {
+          group: this.$i18n.locale == 'ru' ? group.name_ru : group.name_en, stage: this.$i18n.locale == 'ru' ? stage.name_ru : stage.name_en 
+        }),
+        component: 'delete-group-in-stage',
+        width: 'w-9/12 min-w-[500px] max-w-[700px]',
+        height: 'h-[30%]'
+      }
+      this.modalCfg.question = modalBody.question
+      const params = {
+        group: [{
+          id: group.id,
+          code: group.code,
+          check: false,
+          stage_id: stage.id,
+          workflow_id: this.$route.params.workflow_id ? +this.$route.params.workflow_id : null
+        }],
+        stage_id: stage.id,
+        workflow_id: this.$route.params.workflow_id ? +this.$route.params.workflow_id : null
+      }
+      this.modalCfg.tmpDelGroup = params
+      this.onOpenModal(modalBody)
     },
     onDelUser(group_id, user_id) {
       console.log('group_id: '+group_id+' user_id: '+user_id);
     },
-    onOpenModal({ title, component, data, workflow_id }) {
+    onOpenModal({ title, component, data, workflow_id, width, height }) {
       this.modalCfg.title = title;
       this.modalCfg.component = component;
       this.modalCfg.data = data;
       this.modalCfg.workflow_id = workflow_id;
+      this.modalCfg.width = width;
+      this.modalCfg.height = height;
       this.modalCfg.modalShow = true;
     },
     closeModal() {
       this.modalCfg.modalShow = false
     },
     async saveAndCloseModal() {
-      const params = {
-        group: this.modalCfg.tmpGroupCheck,
-        stage_id: this.modalCfg.tmpGroupCheck[0].stage_id,
-        workflow_id: this.modalCfg.tmpGroupCheck[0].workflow_id
+      if(this.modalCfg.component === 'add-group-in-stage') {
+        const params = {
+          group: this.modalCfg.tmpGroupCheck,
+          stage_id: this.modalCfg.tmpGroupCheck[0].stage_id,
+          workflow_id: this.modalCfg.tmpGroupCheck[0].workflow_id
+        }
+        await this.correctStageGroup(params)
       }
-      await this.correctStageGroup(params)
+      if(this.modalCfg.component === 'edit-group-in-stage') {
+        const params = {
+          group_id: +this.modalCfg.data.group.id,
+          group_type: +this.modalCfg.data.group.type_id,
+          stage_id: +this.modalCfg.data.stage.id,
+          workflow_id: +this.$route.params.workflow_id || null,
+          cascade: this.modalCfg.data.cascade
+        }
+        this.updateGroupType(params)
+      }
+      if(this.modalCfg.component === 'delete-group-in-stage') {
+        const params = {
+          group: this.modalCfg.tmpDelGroup.group,
+          stage_id: this.modalCfg.tmpDelGroup.stage_id,
+          workflow_id: this.modalCfg.tmpDelGroup.workflow_id
+        }
+        await this.correctStageGroup(params)
+      }
       this.modalCfg.modalShow = false
-      await this.onRefreshUsergroup()
+      setTimeout(() => { this.onRefreshUsergroup() }, 0)
     },
     async onConnection() {
       await jsPlumb.ready(() => {

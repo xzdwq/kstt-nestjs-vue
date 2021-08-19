@@ -23,7 +23,7 @@ div(class="flex text-sm")
               span {{ getNameStage(stage) }}
             div
               span(class="text-gray-400") {{ $t('task') }}: 
-              span {{ $t('agree') }} --.--.--
+              span {{ $t('agree', {date: formatDate(stage.deadline) }) }}
             div
               span(class="text-gray-400") {{ $t('performers') }}: 
               span {{ getGroupUserStage(stage) }}
@@ -39,6 +39,8 @@ div(class="flex text-sm")
       )
 </template>
 <script>
+import { format } from 'date-fns'
+import { enGB, ru } from 'date-fns/locale'
 export default {
   name: 'stage-workflow',
   props: {
@@ -52,6 +54,12 @@ export default {
     type: {
       type: String,
       default: 'medium'
+    }
+  },
+  data() {
+    return {
+      ru: ru,
+      en: enGB,
     }
   },
   computed: {
@@ -75,6 +83,14 @@ export default {
         }
       }
     },
+    formatDate(date) {
+      let formatType = this.$i18n.locale == 'ru' ? 'dd.MM.yyyy' : 'MM/dd/yyyy'
+      return format(
+        new Date(date),
+        formatType,
+        { locale: this.$i18n.locale == 'ru' ? this.ru : this.en }
+      )
+    },
     getGroupUserStage(stage) {
       const groups = stage?.group
       let executors = []
@@ -83,8 +99,8 @@ export default {
           if(group.users) {
             const users = group.users
             users.forEach((user) => {
-              // executors.push(user.full_name)
-              executors.push(user.uuid)
+              executors.push(user.full_name)
+              // executors.push(user.uuid)
             })
           }
         })

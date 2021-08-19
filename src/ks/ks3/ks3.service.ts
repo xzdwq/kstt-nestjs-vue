@@ -138,11 +138,11 @@ export class KS3Service {
     const stageGroupDefault = await this.ks3StageWorkflowRepository.find({
       relations: ['group']
     })
-    const newWorkflowGroup = await this.workflowService.onCreateWorkflowGroup(newWorkflowStage, stageGroupDefault)
+    const newWorkflowGroup = await this.workflowService.onCreateWorkflowGroup(newWorkflow.id, newWorkflowStage, stageGroupDefault)
     // 4. Создаем пользователей и присваиваем их в ранее созданные группы по логике как из таблицы по умолчанию
     const getGroupDefault: any = await this.groupService.findAll()
     const groupDefault = getGroupDefault.data;
-    await this.workflowService.onCreateWorkflowUser(newWorkflowGroup, groupDefault)
+    await this.workflowService.onCreateWorkflowUser(newWorkflow.id, newWorkflowGroup, groupDefault)
     // 5. Создаем новую карточку КС-3 и присваиваем ей ранее созданный workflow_id
     const createNewKS3 = await this.ks3Repository.create({
       certificate_number: body.data.certificateNumber,
@@ -204,6 +204,25 @@ export class KS3Service {
 
     return {
       data: result
+    }
+  }
+
+  async updateGroupType(params) {
+    const workflow_id = params.workflow_id,
+          group_id = params.group_id,
+          group_type = params.group_type;
+    let data
+    if(workflow_id) {
+      data = await this.workflowService.onUpdateGroupType(params)
+    } else {
+      data = await this.groupService.onUpdateGroupType(params)
+    }
+    return {
+      success: true,
+      data: data,
+      workflow_id: workflow_id,
+      group_id: group_id,
+      group_type: group_type
     }
   }
 }

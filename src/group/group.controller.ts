@@ -15,4 +15,9 @@ export class GroupController {
   async getGroup(): Promise<any> {
     return await this.groupService.findAll()
   }
+
+  @Get('/grouptype')
+  async getGroupType(): Promise<any> {
+    return await this.groupService.findGroupType()
+  }
 }

@@ -42,7 +42,8 @@ export class WorkflowService {
           next_stage: i.next_stage,
           order_execution_stage: i.order_execution_stage,
           action: idx === 0 ? 1 : 0,
-          workflow_id: workflow_id
+          workflow_id: workflow_id,
+          deadline: new Date(new Date().setMonth(new Date().getMonth() + 1))
         }
         dataStage.push(data)
       })
@@ -63,7 +64,7 @@ export class WorkflowService {
       return newWorkflowStage
     }
 
-    async onCreateWorkflowGroup(newWorkflowStage, groupUserDefault) {
+    async onCreateWorkflowGroup(workflow_id, newWorkflowStage, groupUserDefault) {
         const workflowStageGroup = await this.workflowStageGroupRepository.find({
           take: 1,
           order: {
@@ -80,7 +81,9 @@ export class WorkflowService {
                   name_ru: g.name_ru,
                   name_en: g.name_en,
                   type_id: g.type_id,
+                  workflow_id: +workflow_id,
                   stage_id: i.id,
+                  deadline: new Date(new Date().setMonth(new Date().getMonth() + 1))
                 })
               })
             }
@@ -92,7 +95,7 @@ export class WorkflowService {
         return newGroup
     }
 
-    async onCreateWorkflowUser(newGroup, groupUserDefault) {
+    async onCreateWorkflowUser(workflow_id, newGroup, groupUserDefault) {
       const workflowStageGroupUser = await this.workflowStageGroupUserRepository.find({
         take: 1,
         order: {
@@ -110,6 +113,7 @@ export class WorkflowService {
                 department: u.department,
                 position: u.position,
                 role: u.role,
+                workflow_id: +workflow_id,
                 workflow_stage_group: i.id
               })
             })
@@ -185,6 +189,7 @@ export class WorkflowService {
               name_en: getGroupByCode.name_en,
               type_id: getGroupByCode.type_id,
               stage_id: stage_id,
+              workflow_id: workflow_id
             })
             const newGroup = await this.workflowStageGroupRepository.save(addGroup)
             // После добавления группы добавляем в нее пользователей из таблицы по умолчанию
@@ -195,6 +200,7 @@ export class WorkflowService {
                 department: u.department,
                 position: u.position,
                 role: u.role,
+                workflow_id: workflow_id,
                 workflow_stage_group: newGroup
               })
               this.workflowStageGroupUserRepository.save(newGroupUser)
@@ -205,5 +211,34 @@ export class WorkflowService {
       }
 
       return data
+    }
+
+    async onUpdateGroupType(params) {
+      const workflow_id = params.workflow_id,
+            group_id = params.group_id,
+            group_type = params.group_type,
+            cascade = params.cascade
+      let result;
+      const group: any = await this.workflowStageGroupRepository.findOne(group_id)
+      // if(group.type_id != group_type) {
+        if(cascade) {
+          const allGroupInWorkflow = await this.workflowStageGroupRepository.find({
+            where: {
+              workflow_id: workflow_id,
+              code: group.code
+            }
+          })
+          allGroupInWorkflow.forEach((g) => {
+            g.type_id = group_type
+          })
+          result = await this.workflowStageGroupRepository.save(allGroupInWorkflow)
+        } else {
+          group.type_id = group_type
+          result = await this.workflowStageGroupRepository.save(group)
+        }
+      // } else {
+      //   result = group
+      // }
+      return result
     }
 }

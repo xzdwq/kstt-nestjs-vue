@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query
 } from "@nestjs/common";
 
@@ -49,5 +50,12 @@ export class KS3Controller {
   ): Promise<any> {
     const params = body.params
     return this.ks3Service.setStageGroup(params)
+  }
+
+  @Put('/grouptype')
+  async updateGroupType(
+    @Body('params') params
+  ): Promise<any> {
+    return await this.ks3Service.updateGroupType(params)
   }
 }

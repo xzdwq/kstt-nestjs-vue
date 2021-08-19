@@ -55,6 +55,11 @@ export class WorkflowStageGroupUserEntity {
   })
   signed: boolean;
 
+  @Column({
+    nullable: false
+  })
+  workflow_id: number;
+
   @ManyToOne(() => WorkflowStageGroupEntity, group => group.users, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'workflow_stage_group_id' })
   workflow_stage_group: WorkflowStageGroupEntity;

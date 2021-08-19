@@ -73,6 +73,11 @@ export class WorkflowStageEntity {
   complete: boolean;
 
   @Column({
+    nullable: true,
+  })
+  deadline: Date;
+
+  @Column({
     nullable: false
   })
   workflow_id: number;
