@@ -41,6 +41,8 @@
   "approval-route": "Approval route for \"{document_number}\"",
   "route-default": "Default route",
   "edit-group": "Editing the \"{group}\" group ({stage})",
+  "groups": "Groups",
+  "participants": "Participants",
   "type-signing": "Type of signing",
   "cascade": "Cascading",
   "delete-confirm": "Are you sure you want to remove the \"{group}\" from the \"{stage}\" stage?",

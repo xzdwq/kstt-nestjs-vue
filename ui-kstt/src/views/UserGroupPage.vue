@@ -125,6 +125,8 @@ div
     v-show="activeGrid == 'list' && getStageWorkflow.length > 0"
     class="break-words overflow-x-scroll bg-background-secondary rounded mt-2 mb-2 p-2 w-full h-full"
   )
+    group-managment
+    //- draggble end
   //- модальное окно
   modal(v-model:modalCfg="modalCfg")
     template(v-slot:title) {{ modalCfg.title }}
@@ -148,7 +150,7 @@ export default {
   data() {
     return {
       isLoadForRefresh: true,
-      activeGrid: 'grid',
+      activeGrid: 'list',
       defaultJsPlumbSettings: {
         Connector: ['Flowchart', {
           alwaysRespectStubs: true,
@@ -183,7 +185,7 @@ export default {
       getIsLoadStageWorkflow: 'usergroupModule/getIsLoadStageWorkflow',
       getLocales: 'localesSwitcherModule/getLocales',
       getKs3ByWfId: 'usergroupModule/getKs3ByWfId',
-    })
+    }),
   },
   methods: {
     ...mapActions({
@@ -199,6 +201,8 @@ export default {
       await this.onConnection()
     },
     onChancheViewGrid(type) {
+      jsPlumbInstance.deleteEveryConnection();
+      this.onConnection()
       setTimeout(() => { jsPlumbInstance.repaintEverything() }, 0)
       if(this.activeGrid != type) {
         this.activeGrid = type

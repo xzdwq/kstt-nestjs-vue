@@ -9,6 +9,7 @@ import components from "@/components/components"
 import directives from '@/directives';
 
 import VueClickAway from "vue3-click-away";
+import draggable from 'vuedraggable'
 
 import i18n from '@/plugins/i18n'
 
@@ -24,6 +25,7 @@ components.forEach(component => {
 })
 
 app.component('popper', Popper)
+app.component('draggable', draggable)
 
 directives.forEach(directive => {
   app.directive(directive.name, directive)

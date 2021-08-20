@@ -24,6 +24,7 @@ import DefButtonBack from '@/components/utils/DefButtonBack.vue'
 import AddGroupInStageForm from '@/components/usergroup/AddGroupInStageForm.vue'
 import EditGroupInStageForm from '@/components/usergroup/EditGroupInStageForm.vue'
 import DeleteGroupInStage from '@/components/usergroup/DeleteGroupInStage.vue'
+import GroupManagment from '@/components/usergroup/GroupManagment.vue'
 /**
  * SVG icons
  */
@@ -61,6 +62,9 @@ import Trash from '@/components/svg/Trash.vue'
 import ViewGridPlus from '@/components/svg/ViewGridPlus.vue'
 import Pencilalt from '@/components/svg/Pencilalt.vue'
 import Question from '@/components/svg/Question.vue'
+import Hand from '@/components/svg/Hand.vue'
+import Collection from '@/components/svg/Collection.vue'
+import Selector from '@/components/svg/Selector.vue'
 /**
  * Utils
  */
@@ -91,6 +95,7 @@ export default [
   AddGroupInStageForm,
   EditGroupInStageForm,
   DeleteGroupInStage,
+  GroupManagment,
 
   Loading,
   Bell,
@@ -126,6 +131,9 @@ export default [
   ViewGridPlus,
   Pencilalt,
   Question,
+  Hand,
+  Collection,
+  Selector,
 
   Modal,
   PopupNotification

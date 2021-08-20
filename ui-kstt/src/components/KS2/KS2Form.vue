@@ -86,6 +86,9 @@ export default {
       const file = event.target.files[0];
       let formData = new FormData();
       formData.append('file', file);
+      formData.append('ks3_id', this.getKS3id[0].id)
+      formData.append('workflow_id', this.getKS3id[0].workflow_id)
+
       await axios.post( 'api/ks2/upload',
         formData,
         {

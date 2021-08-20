@@ -114,7 +114,8 @@ export class WorkflowService {
                 position: u.position,
                 role: u.role,
                 workflow_id: +workflow_id,
-                workflow_stage_group: i.id
+                stage_id: i.stage_id,
+                group_id: i.id
               })
             })
           }
@@ -201,7 +202,9 @@ export class WorkflowService {
                 position: u.position,
                 role: u.role,
                 workflow_id: workflow_id,
-                workflow_stage_group: newGroup
+                workflow_stage_group: newGroup,
+                stage_id: newGroup.stage_id,
+                group_id: newGroup.id
               })
               this.workflowStageGroupUserRepository.save(newGroupUser)
             })

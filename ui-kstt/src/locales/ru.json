@@ -41,6 +41,8 @@
   "approval-route": "Маршрут согласования для \"{document_number}\"",
   "route-default": "Маршрут по умолчанию",
   "edit-group": "Редактирование группы \"{group}\" ({stage})",
+  "groups": "Группы",
+  "participants": "Участники",
   "type-signing": "Тип подписания",
   "cascade": "Каскадно",
   "delete-confirm": "Вы действительно хотите удалить группу \"{group}\" из стадии \"{stage}\"?",

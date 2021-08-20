@@ -111,6 +111,10 @@
   opacity: 0;
 }
 
+.flip-list-move {
+  transition: transform 0.5s ease;
+}
+
 .list-item {
   display: inline-block;
   margin-right: 10px;
