@@ -39,6 +39,22 @@ export class UserGroupEntity {
   @JoinColumn({ name: 'group_id' })
   group: GroupEntity;
 
+  @Column({
+    nullable: true
+  })
+  order_execution_user: number;
+
+  @Column({
+    nullable: false
+  })
+  hierarchy: string;
+
+  @Column({
+    nullable: false,
+    default: 1
+  })
+  active: boolean;
+
   @CreateDateColumn()
   create_at: Date;
 

@@ -61,6 +61,11 @@ export class WorkflowStageEntity {
   order_execution_stage: number;
 
   @Column({
+    nullable: false
+  })
+  hierarchy: string;
+
+  @Column({
     nullable: false,
     default: 0
   })

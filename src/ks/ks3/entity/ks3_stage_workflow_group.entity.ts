@@ -36,6 +36,16 @@ export class KS3StageWorkflowGroup {
   @ManyToOne(() => GroupEntity, (group) => group.ks3_stage_workflow_group)
   @JoinColumn({ name: 'group_id' })
   group: GroupEntity;
+  
+  @Column({
+    nullable: true
+  })
+  order_execution_group: number;
+
+  @Column({
+    nullable: false
+  })
+  hierarchy: string;
 
   @CreateDateColumn()
   create_at: Date

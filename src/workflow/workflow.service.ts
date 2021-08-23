@@ -40,6 +40,7 @@ export class WorkflowService {
           short_name_en: i.short_name_en,
           previous_stage: i.previous_stage,
           next_stage: i.next_stage,
+          hierarchy: i.order_execution_stage,
           order_execution_stage: i.order_execution_stage,
           action: idx === 0 ? 1 : 0,
           workflow_id: workflow_id,
@@ -82,6 +83,8 @@ export class WorkflowService {
                   name_en: g.group.name_en,
                   type_id: g.group.type_id,
                   workflow_id: +workflow_id,
+                  order_execution_group: g.order_execution_group,
+                  hierarchy: g.hierarchy,
                   stage_id: i.id,
                   deadline: new Date(new Date().setMonth(new Date().getMonth() + 1))
                 })
@@ -115,7 +118,9 @@ export class WorkflowService {
                 role: u.user.role,
                 workflow_id: +workflow_id,
                 stage_id: i.stage_id,
-                group_id: i.id
+                group_id: i.id,
+                order_execution_user: u.order_execution_user,
+                hierarchy: u.hierarchy
               })
             })
           }

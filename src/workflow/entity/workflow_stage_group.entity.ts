@@ -72,6 +72,16 @@ export class WorkflowStageGroupEntity {
   workflow_id: number;
 
   @Column({
+    nullable: true
+  })
+  order_execution_group: number;
+
+  @Column({
+    nullable: false
+  })
+  hierarchy: string;
+
+  @Column({
     nullable: false
   })
   stage_id: number;
