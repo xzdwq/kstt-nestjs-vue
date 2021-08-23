@@ -49,6 +49,8 @@
   "confirm": "Confirm action",
   "ks2-upload": "Import of the file КС-2 {file} completed successfully",
   "upload-error": "File upload error",
+  "success": "Successfully completed",
+  "error": "Error",
   "crypto": {
     "electonic-signature": "Electronic signature",
     "list-electonic-signature": "List of available<br>electronic signatures",

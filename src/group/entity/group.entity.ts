@@ -8,10 +8,13 @@ import {
   ManyToMany,
   JoinTable,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  OneToMany
 } from 'typeorm';
 import { UserEntity } from '@src/user/entity/user.entity';
+import { UserGroupEntity } from '@src/user/entity/user_group.entity';
 import { GroupTypeEntity } from '@src/group/entity/group_type.entity';
+import { KS3StageWorkflowGroup } from '@src/ks/ks3/entity/ks3_stage_workflow_group.entity';
 
 @Entity('group')
 export class GroupEntity {
@@ -51,19 +54,11 @@ export class GroupEntity {
   @JoinColumn({ name: 'type_id' })
   type: GroupTypeEntity;
 
-  @ManyToMany(() => UserEntity, user => user.id, { cascade: true })
-  @JoinTable({
-    name: 'user_group',
-    joinColumn: {
-      name: 'group_id',
-      referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id'
-    }
-  })
-  user: UserEntity[];
+  @OneToMany(() => UserGroupEntity, (user_group) => user_group.group)
+  user_group: UserGroupEntity[];
+
+  @OneToMany(() => KS3StageWorkflowGroup, (wfgroup) => wfgroup.group)
+  ks3_stage_workflow_group: KS3StageWorkflowGroup[];
 
   @CreateDateColumn()
   create_at: Date;

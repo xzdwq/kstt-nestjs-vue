@@ -75,12 +75,12 @@ export class WorkflowService {
         newWorkflowStage.forEach((i) => {
           groupUserDefault.forEach((j) => {
             if(i.order_execution_stage === j.order_execution_stage) {
-              j.group.forEach((g) => {
+              j.ks3_stage_workflow_group.forEach((g) => {
                 data.push({
-                  code: g.code,
-                  name_ru: g.name_ru,
-                  name_en: g.name_en,
-                  type_id: g.type_id,
+                  code: g.group.code,
+                  name_ru: g.group.name_ru,
+                  name_en: g.group.name_en,
+                  type_id: g.group.type_id,
                   workflow_id: +workflow_id,
                   stage_id: i.id,
                   deadline: new Date(new Date().setMonth(new Date().getMonth() + 1))
@@ -106,13 +106,13 @@ export class WorkflowService {
       newGroup.forEach((i) => {
         groupUserDefault.forEach((j) => {
           if(i.code === j.code) {
-            j.user.forEach((u) => {
+            j.user_group.forEach((u) => {
               data.push({
-                full_name: u.full_name,
-                email: u.email,
-                department: u.department,
-                position: u.position,
-                role: u.role,
+                full_name: u.user.full_name,
+                email: u.user.email,
+                department: u.user.department,
+                position: u.user.position,
+                role: u.user.role,
                 workflow_id: +workflow_id,
                 stage_id: i.stage_id,
                 group_id: i.id

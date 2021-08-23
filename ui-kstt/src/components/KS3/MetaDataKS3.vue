@@ -130,10 +130,10 @@ import {
   mapActions
 } from 'vuex'
 
-import { createToast } from 'mosha-vue-toastify';
-import 'mosha-vue-toastify/dist/style.css'
+import toast from '@/mixins/toast'
 export default {
   name: 'metadata-ks3',
+  mixins: [toast],
   components: {
     Popper,
     Datepicker
@@ -204,20 +204,7 @@ export default {
       this.form.date_preparation = new Date(data.data[0].date_preparation)
       this.form.reporting_period = new Date(data.data[0].reporting_period)
     } else {
-      createToast({
-          title: data.message,
-          description: this.$t('ks3.error-load-ks3id')
-        },
-        {
-          showCloseButton: false,
-          swipeClose: true,
-          hideProgressBar: true,
-          position: 'bottom-left',
-          type: 'danger',
-          showIcon: true,
-          transition: 'bounce',
-          timeout: 3500
-      })
+      this.onToast('danger', this.$t('ks3.error-load-ks3id'), data.message)
     }
   }
 }

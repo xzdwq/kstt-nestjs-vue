@@ -7,7 +7,8 @@ import PageNotFound from '@/views/PageNotFound.vue'
 import Register from '@/views/Register.vue'
 import About from '@/views/About.vue'
 import KS3idPage from '@/views/KS3idPage.vue'
-import UserGroupPage from '@/views/UserGroupPage.vue'
+import KS3WorkflowDefault from '@/views/KS3WorkflowDefault.vue'
+import WorkflowMangmentPage from '@/views/WorkflowMangmentPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,11 +25,11 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/usergroup',
-    component: UserGroupPage
+    component: KS3WorkflowDefault
   },
   {
     path: '/usergroup/:workflow_id',
-    component: UserGroupPage
+    component: WorkflowMangmentPage
   },
   {
     path: '/about',

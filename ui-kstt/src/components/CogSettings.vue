@@ -14,11 +14,11 @@ modal(v-model:modalCfg="modalCfg")
     def-button(class="min-w-28 text-white bg-[#06d6a0]" @click="saveAndCloseModal") OK
 </template>
 <script>
-import { createToast } from 'mosha-vue-toastify';
-import 'mosha-vue-toastify/dist/style.css'
+import toast from '@/mixins/toast'
 
 export default {
   name: 'cog-settings',
+  mixins: [toast],
   data() {
     return {
       modalCfg: {
@@ -38,35 +38,9 @@ export default {
     async saveAndCloseModal() {
       try{
         await this.emitter.emit('onSaveCogForm')
-        createToast({
-            title: this.$t('save-settings'),
-            description: this.$t('configuration')
-          },
-          {
-            showCloseButton: false,
-            swipeClose: true,
-            hideProgressBar: true,
-            position: 'bottom-left',
-            type: 'success',
-            showIcon: true,
-            transition: 'bounce',
-            timeout: 3500
-          })
+        this.onToast('success', this.$t('save-settings'), this.$t('configuration'))
       } catch(e) {
-        createToast({
-            title: this.$t('save-error'),
-            description: e.toString()
-          },
-          {
-            showCloseButton: false,
-            swipeClose: true,
-            hideProgressBar: true,
-            position: 'bottom-left',
-            type: 'danger',
-            showIcon: true,
-            transition: 'bounce',
-            timeout: 3500
-          })
+        this.onToast('danger', this.$t('save-error'), e.toString())
       } finally { this.modalCfg.modalShow = false }
     }
   }

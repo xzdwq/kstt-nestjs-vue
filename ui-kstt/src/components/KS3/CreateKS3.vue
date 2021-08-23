@@ -70,10 +70,10 @@ import {
   mapActions
 } from 'vuex'
 
-import { createToast } from 'mosha-vue-toastify';
-import 'mosha-vue-toastify/dist/style.css'
+import toast from '@/mixins/toast'
 export default {
   name: 'create-ks3',
+  mixins: [toast],
   components: {
     Datepicker
   },
@@ -120,20 +120,7 @@ export default {
     } else {
       this.form.certificateNumber = '-'
       this.form.customCertificateNumber = '-'
-      createToast({
-          title: this.$t('ks3.certificate-ks3-error')+' ('+ newCertificateNumber.data.code+')',
-          description: newCertificateNumber.message
-        },
-        {
-          showCloseButton: false,
-          swipeClose: true,
-          hideProgressBar: true,
-          position: 'bottom-left',
-          type: 'danger',
-          showIcon: true,
-          transition: 'bounce',
-          timeout: 3500
-      })
+      this.onToast('danger', this.$t('ks3.certificate-ks3-error')+' ('+ newCertificateNumber.data.code+')', newCertificateNumber.message)
     }
     /**
      * Получаем список этапов workflow справки КС-3
@@ -159,35 +146,9 @@ export default {
           .then((data) => {
             if(data.success) {
               this.instance.parent.parent.parent.parent.data.modalCfg.modalShow = false
-              createToast({
-                  title: this.$t('ks3.create-ks3', { number: this.form.customDocumentNumber }),
-                  description: this.$t('ks3-create')
-                },
-                {
-                  showCloseButton: false,
-                  swipeClose: true,
-                  hideProgressBar: true,
-                  position: 'bottom-left',
-                  type: 'success',
-                  showIcon: true,
-                  transition: 'bounce',
-                  timeout: 3500
-              })
+              this.onToast('success', this.$t('ks3.create-ks3', { number: this.form.customDocumentNumber }), this.$t('ks3-create'))
             } else {
-              createToast({
-                  title: this.$t('ks3.create-ks3-error')+' ('+ data.data.code+')',
-                  description: data.message
-                },
-                {
-                  showCloseButton: false,
-                  swipeClose: true,
-                  hideProgressBar: true,
-                  position: 'bottom-left',
-                  type: 'danger',
-                  showIcon: true,
-                  transition: 'bounce',
-                  timeout: 3500
-              })
+              this.onToast('danger', this.$t('ks3.create-ks3-error')+' ('+ data.data.code+')', data.message)
             }
           })
       }

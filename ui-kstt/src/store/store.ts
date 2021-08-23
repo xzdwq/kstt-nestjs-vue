@@ -7,7 +7,7 @@ import { ks3Module } from "@/store/modules/ks3Module"
 import { ks3idModule } from "@/store/modules/ks3idModule"
 import { ks2idModule } from "@/store/modules/ks2idModule"
 import { groupModule } from "@/store/modules/groupModule"
-import { usergroupModule } from "@/store/modules/usergroupModule"
+import { workflowManagmentModule } from "@/store/modules/workflowManagmentModule"
 
 export default createStore({
   state: {
@@ -27,6 +27,6 @@ export default createStore({
     ks3idModule,
     ks2idModule,
     groupModule,
-    usergroupModule
+    workflowManagmentModule
   }
 })

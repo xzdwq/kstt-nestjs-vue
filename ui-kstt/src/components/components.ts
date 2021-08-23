@@ -24,7 +24,6 @@ import DefButtonBack from '@/components/utils/DefButtonBack.vue'
 import AddGroupInStageForm from '@/components/usergroup/AddGroupInStageForm.vue'
 import EditGroupInStageForm from '@/components/usergroup/EditGroupInStageForm.vue'
 import DeleteGroupInStage from '@/components/usergroup/DeleteGroupInStage.vue'
-import GroupManagment from '@/components/usergroup/GroupManagment.vue'
 /**
  * SVG icons
  */
@@ -95,7 +94,6 @@ export default [
   AddGroupInStageForm,
   EditGroupInStageForm,
   DeleteGroupInStage,
-  GroupManagment,
 
   Loading,
   Bell,

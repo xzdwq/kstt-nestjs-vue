@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Repository, Like } from 'typeorm';
 import { KS3Entity } from '@src/ks/ks3/entity/ks3.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3stageWorkflow.entity';
+import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3_stage_workflow.entity';
 import { GroupService } from '@src/group/group.service';
 import { WorkflowService } from '@src/workflow/workflow.service';
 
@@ -90,15 +90,22 @@ export class KS3Service {
     else {
       const [data, total] = await this.ks3StageWorkflowRepository.findAndCount({
         relations: [
-          'group',
-          'group.user',
-          'group.type'
+          'ks3_stage_workflow_group',
+          'ks3_stage_workflow_group.group',
+          'ks3_stage_workflow_group.group.type',
+          'ks3_stage_workflow_group.group.user_group',
+          'ks3_stage_workflow_group.group.user_group.user'
         ]
       })
+      // const data = await this.ks3StageWorkflowRepository
+      //               .createQueryBuilder('stage')
+      //               .leftJoinAndSelect("stage.ks3_stage_workflow_group", "group")
+      //               .getMany();
+
       return {
         success: true,
         data: data,
-        total: total
+        total: total,
       }
     }
   }
@@ -136,7 +143,7 @@ export class KS3Service {
     const newWorkflowStage = await this.workflowService.onCreateWorkflowStage(stageDefault, newWorkflow.id)
     // 3. Создаем группы и присваиваем их ранее созданным стадиям по логике как из таблицы по умолчанию
     const stageGroupDefault = await this.ks3StageWorkflowRepository.find({
-      relations: ['group']
+      relations: ['ks3_stage_workflow_group', 'ks3_stage_workflow_group.group']
     })
     const newWorkflowGroup = await this.workflowService.onCreateWorkflowGroup(newWorkflow.id, newWorkflowStage, stageGroupDefault)
     // 4. Создаем пользователей и присваиваем их в ранее созданные группы по логике как из таблицы по умолчанию
@@ -184,18 +191,18 @@ export class KS3Service {
     } else {
       // Default
       const stagegroup = await this.ks3StageWorkflowRepository.findOne(stage_id, {
-        relations: ['group']
+        relations: ['ks3_stage_workflow_group', 'ks3_stage_workflow_group.group']
       })
       for(const pg of params.group) {
-        const matchIndex = stagegroup.group.findIndex(x => x.id === pg.id)
+        const matchIndex = stagegroup.ks3_stage_workflow_group.findIndex(x => x.id === pg.id)
         if(matchIndex >= 0) {
           // если группу исключили из стадии
-          if(!pg.check) stagegroup.group.splice(matchIndex, 1);
+          if(!pg.check) stagegroup.ks3_stage_workflow_group.splice(matchIndex, 1);
         } else {
           // если группу добавили в стадию
           if(pg.check) {
             const getGroupById = await this.groupService.findOne(pg.id)
-            stagegroup.group.push(getGroupById['data'])
+            stagegroup.ks3_stage_workflow_group.push(getGroupById['data'])
           }
         }
       }

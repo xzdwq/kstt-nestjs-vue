@@ -50,11 +50,12 @@ import {
   mapActions
 } from 'vuex'
 import axios from "axios";
-import { createToast } from 'mosha-vue-toastify';
-import 'mosha-vue-toastify/dist/style.css'
+
+import toast from '@/mixins/toast'
 
 export default {
   name: 'ks2-form',
+  mixins: [toast],
   data() {
     return {
       id: this.$route.params.id
@@ -98,35 +99,10 @@ export default {
         }
       ).then((e) => {
         this.onRefresh()
-        createToast({
-            title: this.$t('ks2-upload', {file: file.name})
-          },
-          {
-            showCloseButton: false,
-            swipeClose: true,
-            hideProgressBar: true,
-            position: 'bottom-left',
-            type: 'success',
-            showIcon: true,
-            transition: 'bounce',
-            timeout: 3500
-          })
+        this.onToast('success', this.$t('ks2-upload', {file: file.name}))
       })
       .catch((e) => {
-        createToast({
-            title: this.$t('upload-error'),
-            description: e.toString()
-          },
-          {
-            showCloseButton: false,
-            swipeClose: true,
-            hideProgressBar: true,
-            position: 'bottom-left',
-            type: 'danger',
-            showIcon: true,
-            transition: 'bounce',
-            timeout: 3500
-          })
+        this.onToast('danger', this.$t('upload-error'), e.toString())
       });
     }
   },

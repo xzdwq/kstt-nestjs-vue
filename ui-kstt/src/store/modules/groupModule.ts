@@ -58,13 +58,27 @@ export const groupModule = {
       }
     },
     async correctStageGroup({ commit }, params) {
-      await axios.post('api/ks3/stagegroup', {
+      const data = await axios.post('api/ks3/stagegroup', {
         params: {
           group: params.group,
           stage_id: params.stage_id,
           workflow_id: params.workflow_id
         }
       })
+      .then((data) => {
+        return {
+          success: true,
+          data: data.data.data
+        }
+      })
+      .catch((e) => {
+        return {
+          success: false,
+          data: [],
+          message: e.toString()
+        }
+      })
+      return data
     },
     // Загрузка типов групп
     async fetchGroupType({ commit }) {

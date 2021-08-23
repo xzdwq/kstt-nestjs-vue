@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const usergroupModule = {
+export const workflowManagmentModule = {
   namespaced: true,
   state: () => ({
     isLoadStageWorkflow: false,
@@ -32,7 +32,7 @@ export const usergroupModule = {
   actions: {
     async fetchStageWorkflow({ commit, getters }, params) {
       try {
-        /*if(params.type == 'reload' || params.workflow_id)*/ commit('setStageWorkflow', [])
+        if(params.type == 'reload') commit('setStageWorkflow', [])
         if(getters.getStageWorkflow.length === 0) {
           commit('setIsLoadStageWorkflow', true)
           const data = await axios.get('api/ks3/stageworkflow', {
