@@ -49,7 +49,7 @@ div.relative
         template(#item="{element: stage, index: stage_idx}")
           div(class="p-1 flex mb-6 even:bg-background-primary rounded-md min-w-[980px]")
             div(class="h-hull flex items-center px-8 text-[50px] font-bold opacity-40 select-none")
-              span {{ stage_idx+1 }}
+              span {{ getStageSort(stage, stage_idx+1) }}
             div.flex
               div(
                 :ref="`stage_${stage_idx}`"
@@ -107,7 +107,7 @@ div.relative
                             :class="group.type.id == 1 ? 'bg-green-200' : 'bg-red-200'"
                           )
                             div(class="px-1") {{ this.$i18n.locale == 'ru' ? group.type.name_ru : group.type.name_en }}
-                        div(class="absolute bottom-0 right-1") {{ stage_idx+1 }}.{{ group_idx+1 }}
+                        div(class="absolute bottom-0 right-1") {{ getGroupSort(stage, stage_idx+1, group, group_idx+1) }}
                     //- пользователи
                     div
                       draggable(
@@ -132,7 +132,7 @@ div.relative
                               div(class="w-full pr-4")
                                 div {{user.full_name}}
                                 div(class="text-sm italic") {{user.position}}
-                              div(class="absolute bottom-0 right-1") {{ getUserOrder(group, stage_idx, group_idx, user_idx) }}
+                              div(class="absolute bottom-0 right-1") {{ getUserSort(group, stage, stage_idx, group_idx, user_idx, user) }}
                               div(
                                 class="absolute top-0 right-6 text-[#9CA3FF] cursor-pointer h-6"
                                 @click="onAddUser(group.id)"
@@ -153,7 +153,7 @@ div.relative
       def-button(class="min-w-28 text-white bg-[#06d6a0]" @click="saveAndCloseModal") OK
 </template>
 <script>
-var jsPlumbInstance;
+let jsPlumbInstance, accum_group = 0, accum_user = 0, counter_user = 0;
 import {
   mapGetters,
   mapActions
@@ -167,8 +167,16 @@ export default {
   mixins: [toast],
   data() {
     return {
+      sortData: {},
+      sorting: {
+        workflow_id: +this.$route.params.workflow_id,
+        stages: [],
+        groups: [],
+        users: []
+      },
       drag: false,
       isLoadForRefresh: true,
+      sort: {},
       modalCfg: {
         modalShow: false
       },
@@ -195,6 +203,7 @@ export default {
       getIsLoadStageWorkflow: 'workflowManagmentModule/getIsLoadStageWorkflow',
       getLocales: 'localesSwitcherModule/getLocales',
       getKs3ByWfId: 'workflowManagmentModule/getKs3ByWfId',
+      getAllUsersInWorkflowStage: 'workflowManagmentModule/getAllUsersInWorkflowStage'
     }),
     dragStage() {
       return {
@@ -240,6 +249,7 @@ export default {
   methods: {
     ...mapActions({
       fetchStageWorkflow: 'workflowManagmentModule/fetchStageWorkflow',
+      setSortWorkflowElement: 'workflowManagmentModule/setSortWorkflowElement',
       correctStageGroup: 'groupModule/correctStageGroup',
       updateGroupType: 'groupModule/updateGroupType'
     }),
@@ -298,12 +308,93 @@ export default {
     getProp(element) {
       return element.user ? 'user' : 'users'
     },
-    logGroup: function(evt) {
-      console.log(evt);
-      jsPlumbInstance.repaintEverything()
+    getStageSort(stage, idx) {
+      //--
+      this.sorting.stages.push({
+        id: stage.id,
+        name_en: stage.name_en,
+        order_execution_stage: stage.order_execution_stage,
+        hierarchy: stage.hierarchy,
+        workflow_id: this.sorting.workflow_id
+      })
+      //--
+      this.sortData[stage.id] = {
+        id: stage.id,
+        name_en: stage.name_en,
+        order_execution_stage: stage.order_execution_stage,
+        hierarchy: stage.hierarchy,
+        workflow_id: this.$route.params.workflow_id
+      }
+      return stage.order_execution_stage
     },
-    logUser: function(evt) {
-      console.log(evt);
+    getGroupSort(stage, s_idx, group, g_idx) {
+      // accum_user = 0
+      accum_group++
+      //--
+      this.sorting.groups.push({
+        id: group.id,
+        code: group.code,
+        order_execution_group: accum_group,
+        hierarchy: s_idx+'.'+g_idx,
+        workflow_id: this.sorting.workflow_id,
+        stage_id: stage.id
+      })
+      //--
+      this.sortData[stage.id][group.id] = {
+        id: group.id,
+        code: group.code,
+        order_execution_group: accum_group,
+        hierarchy: s_idx+'.'+g_idx,
+        workflow_id: +this.$route.params.workflow_id,
+        stage_id: stage.id
+      }
+      accum_user++
+      group.users.forEach((user, user_idx) => {
+        counter_user++
+        if(group.type_id === 2) accum_user = accum_user + user_idx
+        const hierarchy = this.getUserOrder(group, s_idx-1, g_idx-1, user_idx)
+        this.sortData[stage.id][group.id][user.id] = {
+          id: user.id,
+          email: user.email,
+          order_execution_user: accum_user,
+          hierarchy: hierarchy,
+          workflow_id: this.$route.params.workflow_id,
+          stage_id: stage.id,
+          group_id: group.id
+        }
+        this.sorting.users.push({
+          id: user.id,
+          email: user.email,
+          order_execution_user: accum_user,
+          hierarchy: hierarchy,
+          workflow_id: this.sorting.workflow_id,
+          stage_id: stage.id,
+          group_id: group.id
+        })
+      })
+      if(s_idx === this.getStageWorkflow.length) accum_group = 0
+      return (s_idx+'.'+g_idx)+' ('+this.sortData[stage.id][group.id].order_execution_group+')'
+    },
+    getUserSort(group, stage, stage_idx, group_idx, user_idx, user) {
+      if(counter_user === this.getAllUsersInWorkflowStage.length) accum_user = 0
+      if(counter_user === this.getAllUsersInWorkflowStage.length) counter_user = 0
+      return this.sortData[stage.id][group.id][user.id].hierarchy+' ('+this.sortData[stage.id][group.id][user.id].order_execution_user+')'
+    },
+    logGroup(evt) {
+      counter_user = 0
+      accum_group = 0
+      accum_user = 0
+      this.sorting.stages = [], this.sorting.groups = [], this.sorting.users = []
+      setTimeout(() => { this.setSortWorkflowElement(this.sorting) }, 0)
+      // setTimeout(() => { this.onRefresh() }, 0)
+    },
+    logUser(evt) {
+      counter_user = 0
+      accum_group = 0
+      accum_user = 0
+      this.sorting.stages = [], this.sorting.groups = [], this.sorting.users = []
+      setTimeout(() => { this.setSortWorkflowElement(this.sorting) }, 0)
+      // setTimeout(() => { this.onRefresh() }, 0)
     },
     moveGroup(e) {
       // console.log(e.draggedContext.futureIndex);
@@ -422,6 +513,10 @@ export default {
         await this.updateGroupType(params)
       }
       this.closeModal()
+      counter_user = 0
+      accum_group = 0
+      accum_user = 0
+      this.sorting.stages = [], this.sorting.groups = [], this.sorting.users = []
       setTimeout(() => { this.onRefresh() }, 0)
     },
     async onRefresh() {

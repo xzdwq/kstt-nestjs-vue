@@ -5,7 +5,8 @@ export const workflowManagmentModule = {
   state: () => ({
     isLoadStageWorkflow: false,
     stageWorkflow: [],
-    ks3ByWfId: []
+    ks3ByWfId: [],
+    allUsersInWorkflowStage: []
   }),
   getters: {
     getIsLoadStageWorkflow(state) {
@@ -16,6 +17,9 @@ export const workflowManagmentModule = {
     },
     getKs3ByWfId(state: any) {
       return state.ks3ByWfId;
+    },
+    getAllUsersInWorkflowStage(state) {
+      return state.allUsersInWorkflowStage;
     }
   },
   mutations: {
@@ -27,12 +31,15 @@ export const workflowManagmentModule = {
     },
     setKs3ByWfId(state, ks3ByWfId) {
       state.ks3ByWfId = ks3ByWfId;
+    },
+    setAllUsersInWorkflowStage(state, allUsersInWorkflowStage) {
+      state.allUsersInWorkflowStage = allUsersInWorkflowStage;
     }
   },
   actions: {
     async fetchStageWorkflow({ commit, getters }, params) {
       try {
-        if(params.type == 'reload') commit('setStageWorkflow', [])
+        /*if(params.type == 'reload')*/ commit('setStageWorkflow', [])
         if(getters.getStageWorkflow.length === 0) {
           commit('setIsLoadStageWorkflow', true)
           const data = await axios.get('api/ks3/stageworkflow', {
@@ -42,6 +49,7 @@ export const workflowManagmentModule = {
           })
           commit('setStageWorkflow', data.data.data)
           commit('setKs3ByWfId', data.data.ks3 || [])
+          commit('setAllUsersInWorkflowStage', data.data.allUsersInWorkflowStage || [])
         }
       }
       catch(e) {
@@ -50,6 +58,11 @@ export const workflowManagmentModule = {
       finally {
         commit('setIsLoadStageWorkflow', false)
       }
+    },
+    async setSortWorkflowElement({ commit }, params) {
+      const data = await axios.post('api/ks3/sortworkflowelement', {
+        params: params
+      })
     }
   }
 }

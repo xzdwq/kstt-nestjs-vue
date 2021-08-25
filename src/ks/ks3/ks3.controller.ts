@@ -58,4 +58,9 @@ export class KS3Controller {
   ): Promise<any> {
     return await this.ks3Service.updateGroupType(params)
   }
+
+  @Post('/ks3/sortworkflowelement')
+  async setSortWorkflowElement(@Body() body: Object) {
+    return this.ks3Service.setSortWorkflowElement(body)
+  }
 }

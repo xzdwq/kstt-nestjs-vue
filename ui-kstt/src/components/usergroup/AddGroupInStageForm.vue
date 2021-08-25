@@ -23,11 +23,11 @@ div(class="bg-background-secondary h-full p-2 rounded-md overflow-y-scroll")
         //- участники группы
         div(class="flex flex-wrap text-sm text-copy-secondary pt-2")
           div(
-            v-for="user in group.user"
-            :key="`${group.id}_${user.id}`"
+            v-for="user in group.user_group"
+            :key="`${group.id}_${user.user.id}`"
             class="pb-1 pr-1"
           )
-            div(class="bg-gray-200 rounded-3xl px-1") {{ user.full_name }}
+            div(class="bg-gray-200 rounded-3xl px-1") {{ user.user.full_name }}
   //- load mask
   div(
     v-if="getIsLoading"

@@ -4,12 +4,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
-  JoinTable,
   OneToMany
 } from 'typeorm';
 
-import { GroupEntity } from '@src/group/entity/group.entity';
 import { UserGroupEntity } from '@src/user/entity/user_group.entity';
 
 @Entity('user')

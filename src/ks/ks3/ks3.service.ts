@@ -84,7 +84,8 @@ export class KS3Service {
         success: true,
         data: workflowStageById.data,
         total: workflowStageById.total,
-        ks3: ks3info
+        ks3: ks3info,
+        allUsersInWorkflowStage: workflowStageById.allUsersInWorkflowStage
       }
     }
     else {
@@ -231,5 +232,10 @@ export class KS3Service {
       group_id: group_id,
       group_type: group_type
     }
+  }
+
+  async setSortWorkflowElement(body) {
+    const result = await this.workflowService.setSortWorkflowElement(body.params)
+    return result
   }
 }

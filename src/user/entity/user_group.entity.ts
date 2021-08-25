@@ -40,16 +40,6 @@ export class UserGroupEntity {
   group: GroupEntity;
 
   @Column({
-    nullable: true
-  })
-  order_execution_user: number;
-
-  @Column({
-    nullable: false
-  })
-  hierarchy: string;
-
-  @Column({
     nullable: false,
     default: 1
   })
