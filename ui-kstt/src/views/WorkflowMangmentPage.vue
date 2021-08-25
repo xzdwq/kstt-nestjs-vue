@@ -133,11 +133,11 @@ div.relative
                                 div {{user.full_name}}
                                 div(class="text-sm italic") {{user.position}}
                               div(class="absolute bottom-0 right-1") {{ getUserSort(group, stage, stage_idx, group_idx, user_idx, user) }}
-                              div(
-                                class="absolute top-0 right-6 text-[#9CA3FF] cursor-pointer h-6"
-                                @click="onAddUser(group.id)"
-                              )
-                                svg-user-plus
+                              //- div(
+                              //-   class="absolute top-0 right-6 text-[#9CA3FF] cursor-pointer h-6"
+                              //-   @click="onAddUser(group.id)"
+                              //- )
+                              //-   svg-user-plus
                               div(
                                 class="absolute top-0 right-0 text-[#9CA3FF] cursor-pointer"
                                 @click="onDelUser(group.id, user.id)"
@@ -518,6 +518,7 @@ export default {
       accum_user = 0
       this.sorting.stages = [], this.sorting.groups = [], this.sorting.users = []
       setTimeout(() => { this.onRefresh() }, 0)
+      // await this.onRefresh()
     },
     async onRefresh() {
       this.isLoadForRefresh = true
@@ -525,6 +526,11 @@ export default {
       jsPlumbInstance.deleteEveryConnection();
       await this.fetchStageWorkflow({ type: 'reload', workflow_id: this.$route.params.workflow_id })
       await this.onConnection()
+      counter_user = 0
+      accum_group = 0
+      accum_user = 0
+      this.sorting.stages = [], this.sorting.groups = [], this.sorting.users = []
+      setTimeout(() => { this.setSortWorkflowElement(this.sorting) }, 0)
     }
   },
   watch: {
