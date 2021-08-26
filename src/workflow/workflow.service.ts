@@ -184,6 +184,21 @@ export class WorkflowService {
       }
     }
 
+    async onGetCurrentWorkflowStageById(workflow_id) {
+      const wf_data = await this.workflowRepository.findOne({
+        where: {
+          id: workflow_id
+        }
+      })
+      const stageInfo = await this.workflowStageRepository.findOne({
+        where: {
+          workflow_id: workflow_id,
+          order_execution_stage: wf_data.current_stage
+        }
+      })
+      return stageInfo
+    }
+
     async onSetStageGroup(stage_id, workflow_id, params, groupDefault) {
       // Получаем стадию с группами
       const stagegroup = await this.workflowStageRepository.findOne(stage_id, {

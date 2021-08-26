@@ -10,10 +10,12 @@ import directives from '@/directives';
 
 import VueClickAway from "vue3-click-away";
 import draggable from 'vuedraggable'
+import VueCollapsiblePanel from '@dafcoe/vue-collapsible-panel'
 
 import i18n from '@/plugins/i18n'
 
 import "@/css/main.css"
+import '@dafcoe/vue-collapsible-panel/dist/vue-collapsible-panel.css'
 
 
 const app = createApp(App)
@@ -36,4 +38,5 @@ app
   .use(router)
   .use(i18n)
   .use(VueClickAway)
+  .use(VueCollapsiblePanel)
   .mount('#app')

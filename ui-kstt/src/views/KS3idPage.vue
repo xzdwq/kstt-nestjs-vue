@@ -11,27 +11,6 @@ div
   )
     svg-loading
     p {{ $t('ks3.get-stage-workflow') }}
-  //- схема стадий согласования КС-3
-  div(class="bg-background-secondary rounded mt-2 mb-2")
-    div(class="w-full flex items-center")
-      div(class="w-full flex justify-center font-bold ml-16") {{ $t('stage-agreement') }}
-      div(class="flex justify-end")
-        popper(arrow :hover="true" placement="top"
-          class="flex popper-tips"
-          :content="$t('correction-wf-route')"
-        )
-          def-button(
-            @click="$router.push(`/usergroup/${getKS3id[0].workflow_id}`)"
-          )
-            svg-pencilalt
-    stage-workflow(
-      v-if="!getIsLoadStageWorkflow"
-      type="medium"
-      class="py-4"
-      :stageWorkflow="getStageWorkflow"
-      :activeStageWorkflow="getActiveStageWorkflow"
-    )
-  ks2-form
   //- load
   div(
     v-if="getKS3id.length === 0 && !getIsLoading"
@@ -41,6 +20,42 @@ div
   div(v-if="getKS3id.length === 0 && getIsLoading" class="absolute w-[calc(100%-55px)] flex items-center justify-center")
     svg-loading
     p {{ $t('loading') }}
+  //- схема стадий согласования КС-3
+  vue-collapsible-panel-group
+    vue-collapsible-panel(
+      :expanded="false"
+      v-if="!getIsLoading"
+    )
+      template(#title)
+        div(class="w-full flex items-center select-none")
+          div(class="min-w-[300px] absolute text-sm") {{ $t('stage') }}: {{ this.$i18n.locale == 'ru' ? getCurrentStageInfo.name_ru : getCurrentStageInfo.name_en }}
+          div(class="flex w-full justify-center items-center font-bold ml-16")
+            div(class="w-full md:w-auto")
+              div(class="hidden md:flex") {{ $t('stage-agreement') }}
+            popper(arrow :hover="true" placement="top"
+              class="flex popper-tips font-normal"
+              :content="$t('correction-wf-route')"
+            )
+              def-button(
+                @click="$router.push(`/workflowmanagment/${getKS3id[0].workflow_id}`)"
+              )
+                svg-pencilalt
+      template(#content)
+        div
+          stage-workflow(
+            v-if="!getIsLoadStageWorkflow"
+            type="medium"
+            class="py-4"
+            :stageWorkflow="getStageWorkflow"
+            :activeStageWorkflow="getActiveStageWorkflow"
+          )
+  ks2-form
+  //- bottom toolbar
+  div(class="")
+    def-button(
+      class="text-white bg-[#579bae] flex justify-between"
+      @click="onSave"
+    ) Save
 </template>
 <script>
 import {
@@ -62,12 +77,14 @@ export default {
       getStageWorkflow: 'ks3idModule/getStageWorkflow',
       getIsLoadStageWorkflow: 'ks3idModule/getIsLoadStageWorkflow',
       getActiveStageWorkflow: 'ks3idModule/getActiveStageWorkflow',
+      getCurrentStageInfo: 'ks3idModule/getCurrentStageInfo'
     })
   },
   methods: {
     ...mapActions({
       fetchStageWorkflow: 'ks3idModule/fetchStageWorkflow'
-    })
+    }),
+    onSave() {}
   },
   async mounted() {
     /**
@@ -77,3 +94,24 @@ export default {
   },
 }
 </script>
+<style>
+.vcpg {
+  --border-color: none !important;
+  --bg-color-body: var(--bg-background-secondary) !important;
+}
+.vcp {
+  border-radius: 5px;
+  background-color: var(--bg-background-secondary);
+}
+.vcp__header {
+  border-radius: 5px;
+  background-color: var(--bg-background-secondary) !important;
+}
+.vcp__body {
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.vcp__body-content {
+  padding: 0 !important;
+}
+</style>

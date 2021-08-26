@@ -34,7 +34,7 @@
   "paginator-info": "Records {startList} to {limitList} of {total}",
   "back": "Back",
   "oops-data": "Nothing found by certificate id {id}",
-  "user-group": "Group and user management",
+  "workflow-managment": "Group and user management",
   "manager-stage-group": "Group management in the \"{stage}\" stage",
   "stage-agreement": "Stage of agreement",
   "correction-wf-route": "Correction of the approval route",

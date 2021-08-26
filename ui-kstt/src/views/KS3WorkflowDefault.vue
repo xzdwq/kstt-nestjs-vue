@@ -1,5 +1,8 @@
 <template lang="pug">
-div 123
+div.relative
+  //- toolbar
+  div(class="flex items-center")
+    def-button-back
 </template>
 <script>
 import {
@@ -14,10 +17,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getStageWorkflow: 'usergroupModule/getStageWorkflow',
-      getIsLoadStageWorkflow: 'usergroupModule/getIsLoadStageWorkflow',
-      getLocales: 'localesSwitcherModule/getLocales',
-      getKs3ByWfId: 'usergroupModule/getKs3ByWfId',
+      getLocales: 'localesSwitcherModule/getLocales'
     }),
   },
   methods: {

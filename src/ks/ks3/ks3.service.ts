@@ -65,9 +65,14 @@ export class KS3Service {
         { id: id }
       ]
     })
+    // Информация по текущей стадии согласования
+    const wf_id_by_ks3 = data[0].workflow_id
+    const currentStageWFId = await this.workflowService.onGetCurrentWorkflowStageById(wf_id_by_ks3)
+
     return {
       success: true,
       data: data,
+      currentStage: currentStageWFId,
       total: total
     }
   }

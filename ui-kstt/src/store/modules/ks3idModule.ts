@@ -7,7 +7,8 @@ export const ks3idModule = {
     KS3id: [],
     stageWorkflow: [],
     isLoadStageWorkflow: false,
-    activeStageWorkflow: 0
+    activeStageWorkflow: 0,
+    currentStageInfo: {}
   }),
   getters: {
     getIsLoading(state) {
@@ -24,6 +25,9 @@ export const ks3idModule = {
     },
     getActiveStageWorkflow(state: any) {
       return state.activeStageWorkflow
+    },
+    getCurrentStageInfo(state) {
+      return state.currentStageInfo
     }
   },
   mutations: {
@@ -41,6 +45,9 @@ export const ks3idModule = {
     },
     setActiveStageWorkflow(state, active) {
       state.activeStageWorkflow = active
+    },
+    setCurrentStageInfo(state, data) {
+      state.currentStageInfo = data
     }
   },
   actions: {
@@ -51,7 +58,8 @@ export const ks3idModule = {
         const data = await axios.get(`api/ks3id/${id}`)
         commit('setKS3id', data.data.data)
         commit('setStageWorkflow', data.data.data[0].workflow.stage)
-        commit('setActiveStageWorkflow', data.data.data[0].workflow.curret_stage)
+        commit('setActiveStageWorkflow', data.data.data[0].workflow.current_stage)
+        commit('setCurrentStageInfo', data.data.currentStage)
         return {
           success: true,
           data: data.data.data

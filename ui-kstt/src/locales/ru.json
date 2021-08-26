@@ -34,7 +34,7 @@
   "paginator-info": "Строки с {startList} по {limitList} из {total}",
   "back": "Назад",
   "oops-data": "По id справки {id} ничего не найдено",
-  "user-group": "Управление группами и пользователями",
+  "workflow-managment": "Управление группами и пользователями",
   "manager-stage-group": "Управление группами в этапе \"{stage}\"",
   "stage-agreement": "Стадии согласования",
   "correction-wf-route": "Корректировка маршрута согласования",

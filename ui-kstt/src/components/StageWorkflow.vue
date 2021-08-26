@@ -9,13 +9,13 @@ div(class="flex text-sm")
         span(v-if="type == 'medium'" class="text-center w-full pr-[1px] pb-[2px]") {{ stage.order_execution_stage }}
         popper(
           arrow
+          :disabled="$route.params.id ? true : false"
           placement="top"
           class="popper-cust flex absolute"
           :style="getPopperStyle"
         )
           div(
-            class="cursor-pointer"
-            :class="{'w-4 h-4': type == 'small', 'w-10 h-10': type == 'medium'}"
+            :class="{'w-4 h-4': type == 'small', 'w-10 h-10': type == 'medium', 'cursor-pointer': !$route.params.id}"
           )
           template(#content)
             div

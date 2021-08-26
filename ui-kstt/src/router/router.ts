@@ -24,11 +24,11 @@ const routes: Array<RouteRecordRaw> = [
     component: KS3idPage
   },
   {
-    path: '/usergroup',
+    path: '/workflowmanagment',
     component: KS3WorkflowDefault
   },
   {
-    path: '/usergroup/:workflow_id',
+    path: '/workflowmanagment/:workflow_id',
     component: WorkflowMangmentPage
   },
   {

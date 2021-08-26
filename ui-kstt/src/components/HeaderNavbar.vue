@@ -16,9 +16,9 @@ nav(class="z-10 md:mx-auto flex justify-between p-3 border-2 border-transparent 
   div.flex.w-auto
     popper(arrow :hover="true" placement="bottom"
       class="flex pr-2 popper-tips"
-      :content="$t('user-group')"
+      :content="$t('workflow-managment')"
     )
-      user-group
+      workflow-managment
     popper(arrow :hover="true" placement="bottom"
       class="flex pr-2 popper-tips"
       :content="$t('configuration')"

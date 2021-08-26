@@ -69,7 +69,7 @@ export default {
     return {
       modalCfg: {
         modalShow: false,
-        width: 'w-9/12 min-w-[500px] max-w-[700px]',
+        width: 'w-[95%] sm:w-[85%] lg:w-[70%] xl:w-[700px]',
         height: 'h-[80%] sm:h-[70%] lg:h-4/6 '
       }
     }

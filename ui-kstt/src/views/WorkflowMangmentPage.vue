@@ -8,6 +8,8 @@ div.relative
       @click="onRefresh"
     )
       svg-refresh(:class="{'animate-spin z-0' : getIsLoadStageWorkflow || isLoadForRefresh}")
+    div(class="flex w-full justify-center")
+      div {{ $t('approval-route', {document_number:getKs3ByWfId[0]?.document_number}) }}
   //- component
   div(class="relative h-[calc(100vh-130px)] overflow-scroll break-words bg-background-secondary rounded mt-2 mb-2 p-2 w-full")
     div(class="flex min-w-[980px] pr-2 text-center items-center bg-background-primary rounded-md")
@@ -53,13 +55,13 @@ div.relative
             div.flex
               div(
                 :ref="`stage_${stage_idx}`"
-                class="relative flex items-center justify-start text-center border-4 border-[#9CA3FF] min-h-[90px] w-[180px]"
+                class="relative flex items-center justify-start text-center border-4 border-[#9CA3FF] rounded-xl min-h-[90px] w-[180px]"
               )
                 div(class="w-[40px]")
                 //-   svg-selector(class="handle cursor-move")
                 div(class="w-full pr-8") {{ this.$i18n.locale == 'ru' ? stage.name_ru : stage.name_en }}
                 div(
-                  class="absolute right-0 top-0 text-[#9CA3FF] cursor-pointer"
+                  class="absolute right-0 top-0 text-[#9CA3FF] hover:text-[#898ed2] duration-100 cursor-pointer"
                   @click="onAddGroup(stage)"
                 )
                   svg-view-grid-plus
@@ -91,12 +93,12 @@ div.relative
                         div(class="w-full pr-4") {{ this.$i18n.locale == 'ru' ? group.name_ru : group.name_en }}
                         //- toolbar
                         div(
-                          class="absolute top-0 right-7 text-[#9CA3FF] cursor-pointer h-6"
+                          class="absolute top-0 right-7 text-[#9CA3FF] hover:text-[#898ed2] duration-100 cursor-pointer h-6"
                           @click="onEditGroup(stage, group)"
                         )
                           svg-pencilalt
                         div(
-                          class="absolute top-0 right-0 text-[#9CA3FF] cursor-pointer h-6"
+                          class="absolute top-0 right-0 text-[#9CA3FF] hover:text-[#898ed2] duration-100 cursor-pointer h-6"
                           @click="onDelGroup(group, stage)"
                         )
                           svg-trash
@@ -107,7 +109,7 @@ div.relative
                             :class="group.type.id == 1 ? 'bg-green-200' : 'bg-red-200'"
                           )
                             div(class="px-1") {{ this.$i18n.locale == 'ru' ? group.type.name_ru : group.type.name_en }}
-                        div(class="absolute bottom-0 right-1") {{ getGroupSort(stage, stage_idx+1, group, group_idx+1) }}
+                        div(class="absolute bottom-0 right-1 text-sm") {{ getGroupSort(stage, stage_idx+1, group, group_idx+1) }}
                     //- пользователи
                     div
                       draggable(
@@ -132,14 +134,14 @@ div.relative
                               div(class="w-full pr-4")
                                 div {{user.full_name}}
                                 div(class="text-sm italic") {{user.position}}
-                              div(class="absolute bottom-0 right-1") {{ getUserSort(group, stage, stage_idx, group_idx, user_idx, user) }}
+                              div(class="absolute bottom-0 right-1 text-sm") {{ getUserSort(group, stage, stage_idx, group_idx, user_idx, user) }}
                               //- div(
                               //-   class="absolute top-0 right-6 text-[#9CA3FF] cursor-pointer h-6"
                               //-   @click="onAddUser(group.id)"
                               //- )
                               //-   svg-user-plus
                               div(
-                                class="absolute top-0 right-0 text-[#9CA3FF] cursor-pointer"
+                                class="absolute top-0 right-0 text-[#9CA3FF] hover:text-[#898ed2] duration-100 cursor-pointer"
                                 @click="onDelUser(group.id, user.id)"
                               )
                                 svg-trash
@@ -181,6 +183,7 @@ export default {
         modalShow: false
       },
       defaultJsPlumbSettings: {
+        ConnectionsDetachable: false,
         Connector: ['Flowchart', {
           alwaysRespectStubs: true,
           midpoint: 0.2,
@@ -386,6 +389,7 @@ export default {
       accum_user = 0
       this.sorting.stages = [], this.sorting.groups = [], this.sorting.users = []
       setTimeout(() => { this.setSortWorkflowElement(this.sorting) }, 0)
+      setTimeout(() => { jsPlumbInstance.repaintEverything() }, 0)
       // setTimeout(() => { this.onRefresh() }, 0)
     },
     logUser(evt) {

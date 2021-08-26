@@ -19,11 +19,11 @@ import DefPagination from '@/components/utils/DefPagination.vue'
 import MetaDataKS3 from '@/components/KS3/MetaDataKS3.vue'
 import KS2Form from '@/components/KS2/KS2Form.vue'
 import DropdownMenu from '@/components/utils/DropdownMenu.vue'
-import UserGroup from '@/components/UserGroup.vue'
+import WorkflowManagment from '@/components/WorkflowManagment.vue'
 import DefButtonBack from '@/components/utils/DefButtonBack.vue'
-import AddGroupInStageForm from '@/components/usergroup/AddGroupInStageForm.vue'
-import EditGroupInStageForm from '@/components/usergroup/EditGroupInStageForm.vue'
-import DeleteGroupInStage from '@/components/usergroup/DeleteGroupInStage.vue'
+import AddGroupInStageForm from '@/components/workflow/AddGroupInStageForm.vue'
+import EditGroupInStageForm from '@/components/workflow/EditGroupInStageForm.vue'
+import DeleteGroupInStage from '@/components/workflow/DeleteGroupInStage.vue'
 /**
  * SVG icons
  */
@@ -64,6 +64,7 @@ import Question from '@/components/svg/Question.vue'
 import Hand from '@/components/svg/Hand.vue'
 import Collection from '@/components/svg/Collection.vue'
 import Selector from '@/components/svg/Selector.vue'
+import Translate from '@/components/svg/Translate.vue'
 /**
  * Utils
  */
@@ -89,7 +90,7 @@ export default [
   MetaDataKS3,
   KS2Form,
   DropdownMenu,
-  UserGroup,
+  WorkflowManagment,
   DefButtonBack,
   AddGroupInStageForm,
   EditGroupInStageForm,
@@ -132,6 +133,7 @@ export default [
   Hand,
   Collection,
   Selector,
+  Translate,
 
   Modal,
   PopupNotification
