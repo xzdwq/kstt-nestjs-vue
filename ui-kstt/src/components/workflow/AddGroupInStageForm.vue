@@ -52,7 +52,7 @@ export default {
   props: ['modalCfg'],
   async mounted() {
     this.modalCfg.tmpGroupCheck = []
-    if(this.getGroup.length === 0) await this.fetchGroup()
+    /*if(this.getGroup.length === 0)*/ await this.fetchGroup()
   },
   methods: {
     ...mapActions({

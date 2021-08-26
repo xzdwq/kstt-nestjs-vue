@@ -29,7 +29,7 @@ export default {
   name: 'edit-group-in-stage',
   props: ['modalCfg'],
   async mounted() {
-    if(this.getGroupType.length === 0) await this.fetchGroupType()
+    /*if(this.getGroupType.length === 0)*/ await this.fetchGroupType()
   },
   methods: {
     ...mapActions({

@@ -177,9 +177,11 @@ export class WorkflowService {
         })
         .getMany()
       const allUsersInWorkflowStage = await this.workflowStageGroupUserRepository.find({ where: { workflow_id: workflow_id } })
+      const allGroupsInWorkflowStage = await this.workflowStageGroupRepository.find({ where: { workflow_id: workflow_id } })
       return {
         data: data,
         total: data.length,
+        allGroupsInWorkflowStage: allGroupsInWorkflowStage,
         allUsersInWorkflowStage: allUsersInWorkflowStage
       }
     }
@@ -240,15 +242,36 @@ export class WorkflowService {
           // если группу добавили в стадию
           if(pg.check) {
             const getGroupByCode = groupDefault.data.find(x => x.code === pg.code)
+            //- получаем группу в стадии с максимальным порядком выполнения, чтобы добавить новую группу после нее
+            const maxGroupInStage = await this.workflowStageGroupRepository.findOne({
+              where: {
+                workflow_id: pg.workflow_id,
+                stage_id: pg.stage_id
+              },
+              order: {
+                order_execution_group: 'DESC'
+              }
+            })
+            let newOrderExecutionGroup = 0, newHierarchy = '0.0'
+            if(maxGroupInStage) {
+              // Высчитываем новый порядок выполнения
+              newOrderExecutionGroup = +maxGroupInStage.order_execution_group+1
+              // Высчитываем новуб иерархию
+              const maxHierarchy = maxGroupInStage.hierarchy.split('.')
+              const newSubHierarchy = +maxHierarchy[1]+1
+              newHierarchy = maxHierarchy[0]+'.'+newSubHierarchy
+            }
+            // Добавляем
             const addGroup = await this.workflowStageGroupRepository.create({
               code: getGroupByCode.code,
               name_ru: getGroupByCode.name_ru,
               name_en: getGroupByCode.name_en,
               type_id: getGroupByCode.type_id,
-              order_execution_group: 1, // TODO
-              hierarchy: '1', // TODO
+              order_execution_group: newOrderExecutionGroup,
+              hierarchy: newHierarchy,
               stage_id: stage_id,
-              workflow_id: workflow_id
+              workflow_id: workflow_id,
+              deadline: new Date(new Date().setMonth(new Date().getMonth() + 1))
             })
             const newGroup = await this.workflowStageGroupRepository.save(addGroup)
             // После добавления группы добавляем в нее пользователей из таблицы по умолчанию

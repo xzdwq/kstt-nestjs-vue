@@ -21,10 +21,9 @@ div
     svg-loading
     p {{ $t('loading') }}
   //- схема стадий согласования КС-3
-  vue-collapsible-panel-group
+  vue-collapsible-panel-group(v-if="getKS3id.length > 0 && !getIsLoading")
     vue-collapsible-panel(
       :expanded="false"
-      v-if="!getIsLoading"
     )
       template(#title)
         div(class="w-full flex items-center select-none")
@@ -51,7 +50,10 @@ div
           )
   ks2-form
   //- bottom toolbar
-  div(class="")
+  div(
+    v-if="getKS3id.length > 0 && !getIsLoading"
+    class=""
+  )
     def-button(
       class="text-white bg-[#579bae] flex justify-between"
       @click="onSave"

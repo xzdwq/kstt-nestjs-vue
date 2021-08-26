@@ -86,9 +86,9 @@ div.relative
                     div.flex
                       div(
                         :ref="`group_${stage_idx}_${group_idx}`"
-                        class="relative flex items-center justify-start text-center border-dashed border-2 border-[#9CA3FF] min-h-[90px] w-[200px]")
-                        div(class="w-[40px]"
+                        class="relative flex items-center justify-start text-center border-dashed border-2 border-[#9CA3FF] min-h-[90px] w-[200px]"
                       )
+                        div(class="w-[40px]")
                           svg-selector(class="handle cursor-move")
                         div(class="w-full pr-4") {{ this.$i18n.locale == 'ru' ? group.name_ru : group.name_en }}
                         //- toolbar
@@ -206,6 +206,7 @@ export default {
       getIsLoadStageWorkflow: 'workflowManagmentModule/getIsLoadStageWorkflow',
       getLocales: 'localesSwitcherModule/getLocales',
       getKs3ByWfId: 'workflowManagmentModule/getKs3ByWfId',
+      getAllGroupsInWorkflowStage: 'workflowManagmentModule/getAllGroupsInWorkflowStage',
       getAllUsersInWorkflowStage: 'workflowManagmentModule/getAllUsersInWorkflowStage'
     }),
     dragStage() {
@@ -375,7 +376,7 @@ export default {
           group_id: group.id
         })
       })
-      if(s_idx === this.getStageWorkflow.length) accum_group = 0
+      if(accum_group === this.getAllGroupsInWorkflowStage.length) accum_group = 0
       return (s_idx+'.'+g_idx)+' ('+this.sortData[stage.id][group.id].order_execution_group+')'
     },
     getUserSort(group, stage, stage_idx, group_idx, user_idx, user) {

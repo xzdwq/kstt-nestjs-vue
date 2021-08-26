@@ -90,6 +90,7 @@ export class KS3Service {
         data: workflowStageById.data,
         total: workflowStageById.total,
         ks3: ks3info,
+        allGroupsInWorkflowStage: workflowStageById.allGroupsInWorkflowStage,
         allUsersInWorkflowStage: workflowStageById.allUsersInWorkflowStage
       }
     }
@@ -103,6 +104,18 @@ export class KS3Service {
           'ks3_stage_workflow_group.group.user_group.user'
         ]
       })
+      // const data2 = await this.ks3StageWorkflowRepository
+      // .createQueryBuilder('wfdef')
+      // .leftJoinAndSelect('wfdef.ks3_stage_workflow_group', 'group_between')
+      // .leftJoinAndSelect('group_between.group', 'group_info')
+      // .leftJoinAndSelect('group_info.type', 'type')
+      // .leftJoinAndSelect('group_info.user_group', 'user_group')
+      // .leftJoinAndSelect('user_group.user', 'user')
+      // .orderBy({
+      //   'wfdef.order_execution_stage': 'ASC',
+      //   'group_between.order_execution_group': 'ASC'
+      // })
+      // .getMany()
       // const data = await this.ks3StageWorkflowRepository
       //               .createQueryBuilder('stage')
       //               .leftJoinAndSelect("stage.ks3_stage_workflow_group", "group")
@@ -111,6 +124,7 @@ export class KS3Service {
       return {
         success: true,
         data: data,
+        // data2: data2,
         total: total,
       }
     }

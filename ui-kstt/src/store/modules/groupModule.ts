@@ -40,6 +40,7 @@ export const groupModule = {
     async fetchGroup({ commit }) {
       try {
         commit('setIsLoading', true)
+        commit('setGroup', [])
         const data = await axios.get('api/group')
         commit('setGroup', data.data.data)
         return {
