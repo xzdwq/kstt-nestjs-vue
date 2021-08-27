@@ -67,7 +67,7 @@ export class WorkflowStageEntity {
 
   @Column({
     nullable: false,
-    default: 0
+    default: 1
   })
   action: boolean;
 

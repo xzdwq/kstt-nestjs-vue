@@ -123,10 +123,6 @@ export default {
       this.onToast('danger', this.$t('ks3.certificate-ks3-error')+' ('+ newCertificateNumber.data.code+')', newCertificateNumber.message)
     }
     /**
-     * Получаем список этапов workflow справки КС-3
-     */
-    await this.fetchStageWorkflow()
-    /**
      * Принимаем событие из эвентбуса на создание справки КС-3
      */
     await this.emitter.all.clear()
@@ -189,8 +185,7 @@ export default {
     },
     ...mapActions({
       createKS3: 'ks3Module/createKS3',
-      certificateNumber: 'ks3Module/certificateNumber',
-      fetchStageWorkflow: 'ks3Module/fetchStageWorkflow'
+      certificateNumber: 'ks3Module/certificateNumber'
     }),
   }
 }

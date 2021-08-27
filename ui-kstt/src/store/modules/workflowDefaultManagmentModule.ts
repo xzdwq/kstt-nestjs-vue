@@ -19,7 +19,7 @@ export const workflowDefaultManagmentModule = {
       try {
         commit('setWorkflowDefault', [])
         commit('setIsLoadWorkflowDefault', true)
-        const data = await axios.get('api/ks3/stageworkflow')
+        const data = await axios.get('api/defaultworkflow')
         commit('setWorkflowDefault', data.data.data)
       }
       catch(e) {

@@ -195,7 +195,7 @@ export default {
     //- Вычисление глобальных индексов сортировки групп
     getGroupSort(stage, s_idx, group, g_idx) {
       accum_group++
-      console.log(accum_group)
+      // console.log(accum_group)
     },
     onGetSort() {
       console.log(this.sorting)

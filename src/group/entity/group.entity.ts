@@ -5,16 +5,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Generated,
-  ManyToMany,
-  JoinTable,
   ManyToOne,
   JoinColumn,
   OneToMany
 } from 'typeorm';
-import { UserEntity } from '@src/user/entity/user.entity';
+
 import { UserGroupEntity } from '@src/user/entity/user_group.entity';
 import { GroupTypeEntity } from '@src/group/entity/group_type.entity';
-import { KS3StageWorkflowGroup } from '@src/ks/ks3/entity/ks3_stage_workflow_group.entity';
+import { DefaultWorkflowStageGroupEntity } from "@src/workflow/entity/default/default_workflow_stage_group.entity";
 
 @Entity('group')
 export class GroupEntity {
@@ -57,8 +55,8 @@ export class GroupEntity {
   @OneToMany(() => UserGroupEntity, (user_group) => user_group.group)
   user_group: UserGroupEntity[];
 
-  @OneToMany(() => KS3StageWorkflowGroup, (wfgroup) => wfgroup.group)
-  ks3_stage_workflow_group: KS3StageWorkflowGroup[];
+  @OneToMany(() => DefaultWorkflowStageGroupEntity, (wfgroup) => wfgroup.group)
+  default_workflow_group: DefaultWorkflowStageGroupEntity[];
 
   @CreateDateColumn()
   create_at: Date;

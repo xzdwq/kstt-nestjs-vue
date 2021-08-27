@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository, Like } from 'typeorm';
-import { KS3Entity } from '@src/ks/ks3/entity/ks3.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { KS3StageWorkflow } from '@src/ks/ks3/entity/ks3_stage_workflow.entity';
+
+import { KS3Entity } from '@src/ks/ks3/entity/ks3.entity';
 import { GroupService } from '@src/group/group.service';
 import { WorkflowService } from '@src/workflow/workflow.service';
 
@@ -11,8 +11,6 @@ export class KS3Service {
   constructor(
     @InjectRepository(KS3Entity)
     private ks3Repository: Repository<KS3Entity>,
-    @InjectRepository(KS3StageWorkflow)
-    private ks3StageWorkflowRepository: Repository<KS3StageWorkflow>,
     @Inject(GroupService)
     private groupService: GroupService,
     @Inject(WorkflowService)
@@ -78,55 +76,19 @@ export class KS3Service {
   }
 
   async getKS3StageWorkflow(workflow_id): Promise<object> {
-    if(workflow_id) {
-      const workflowStageById = await this.workflowService.onGetWorkflowStageById(workflow_id)
-      const ks3info = await this.ks3Repository.find({
-        where: {
-          workflow_id: workflow_id
-        }
-      })
-      return {
-        success: true,
-        data: workflowStageById.data,
-        total: workflowStageById.total,
-        ks3: ks3info,
-        allGroupsInWorkflowStage: workflowStageById.allGroupsInWorkflowStage,
-        allUsersInWorkflowStage: workflowStageById.allUsersInWorkflowStage
+    const workflowStageById = await this.workflowService.onGetWorkflowStageById(workflow_id)
+    const ks3info = await this.ks3Repository.find({
+      where: {
+        workflow_id: workflow_id
       }
-    }
-    else {
-      const [data, total] = await this.ks3StageWorkflowRepository.findAndCount({
-        relations: [
-          'ks3_stage_workflow_group',
-          'ks3_stage_workflow_group.group',
-          'ks3_stage_workflow_group.group.type',
-          'ks3_stage_workflow_group.group.user_group',
-          'ks3_stage_workflow_group.group.user_group.user'
-        ]
-      })
-      // const data2 = await this.ks3StageWorkflowRepository
-      // .createQueryBuilder('wfdef')
-      // .leftJoinAndSelect('wfdef.ks3_stage_workflow_group', 'group_between')
-      // .leftJoinAndSelect('group_between.group', 'group_info')
-      // .leftJoinAndSelect('group_info.type', 'type')
-      // .leftJoinAndSelect('group_info.user_group', 'user_group')
-      // .leftJoinAndSelect('user_group.user', 'user')
-      // .orderBy({
-      //   'wfdef.order_execution_stage': 'ASC',
-      //   'group_between.order_execution_group': 'ASC'
-      // })
-      // .getMany()
-      // const data = await this.ks3StageWorkflowRepository
-      //               .createQueryBuilder('stage')
-      //               .leftJoinAndSelect("stage.ks3_stage_workflow_group", "group")
-      //               .getMany();
-
-      return {
-        success: true,
-        data: data,
-        // data2: data2,
-        total: total,
-      }
+    })
+    return {
+      success: true,
+      data: workflowStageById.data,
+      total: workflowStageById.total,
+      ks3: ks3info,
+      allGroupsInWorkflowStage: workflowStageById.allGroupsInWorkflowStage,
+      allUsersInWorkflowStage: workflowStageById.allUsersInWorkflowStage
     }
   }
 
@@ -158,14 +120,13 @@ export class KS3Service {
   async createKS3(body): Promise<object> {
     // 1. Создаем новый workflow и получаем его id
     const newWorkflow = await this.workflowService.onCreateWorkflow()
+
     // 2. Создаем стадии согласования для вновь созданного workflow копируя их из таблицы по умолчанию
-    const stageDefault = await this.ks3StageWorkflowRepository.find()
-    const newWorkflowStage = await this.workflowService.onCreateWorkflowStage(stageDefault, newWorkflow.id)
+    const newWorkflowStage = await this.workflowService.onCreateWorkflowStage(newWorkflow.id)
+
     // 3. Создаем группы и присваиваем их ранее созданным стадиям по логике как из таблицы по умолчанию
-    const stageGroupDefault = await this.ks3StageWorkflowRepository.find({
-      relations: ['ks3_stage_workflow_group', 'ks3_stage_workflow_group.group']
-    })
-    const newWorkflowGroup = await this.workflowService.onCreateWorkflowGroup(newWorkflow.id, newWorkflowStage, stageGroupDefault)
+    const newWorkflowGroup = await this.workflowService.onCreateWorkflowGroup(newWorkflow.id, newWorkflowStage)
+
     // 4. Создаем пользователей и присваиваем их в ранее созданные группы по логике как из таблицы по умолчанию
     const getGroupDefault: any = await this.groupService.findAll()
     const groupDefault = getGroupDefault.data;
@@ -210,7 +171,8 @@ export class KS3Service {
       result = await this.workflowService.onSetStageGroup(stage_id, workflow_id, params, getGroupAll)
     } else {
       // Default
-      const stagegroup = await this.ks3StageWorkflowRepository.findOne(stage_id, {
+      /*!!!*/ const stagegroup = []
+      /*!!!*/ /*const stagegroup = await this.ks3StageWorkflowRepository.findOne(stage_id, {
         relations: ['ks3_stage_workflow_group', 'ks3_stage_workflow_group.group']
       })
       for(const pg of params.group) {
@@ -226,7 +188,7 @@ export class KS3Service {
           }
         }
       }
-      result = await this.ks3StageWorkflowRepository.save(stagegroup)
+      result = await this.ks3StageWorkflowRepository.save(stagegroup)*/
     }
 
     return {

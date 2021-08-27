@@ -1,17 +1,17 @@
 import {
-  Entity,
   Column,
-  Generated,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  Generated,
   OneToMany,
-} from 'typeorm';
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from "typeorm";
 
-import { KS3StageWorkflowGroup } from '@src/ks/ks3/entity/ks3_stage_workflow_group.entity';
+import { DefaultWorkflowStageGroupEntity } from "@src/workflow/entity/default/default_workflow_stage_group.entity";
 
-@Entity('ks3_stage_workflow')
-export class KS3StageWorkflow {
+@Entity('default_workflow_stage')
+export class DefaultWorkflowStageEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -58,8 +58,13 @@ export class KS3StageWorkflow {
   })
   order_execution_stage: number;
 
-  @OneToMany(() => KS3StageWorkflowGroup, (wfgroup) => wfgroup.ks3_stage_workflow)
-  ks3_stage_workflow_group: KS3StageWorkflowGroup[];
+  @Column({
+    nullable: false
+  })
+  hierarchy: string;
+
+  @OneToMany(() => DefaultWorkflowStageGroupEntity, stage_group => stage_group.stage)
+  groups: DefaultWorkflowStageGroupEntity[];
 
   @CreateDateColumn()
   create_at: Date;

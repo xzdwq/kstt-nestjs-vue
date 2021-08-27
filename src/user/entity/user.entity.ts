@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import { UserGroupEntity } from '@src/user/entity/user_group.entity';
+import { DefaultWorkflowStageGroupUserEntity } from "@src/workflow/entity/default/default_workflow_stage_group_user.entity";
 
 @Entity('user')
 export class UserEntity {
@@ -54,6 +55,9 @@ export class UserEntity {
 
   @OneToMany(() => UserGroupEntity, (user_group) => user_group.user)
   user_group: UserGroupEntity[];
+
+  @OneToMany(() => DefaultWorkflowStageGroupUserEntity, (wfgroup) => wfgroup.user)
+  workflow_group_user: DefaultWorkflowStageGroupUserEntity[];
 
   @CreateDateColumn()
   create_at: Date;

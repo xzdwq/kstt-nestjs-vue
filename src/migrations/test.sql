@@ -45,7 +45,7 @@ VALUES
   )
 GO
 
-INSERT INTO [dbo].[ks3_stage_workflow]
+INSERT INTO [dbo].[default_workflow_stage]
   (
     [name_ru]
     ,[short_name_ru]
@@ -54,6 +54,7 @@ INSERT INTO [dbo].[ks3_stage_workflow]
     ,[previous_stage]
     ,[next_stage]
     ,[order_execution_stage]
+	,[hierarchy]
   )
 VALUES
   (
@@ -64,6 +65,7 @@ VALUES
     ,NULL
     ,2
     ,1
+	,'1'
   ),
   (
     'Согласование и подписание КС-2'
@@ -73,6 +75,7 @@ VALUES
     ,1
     ,3
     ,2
+	,'2'
   ),
   (
     'Приемка КС-2 завершена'
@@ -82,6 +85,7 @@ VALUES
     ,2
     ,4
     ,3
+	,'3'
   ),
   (
     'Проверка КС-3'
@@ -91,6 +95,7 @@ VALUES
     ,3
     ,5
     ,4
+	,'4'
   ),
   (
     'Подписание КС-3'
@@ -100,6 +105,7 @@ VALUES
     ,4
     ,6
     ,5
+	,'5'
   ),
   (
     'Подписан'
@@ -109,6 +115,7 @@ VALUES
     ,5
     ,NULL
     ,6
+	,'6'
   )
 GO
 
@@ -275,9 +282,9 @@ VALUES
   )
 GO
 
-INSERT INTO [dbo].[ks3_stage_workflow_group]
+INSERT INTO [dbo].[default_workflow_stage_group]
   (
-    [ks3_stage_workflow_id]
+    [stage_id]
     ,[group_id]
     ,[order_execution_group]
     ,[hierarchy]
@@ -304,435 +311,167 @@ VALUES
   (
     2
 	,3
-  ,4
-  ,'2.3'
+  ,3
+  ,'2.2'
   ),
   (
     3
 	,1
-  ,5
+  ,4
   ,'3.1'
   ),
   (
     4
 	,1
-  ,6
+  ,5
   ,'4.1'
   ),
   (
     4
 	,2
-  ,7
+  ,6
   ,'4.2'
   ),
   (
     5
 	,1
-  ,8
+  ,7
   ,'5.1'
   ),
   (
     5
 	,4
-  ,9
+  ,8
   ,'5.2'
   ),
   (
     6
 	,1
-  ,10
+  ,9
   ,'6.1'
   )
 GO
-/* --
-INSERT INTO [dbo].[workflow]
+
+INSERT INTO [dbo].[default_workflow_stage_group_user]
   (
-    [current_stage]
-    ,[last_action_ru]
-    ,[last_action_en]
-    ,[deadline]
-    ,[started]
-    ,[complete]
+	[stage_id]
+	,[group_id]
+	,[user_id]
+	,[order_execution_user]
+	,[hierarchy]
   )
 VALUES
+  -- в стадии 1 есть 1 группа с 1 человеком
   (
-    1
-	,'Рабочий процесс 1 создан'
-	,'Workflow 1 created'
-	,GETDATE()
-	,0
-	,0
+   1
+   ,1 -- последовательная (id из default_workflow_stage_group) 
+   ,1
+   ,1
+   ,'1.1.1'
+  ),
+  -- в стадии 2 есть 3 группы с 6 людьми
+  (
+   2
+   ,2 --последовательная
+   ,1
+   ,2
+   ,'2.1'
   ),
   (
-    1
-	,'Рабочий процесс 2 создан'
-	,'Workflow 2 created'
-	,GETDATE()
-	,0
-	,0
+   2
+   ,3 -- параллельная
+   ,2
+   ,3
+   ,'2.2'
+  ),
+  (
+   2
+   ,3 --параллельная
+   ,4
+   ,3
+   ,'2.2'
+  ),
+  (
+   2
+   ,4 --параллельная
+   ,1
+   ,4
+   ,'2.3'
+  ),
+  (
+   2
+   ,4 --параллельная
+   ,2
+   ,4
+   ,'2.3'
+  ),
+  (
+   2
+   ,4 --параллельная
+   ,3
+   ,4
+   ,'2.3'
+  ),
+  -- в стадии 3 есть 1 группа с 1 человеком
+  (
+   3
+   ,5 --последовательная
+   ,1
+   ,5
+   ,'3.1'
+  ),
+  -- в стадии 4 2 группы с 3 людьми
+  (
+   4
+   ,6 --последовательная
+   ,1
+   ,6
+   ,'4.1'
+  ),
+  (
+   4
+   ,7 --параллельная
+   ,2
+   ,7
+   ,'4.2'
+  ),
+  (
+   4
+   ,7 --параллельная
+   ,4
+   ,7
+   ,'4.2'
+  ),
+  -- в стадии 5 2 группы с 3 людьми
+  (
+   5
+   ,8 --последовательная
+   ,1
+   ,8
+   ,'5.1'
+  ),
+  (
+   5
+   ,9 --последовательная
+   ,1
+   ,9
+   ,'5.2'
+  ),
+  (
+   5
+   ,9 --последовательная
+   ,4
+   ,10
+   ,'5.3'
+  ),
+  -- в стадии 6 1 группа с 1 человеком
+  (
+   6
+   ,10 --последовательная
+   ,1
+   ,11
+   ,'6.1'
   )
 GO
 
-INSERT INTO [dbo].[workflow_stage]
-  (
-    [name_ru]
-    ,[short_name_ru]
-    ,[name_en]
-    ,[short_name_en]
-    ,[previous_stage]
-    ,[next_stage]
-    ,[order_execution_stage]
-    ,[action]
-    ,[complete]
-	,[workflow_id]
-  )
-VALUES
-  (
-    'Проект'
-    ,'Проект'
-    ,'Project'
-    ,'Project'
-    ,NULL
-    ,2
-    ,1
-    ,1
-    ,0
-	,1
-  ),
-  (
-    'Согласование и подписание КС-2'
-    ,'Согл. и подп. КС-2'
-    ,'Coordination and signing of KS-2'
-    ,'Coord. and sign. of KS-2'
-    ,1
-    ,3
-    ,2
-    ,0
-    ,0
-	,1
-  ),
-  (
-    'Приемка КС-2 завершена'
-    ,'Приемка КС-2 зав.'
-    ,'Acceptance of KS-2 completed'
-    ,'Accept. of KS-2 compl.'
-    ,2
-    ,4
-    ,3
-    ,0
-    ,0
-	,1
-  ),
-  (
-    'Проверка КС-3'
-    ,'Пров. КС-3'
-    ,'Checking KS-3'
-    ,'Check. KS-3'
-    ,3
-    ,5
-    ,4
-    ,0
-    ,0
-	,1
-  ),
-  (
-    'Подписание КС-3'
-    ,'Подп. КС-3'
-    ,'Signing of KS-3'
-    ,'Sign. of KS-3'
-    ,4
-    ,6
-    ,5
-    ,0
-    ,0
-	,1
-  ),
-  (
-    'Подписан'
-    ,'Подписан'
-    ,'Signed'
-    ,'Signed'
-    ,5
-    ,NULL
-    ,6
-    ,0
-    ,0
-	,1
-  ),
-  (
-    'Проект 2'
-    ,'Проект 2'
-    ,'Project 2'
-    ,'Project 2'
-    ,NULL
-    ,2
-    ,1
-    ,1
-    ,0
-	,2
-  ),
-  (
-    'Согласование и подписание КС-2'
-    ,'Согл. и подп. КС-2'
-    ,'Coordination and signing of KS-2'
-    ,'Coord. and sign. of KS-2'
-    ,1
-    ,3
-    ,2
-    ,0
-    ,0
-	,2
-  ),
-  (
-    'Приемка КС-2 завершена'
-    ,'Приемка КС-2 зав.'
-    ,'Acceptance of KS-2 completed'
-    ,'Accept. of KS-2 compl.'
-    ,2
-    ,4
-    ,3
-    ,0
-    ,0
-	,2
-  ),
-  (
-    'Проверка КС-3'
-    ,'Пров. КС-3'
-    ,'Checking KS-3'
-    ,'Check. KS-3'
-    ,3
-    ,5
-    ,4
-    ,0
-    ,0
-	,2
-  ),
-  (
-    'Подписание КС-3'
-    ,'Подп. КС-3'
-    ,'Signing of KS-3'
-    ,'Sign. of KS-3'
-    ,4
-    ,6
-    ,5
-    ,0
-    ,0
-	,2
-  ),
-  (
-    'Подписан'
-    ,'Подписан'
-    ,'Signed'
-    ,'Signed'
-    ,5
-    ,NULL
-    ,6
-    ,0
-    ,0
-	,2
-  )
-GO
-
-INSERT INTO [dbo].[workflow_stage_group]
-  (
-    [code]
-    ,[name_ru]
-    ,[name_en]
-    ,[type_id]
-    ,[action]
-    ,[complete]
-	,[stage_id]
-  )
-VALUES
--- 1 wf
-  (
-    'AKKU_KS_CONTROL'
-    ,'Группа контроля'
-    ,'Control group'
-    ,2
-    ,0
-    ,0
-	,1
-  ),
-  (
-    'AKKU_KS_CONTROL'
-    ,'Группа контроля'
-    ,'Control group'
-    ,2
-    ,0
-    ,0
-	,2
-  ),
-  (
-    'AKKU_KS_CONTROL'
-    ,'Группа контроля'
-    ,'Control group'
-    ,2
-    ,0
-    ,0
-	,3
-  ),
-  (
-    'AKKU_KS_CONTROL'
-    ,'Группа контроля'
-    ,'Control group'
-    ,2
-    ,0
-    ,0
-	,4
-  ),
-  (
-    'AKKU_KS_CONTROL'
-    ,'Группа контроля'
-    ,'Control group'
-    ,2
-    ,0
-    ,0
-	,5
-  ),
-  (
-    'AKKU_KS_CONTROL'
-    ,'Группа контроля'
-    ,'Control group'
-    ,2
-    ,0
-    ,0
-	,6
-  ),
-  (
-    'AKKU_KS_SIGNER'
-    ,'Группа подписания (КС-2/КС-3)'
-    ,'Signing group (KS-2/KS-3)'
-    ,1
-    ,0
-    ,0
-	,2
-  ),
-  (
-    'AKKU_KS_SIGNER'
-    ,'Группа подписания (КС-2/КС-3)'
-    ,'Signing group (KS-2/KS-3)'
-    ,1
-    ,0
-    ,0
-	,3
-  ),
-  (
-    'AKKU_KS2_SIGNER'
-    ,'Группа подписания актов КС-2'
-    ,'Group of signing acts KS-2'
-    ,1
-    ,0
-    ,0
-	,2
-  ),
-  (
-    'AKKU_KS3_SIGNER'
-    ,'Группа подписания справок КС-3'
-    ,'Certificate signing group KS-3'
-    ,2
-    ,0
-    ,0
-	,5
-  ),
--- 2 wf
-  (
-    'AKKU_KS_CONTROL'
-    ,'Группа контроля'
-    ,'Control group'
-    ,2
-    ,0
-    ,0
-	,7
-  ),
-  (
-    'AKKU_KS_CONTROL'
-    ,'Группа контроля'
-    ,'Control group'
-    ,2
-    ,0
-    ,0
-	,8
-  )
-GO
-
-INSERT INTO [dbo].[workflow_stage_group_user]
-  (
-    [workflow_stage_group_id]
-  )
-  VALUES
-  (
-    1
-  ),
-  (
-    1
-  ),
-  (
-    2
-  ),
-  (
-    3
-  ),
-  (
-    4
-  ),
-  (
-    5
-  ),
-  (
-    6
-  ),
-  (
-    7
-  ),
-  (
-    8
-  ),
-  (
-    9
-  ),
-  (
-    10
-  ),
-  (
-    11
-  ),
-  (
-    12
-  )
-GO
-
-INSERT INTO [dbo].[ks3]
-  (
-  [uuid]
-  ,[certificate_number]
-  ,[document_number]
-  ,[reporting_period]
-  ,[date_preparation]
-  ,[project_id]
-  ,[user_id]
-  ,[workflow_id]
-  )
-VALUES
-  (
-    NEWID()
-    ,'001-a'
-    , '256-лс'
-    , GETDATE()
-	, GETDATE()
-    , 1
-    , 1
-    , 1
-  ),
-  (
-    NEWID()
-    , '002-a'
-    , '1012-КТ'
-    , GETDATE()
-	  , GETDATE()
-    , 1
-    , 1
-    , 2
-  )
-GO
-*/
+-- DBCC CHECKIDENT ([default_workflow_stage_group_user], RESEED, 1)

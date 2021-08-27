@@ -1,6 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { getConnection, getManager, Repository } from "typeorm";
+import { Repository } from "typeorm";
+
+import { DefaultWorkflowStageEntity } from "@src/workflow/entity/default/default_workflow_stage.entity";
+import { DefaultWorkflowStageGroupEntity } from "@src/workflow/entity/default/default_workflow_stage_group.entity";
+import { DefaultWorkflowStageGroupUserEntity } from "@src/workflow/entity/default/default_workflow_stage_group_user.entity";
 
 import { WorkflowEntity } from '@src/workflow/entity/workflow.entity';
 import { WorkflowStageEntity } from '@src/workflow/entity/workflow_stage.entity';
@@ -10,6 +14,14 @@ import { WorkflowStageGroupUserEntity } from '@src/workflow/entity/workflow_stag
 @Injectable()
 export class WorkflowService {
   constructor(
+    // Репозитории с маршрутами по умолчанию
+    @InjectRepository(DefaultWorkflowStageEntity)
+    private defaultWorkflowStageRepository: Repository<DefaultWorkflowStageEntity>,
+    @InjectRepository(DefaultWorkflowStageGroupEntity)
+    private defaultWorkflowStageGroupRepository: Repository<DefaultWorkflowStageGroupEntity>,
+    @InjectRepository(DefaultWorkflowStageGroupUserEntity)
+    private defaultWorkflowStageGroupUserRepository: Repository<DefaultWorkflowStageGroupUserEntity>,
+    // Репозитории с индивидуальными маршрутами
     @InjectRepository(WorkflowEntity)
     private workflowRepository: Repository<WorkflowEntity>,
     @InjectRepository(WorkflowStageEntity)
@@ -20,6 +32,29 @@ export class WorkflowService {
     private workflowStageGroupUserRepository: Repository<WorkflowStageGroupUserEntity>
     ) {}
 
+    // Получить маршрут согласования по умолчанию
+    async getDefaultWorkflow() {
+      const data = await this.defaultWorkflowStageRepository
+        .createQueryBuilder('wf')
+        .leftJoinAndSelect('wf.groups', 'groups')
+        .leftJoinAndSelect('groups.group', 'group_info')
+        .leftJoinAndSelect('group_info.type', 'type')
+        .leftJoinAndSelect('groups.users', 'users')
+        .leftJoinAndSelect('users.user', 'user_info')
+        .orderBy({
+          'wf.order_execution_stage': 'ASC',
+          'groups.order_execution_group': 'ASC',
+          'users.order_execution_user': 'ASC'
+        })
+        .getMany()
+      return {
+        success: true,
+        data: data,
+        total: data.length
+      }
+    }
+
+    // Создать новый индивидуальный маршрут
     async onCreateWorkflow() {
       const newWorkflow = await this.workflowRepository.create({
         last_action_ru: 'Карточка создана',
@@ -30,7 +65,9 @@ export class WorkflowService {
       return newWorkflow
     }
 
-    async onCreateWorkflowStage(stageDefault, workflow_id) {
+    // Создаем стадии согласования для индивидуального маршрута копируя их из defaultWorkflowStageRepository
+    async onCreateWorkflowStage(workflow_id) {
+      const stageDefault = await this.defaultWorkflowStageRepository.find()
       let dataStage =[]
       stageDefault.forEach((i, idx) => {
         const data = {
@@ -49,11 +86,8 @@ export class WorkflowService {
         dataStage.push(data)
       })
       const workflowStage = await this.workflowStageRepository.find({
-        take: 1,
-        order: {
-          id: "DESC"
-        }
-      })
+        where: { id: -1 }
+      }) // ищем по несуществующему id т.к. далее мы делаем спрет пуш и для этого нам нужна пустая выборка
       workflowStage.push(...dataStage)
       await this.workflowStageRepository.save(workflowStage)
 
@@ -65,34 +99,39 @@ export class WorkflowService {
       return newWorkflowStage
     }
 
-    async onCreateWorkflowGroup(workflow_id, newWorkflowStage, groupUserDefault) {
-        const workflowStageGroup = await this.workflowStageGroupRepository.find({
-          where: { id: -1 }
-        }) // ищем по несуществующему id т.к. далее мы делаем спрет пуш и для этого нам нужна пустая выборка
-        let data = []
-        newWorkflowStage.forEach((i) => {
-          groupUserDefault.forEach((j) => {
-            if(i.order_execution_stage === j.order_execution_stage) {
-              j.ks3_stage_workflow_group.forEach((g) => {
-                data.push({
-                  code: g.group.code,
-                  name_ru: g.group.name_ru,
-                  name_en: g.group.name_en,
-                  type_id: g.group.type_id,
-                  workflow_id: +workflow_id,
-                  order_execution_group: g.order_execution_group,
-                  hierarchy: g.hierarchy,
-                  stage_id: i.id,
-                  deadline: new Date(new Date().setMonth(new Date().getMonth() + 1))
-                })
+    // Создаем группы и присваиваем их ранее созданным стадиям по логике как из таблицы по умолчанию
+    async onCreateWorkflowGroup(workflow_id, newWorkflowStage) {
+      const groupUserDefault = await this.defaultWorkflowStageRepository.find({
+        relations: ['groups', 'groups.group']
+      })
+      // console.log(groupUserDefault[0].groups)
+      const workflowStageGroup = await this.workflowStageGroupRepository.find({
+        where: { id: -1 }
+      }) // ищем по несуществующему id т.к. далее мы делаем спрет пуш и для этого нам нужна пустая выборка
+      let data = []
+      newWorkflowStage.forEach((i) => {
+        groupUserDefault.forEach((j) => {
+          if(i.order_execution_stage === j.order_execution_stage) {
+            j.groups.forEach((g) => {
+              data.push({
+                code: g.group['code'],
+                name_ru: g.group['name_ru'],
+                name_en: g.group['name_en'],
+                type_id: g.group['type_id'],
+                workflow_id: +workflow_id,
+                order_execution_group: g.order_execution_group,
+                hierarchy: g.hierarchy,
+                stage_id: i.id,
+                deadline: new Date(new Date().setMonth(new Date().getMonth() + 1))
               })
-            }
-          })
+            })
+          }
         })
-        workflowStageGroup.push(...data)
-        const newGroup = await this.workflowStageGroupRepository.save(workflowStageGroup)
+      })
+      workflowStageGroup.push(...data)
+      const newGroup = await this.workflowStageGroupRepository.save(workflowStageGroup)
 
-        return newGroup
+      return newGroup
     }
 
     async onCreateWorkflowUser(workflow_id, newGroup, groupUserDefault) {
