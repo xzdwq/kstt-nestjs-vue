@@ -7,7 +7,7 @@ import PageNotFound from '@/views/PageNotFound.vue'
 import Register from '@/views/Register.vue'
 import About from '@/views/About.vue'
 import KS3idPage from '@/views/KS3idPage.vue'
-import KS3WorkflowDefault from '@/views/KS3WorkflowDefault.vue'
+import WorkflowManagmentDefault from '@/views/WorkflowManagmentDefault.vue'
 import WorkflowMangmentPage from '@/views/WorkflowMangmentPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/workflowmanagment',
-    component: KS3WorkflowDefault
+    component: WorkflowManagmentDefault
   },
   {
     path: '/workflowmanagment/:workflow_id',

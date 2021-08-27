@@ -20,49 +20,73 @@ export class KS3Service {
   async findAll(page: number, limit: number, query: string): Promise<object> {
     if(!query) query = ''
 
-    const [data, total] = await this.ks3Repository.findAndCount({
-      relations: [
-        'user',
-        'project',
-        'workflow',
-        'workflow.stage',
-        'workflow.stage.group',
-        'workflow.stage.group.type',
-        'workflow.stage.group.users'
-      ],
-      skip: limit * (page - 1),
-      take: limit,
-      where: [
-        { certificate_number: Like(`%${query}%`) },
-        { document_number: Like(`%${query}%`) }
-      ],
-      order: {
-        create_at: 'DESC'
-      }
-    })
+    // const [data, total] = await this.ks3Repository.findAndCount({
+    //   relations: [
+    //     'user',
+    //     'project',
+    //     'workflow',
+    //     'workflow.stage',
+    //     'workflow.stage.group',
+    //     'workflow.stage.group.type',
+    //     'workflow.stage.group.users'
+    //   ],
+    //   skip: limit * (page - 1),
+    //   take: limit,
+    //   where: [
+    //     { certificate_number: Like(`%${query}%`) },
+    //     { document_number: Like(`%${query}%`) }
+    //   ],
+    //   order: {
+    //     create_at: 'DESC'
+    //   }
+    // })
+
+    const data = await this.ks3Repository
+        .createQueryBuilder('ks3')
+        .leftJoinAndSelect('ks3.user', 'user')
+        .leftJoinAndSelect('ks3.project', 'project')
+        .leftJoinAndSelect('ks3.workflow', 'workflow')
+        .leftJoinAndSelect('workflow.stage', 'stage')
+        .leftJoinAndSelect('stage.group', 'group')
+        .leftJoinAndSelect('group.type', 'type')
+        .leftJoinAndSelect('group.users', 'users')
+        .where('ks3.certificate_number like :query', { query:`%${query}%` })
+        .orWhere('ks3.document_number like :query', { query:`%${query}%` })
+        .orderBy({
+          'ks3.create_at': 'DESC',
+          'stage.order_execution_stage': 'ASC',
+          'group.order_execution_group': 'ASC',
+          'users.order_execution_user': 'ASC'
+        })
+        // .limit(limit * (page - 1))
+        // .offset(limit)
+        .getMany()
 
     return {
       success: true,
       data: data,
-      total: total
+      total: data.length
     }
   }
 
   async getKS3id(id: number): Promise<object> {
-    const [data, total] = await this.ks3Repository.findAndCount({
-      relations: [
-        'user',
-        'project',
-        'workflow',
-        'workflow.stage',
-        'workflow.stage.group',
-        'workflow.stage.group.type',
-        'workflow.stage.group.users'
-      ],
-      where: [
-        { id: id }
-      ]
-    })
+    const data = await this.ks3Repository
+        .createQueryBuilder('ks3')
+        .leftJoinAndSelect('ks3.user', 'user')
+        .leftJoinAndSelect('ks3.project', 'project')
+        .leftJoinAndSelect('ks3.workflow', 'workflow')
+        .leftJoinAndSelect('workflow.stage', 'stage')
+        .leftJoinAndSelect('stage.group', 'group')
+        .leftJoinAndSelect('group.type', 'type')
+        .leftJoinAndSelect('group.users', 'users')
+        .where(`ks3.id = ${id}`)
+        .orderBy({
+          'ks3.create_at': 'DESC',
+          'stage.order_execution_stage': 'ASC',
+          'group.order_execution_group': 'ASC',
+          'users.order_execution_user': 'ASC'
+        })
+        .getMany()
     // Информация по текущей стадии согласования
     const wf_id_by_ks3 = data[0].workflow_id
     const currentStageWFId = await this.workflowService.onGetCurrentWorkflowStageById(wf_id_by_ks3)
@@ -71,7 +95,7 @@ export class KS3Service {
       success: true,
       data: data,
       currentStage: currentStageWFId,
-      total: total
+      total: data.length
     }
   }
 

@@ -16,8 +16,15 @@ export class WorkflowController {
     private workflowService: WorkflowService
   ){}
 
+  // Маршрут согласования по умолчанию
   @Get('/defaultworkflow')
   async getDefaultWorkflow() {
     return await this.workflowService.getDefaultWorkflow()
+  }
+
+  // Сортировка маршрута по умолчанию
+  @Post('/sortdefaultworkflowelement')
+  async setSortWorkflowElement(@Body() body: Object) {
+    return this.workflowService.setSortDefaultWorkflowElement(body)
   }
 }

@@ -380,8 +380,10 @@ export default {
       return (s_idx+'.'+g_idx)+' ('+this.sortData[stage.id][group.id].order_execution_group+')'
     },
     getUserSort(group, stage, stage_idx, group_idx, user_idx, user) {
-      if(counter_user === this.getAllUsersInWorkflowStage.length) accum_user = 0
-      if(counter_user === this.getAllUsersInWorkflowStage.length) counter_user = 0
+      if(counter_user === this.getAllUsersInWorkflowStage.length) {
+        accum_user = 0
+        counter_user = 0
+      }
       return this.sortData[stage.id][group.id][user.id].hierarchy+' ('+this.sortData[stage.id][group.id][user.id].order_execution_user+')'
     },
     logGroup(evt) {

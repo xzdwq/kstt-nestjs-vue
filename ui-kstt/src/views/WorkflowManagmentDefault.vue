@@ -69,10 +69,10 @@ div.relative
                 )
                   svg-view-grid-plus
             //- группы
-            div(v-if="stage.ks3_stage_workflow_group.length > 0")
+            div(v-if="stage.groups.length > 0")
               draggable(
                 class="ml-14 min-h-[90px] w-[208px] border-4 border-[#9CA3FF] rounded-xl"
-                v-model="stage.ks3_stage_workflow_group"
+                v-model="stage.groups"
                 tag="transition-group"
                 :component-data="{tag: 'div', type: 'transition-group', name: !drag ? 'flip-list' : null }"
                 v-bind="dragGroup"
@@ -111,6 +111,35 @@ div.relative
                           )
                             div(class="px-1") {{ this.$i18n.locale == 'ru' ? group.group.type.name_ru : group.group.type.name_en }}
                         div(class="absolute bottom-0 right-1 text-sm") {{ getGroupSort(stage, stage_idx+1, group, group_idx+1) }}
+                    //- пользователи
+                    div
+                      draggable(
+                        class="ml-8 min-h-[90px] w-[400px] border-4 border-[#9CA3FF] rounded-xl"
+                        v-model="group.users"
+                        tag="transition-group"
+                        :component-data="{tag: 'div', type: 'transition-group', name: !drag ? 'flip-list' : null }"
+                        v-bind="dragUser"
+                        :group="`user_${group.id}`"
+                        handle=".handle"
+                        @start="drag=true"
+                        @end="drag=false"
+                        item-key="id"
+                        @change="logUser"
+                      )
+                        template(#item="{element: user, index: user_idx}")
+                          div(class="flex mb-1 last:mb-0")
+                            div(class="relative flex items-center justify-start border-dashed border-2 border-[#9CA3FF] rounded-lg min-h-[20px] w-[400px]")
+                              div(class="w-[40px]")
+                                svg-selector(class="handle cursor-move")
+                              div(class="w-full pr-4")
+                                div {{user.user.full_name}}
+                                div(class="text-sm italic") {{user.user.position}}
+                              div(class="absolute bottom-0 right-1 text-sm") {{ getUserSort(group, stage, stage_idx, group_idx, user_idx, user) }}
+                              div(
+                                class="absolute top-0 right-0 text-[#9CA3FF] hover:text-[#898ed2] duration-100 cursor-pointer"
+                                @click="onDelUser(group.id, user.id)"
+                              )
+                                svg-trash
 </template>
 <script>
 import {
@@ -118,7 +147,7 @@ import {
   mapActions
 } from 'vuex'
 
-var accum_group = 0
+let accum_group = 0, accum_user = 0, counter_user = 0;
 export default {
   name: 'workflow-default',
   data() {
@@ -137,7 +166,9 @@ export default {
     ...mapGetters({
       getLocales: 'localesSwitcherModule/getLocales',
       getIsLoadWorkflowDefault: 'workflowDefaultManagmentModule/getIsLoadWorkflowDefault',
-      getWorkflowDefault: 'workflowDefaultManagmentModule/getWorkflowDefault'
+      getWorkflowDefault: 'workflowDefaultManagmentModule/getWorkflowDefault',
+      getAllGroupInWorkflow: 'workflowDefaultManagmentModule/getAllGroupInWorkflow',
+      getAllUsersInWorkflow: 'workflowDefaultManagmentModule/getAllUsersInWorkflow',
     }),
     dragStage() {
       return {
@@ -155,24 +186,51 @@ export default {
         ghostClass: "opacity-50"
       }
     },
+    dragUser() {
+      return {
+        animation: 200,
+        group: "userDefault",
+        disabled: false,
+        ghostClass: "opacity-50"
+      }
+    }
   },
   methods: {
     ...mapActions({
-      fetchWorkflowDefault: 'workflowDefaultManagmentModule/fetchWorkflowDefault'
+      fetchWorkflowDefault: 'workflowDefaultManagmentModule/fetchWorkflowDefault',
+      setDefaultSortWorkflowElement: 'workflowDefaultManagmentModule/setDefaultSortWorkflowElement'
     }),
     async onRefresh() {
       this.isLoadForRefresh = true
       setTimeout(() => { this.isLoadForRefresh = false }, 500)
       await this.fetchWorkflowDefault()
+      counter_user = 0
+      accum_group = 0
+      accum_user = 0
+      this.sorting.stages = [], this.sorting.groups = [], this.sorting.users = []
+      setTimeout(() => { this.setDefaultSortWorkflowElement(this.sorting) }, 0)
     },
     //- Логирование сортировки
     logStage(evt) {
+      counter_user = 0
       accum_group = 0
+      accum_user = 0
       this.sorting.stages = [], this.sorting.groups = [], this.sorting.users = []
+      setTimeout(() => { this.setDefaultSortWorkflowElement(this.sorting) }, 0)
     },
     logGroup(evt) {
+      counter_user = 0
       accum_group = 0
+      accum_user = 0
       this.sorting.stages = [], this.sorting.groups = [], this.sorting.users = []
+      setTimeout(() => { this.setDefaultSortWorkflowElement(this.sorting) }, 0)
+    },
+    logUser(evt) {
+      counter_user = 0
+      accum_group = 0
+      accum_user = 0
+      this.sorting.stages = [], this.sorting.groups = [], this.sorting.users = []
+      setTimeout(() => { this.setDefaultSortWorkflowElement(this.sorting) }, 0)
     },
     //- Вычисление глобальных индексов сортировки стадий
     getStageSort(stage, s_idx) {
@@ -195,7 +253,61 @@ export default {
     //- Вычисление глобальных индексов сортировки групп
     getGroupSort(stage, s_idx, group, g_idx) {
       accum_group++
-      // console.log(accum_group)
+      //--
+      this.sorting.groups.push({
+        id: group.id,
+        code: group.group.code,
+        order_execution_group: accum_group,
+        hierarchy: s_idx+'.'+g_idx,
+        stage_id: stage.id
+      })
+      //--
+      this.sortData[stage.id][group.id] = {
+        id: group.id,
+        code: group.group.code,
+        order_execution_group: accum_group,
+        hierarchy: s_idx+'.'+g_idx,
+        stage_id: stage.id
+      }
+      accum_user++
+      group.users.forEach((user, user_idx) => {
+        counter_user++
+        if(group.group.type_id === 2) accum_user = accum_user + user_idx
+        const hierarchy = this.getUserOrder(group, s_idx-1, g_idx-1, user_idx)
+        this.sortData[stage.id][group.id][user.id] = {
+          id: user.id,
+          email: user.user.email,
+          order_execution_user: accum_user,
+          hierarchy: hierarchy,
+          stage_id: stage.id,
+          group_id: group.id
+        }
+        this.sorting.users.push({
+          id: user.id,
+          email: user.user.email,
+          order_execution_user: accum_user,
+          hierarchy: hierarchy,
+          stage_id: stage.id,
+          group_id: group.id
+        })
+      })
+      if(accum_group === this.getAllGroupInWorkflow.length) accum_group = 0
+      return (s_idx+'.'+g_idx)+' ('+this.sortData[stage.id][group.id].order_execution_group+')'
+    },
+    //- Вычисление глобальных индексов сортировки пользователей
+    getUserSort(group, stage, stage_idx, group_idx, user_idx, user) {
+      if(counter_user === this.getAllUsersInWorkflow.length) {
+        accum_user = 0
+        counter_user = 0
+      }
+      return this.sortData[stage.id][group.id][user.id].hierarchy+' ('+this.sortData[stage.id][group.id][user.id].order_execution_user+')'
+    },
+    getUserOrder(group, stage_idx, group_idx, user_idx) {
+      if(group.group.type_id === 2) {
+        return `${stage_idx+1}.${group_idx+1}.${user_idx+1}`
+      } else {
+        return `${stage_idx+1}.${group_idx+1}.${1}`
+      }
     },
     onGetSort() {
       console.log(this.sorting)

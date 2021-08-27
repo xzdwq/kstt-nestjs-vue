@@ -47,9 +47,16 @@ export class WorkflowService {
           'users.order_execution_user': 'ASC'
         })
         .getMany()
+
+        
+      const allGroupInWorkflow = await this.defaultWorkflowStageGroupRepository.find()
+      const allUsersInWorkflow = await this.defaultWorkflowStageGroupUserRepository.find()
+
       return {
         success: true,
         data: data,
+        allGroupInWorkflow: allGroupInWorkflow,
+        allUsersInWorkflow: allUsersInWorkflow,
         total: data.length
       }
     }
@@ -366,7 +373,45 @@ export class WorkflowService {
       // }
       return result
     }
+    // Обновление пользовательской сортировки групп для маршрута по умолчанию
+    async setSortDefaultWorkflowElement(params) {
+      try {
+        // Обновляем иерархию стадий
+        params.params.stages.forEach(async (p_stage, p_stage_idx) => {
+          const stage_wf = await this.defaultWorkflowStageRepository.findOne(p_stage.id)
+          stage_wf.order_execution_stage = p_stage.order_execution_stage
+          stage_wf.hierarchy = p_stage.hierarchy
+          await this.defaultWorkflowStageRepository.save(stage_wf)
+        })
+        // Обновляем иерархию групп
+        params.params.groups.forEach(async (p_group, p_group_idx) => {
+          const group_wf = await this.defaultWorkflowStageGroupRepository.findOne(p_group.id)
+          group_wf.order_execution_group = p_group.order_execution_group
+          group_wf.hierarchy = p_group.hierarchy
+          await this.defaultWorkflowStageGroupRepository.save(group_wf)
+        })
+        // Обновляем иерархию пользователей
+        params.params.users.forEach(async (p_user, p_user_idx) => {
+          const user_wf = await this.defaultWorkflowStageGroupUserRepository.findOne(p_user.id)
+          user_wf.order_execution_user = p_user.order_execution_user
+          user_wf.hierarchy = p_user.hierarchy
+          await this.defaultWorkflowStageGroupUserRepository.save(user_wf)
+        })
 
+        return {
+          success: true,
+          message: 'Data sorted successfully'
+        }
+      }
+      catch(e) {
+        return {
+          success: false,
+          message: e.toString(),
+        }
+      }
+    }
+
+    // Обновление пользовательской сортировки групп для индивидуального маршрута
     async setSortWorkflowElement(params) {
       try {
         // Обновляем иерархию стадий
