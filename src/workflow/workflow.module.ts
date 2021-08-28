@@ -13,6 +13,8 @@ import { WorkflowStageGroupUserEntity } from '@src/workflow/entity/workflow_stag
 import { WorkflowController } from '@src/workflow/workflow.controller'
 import { WorkflowService } from '@src/workflow/workflow.service';
 
+import { GroupModule } from '@src/group/group.module';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -24,7 +26,8 @@ import { WorkflowService } from '@src/workflow/workflow.service';
       WorkflowStageEntity,
       WorkflowStageGroupEntity,
       WorkflowStageGroupUserEntity
-    ])
+    ]),
+    GroupModule
   ],
   providers: [
     WorkflowService

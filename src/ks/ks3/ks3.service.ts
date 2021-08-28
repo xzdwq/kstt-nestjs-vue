@@ -20,28 +20,28 @@ export class KS3Service {
   async findAll(page: number, limit: number, query: string): Promise<object> {
     if(!query) query = ''
 
-    // const [data, total] = await this.ks3Repository.findAndCount({
-    //   relations: [
-    //     'user',
-    //     'project',
-    //     'workflow',
-    //     'workflow.stage',
-    //     'workflow.stage.group',
-    //     'workflow.stage.group.type',
-    //     'workflow.stage.group.users'
-    //   ],
-    //   skip: limit * (page - 1),
-    //   take: limit,
-    //   where: [
-    //     { certificate_number: Like(`%${query}%`) },
-    //     { document_number: Like(`%${query}%`) }
-    //   ],
-    //   order: {
-    //     create_at: 'DESC'
-    //   }
-    // })
+  //   const [data, total] = await this.ks3Repository.findAndCount({
+  //     relations: [
+  //       'user',
+  //       'project',
+  //       'workflow',
+  //       'workflow.stage',
+  //       'workflow.stage.group',
+  //       'workflow.stage.group.type',
+  //       'workflow.stage.group.users'
+  //     ],
+  //     skip: limit * (page - 1),
+  //     take: limit,
+  //     where: [
+  //       { certificate_number: Like(`%${query}%`) },
+  //       { document_number: Like(`%${query}%`) }
+  //     ],
+  //     order: {
+  //       create_at: 'DESC'
+  //     }
+  //   })
 
-    const data = await this.ks3Repository
+    const queryB = await this.ks3Repository
         .createQueryBuilder('ks3')
         .leftJoinAndSelect('ks3.user', 'user')
         .leftJoinAndSelect('ks3.project', 'project')
@@ -58,14 +58,20 @@ export class KS3Service {
           'group.order_execution_group': 'ASC',
           'users.order_execution_user': 'ASC'
         })
-        // .limit(limit * (page - 1))
-        // .offset(limit)
-        .getMany()
+
+    const dataAll = await queryB
+      // Данный подход в пагинации не работает т.к. присутствует leftJoinAndSelect и результаты не группируются
+      // .limit(limit)
+      // .offset(limit * (page - 1))
+      .getMany()
+    // Пагинация
+    const data = dataAll.slice((limit * (page - 1)), (limit * page))
+    const total = await queryB.getCount();
 
     return {
       success: true,
       data: data,
-      total: data.length
+      total: total
     }
   }
 
@@ -188,32 +194,9 @@ export class KS3Service {
   async setStageGroup(params): Promise<object> {
     const stage_id = params.stage_id
     const workflow_id = params.workflow_id
-    let result
-    if(workflow_id) {
-      // WF
-      const getGroupAll = await this.groupService.findAll();
-      result = await this.workflowService.onSetStageGroup(stage_id, workflow_id, params, getGroupAll)
-    } else {
-      // Default
-      /*!!!*/ const stagegroup = []
-      /*!!!*/ /*const stagegroup = await this.ks3StageWorkflowRepository.findOne(stage_id, {
-        relations: ['ks3_stage_workflow_group', 'ks3_stage_workflow_group.group']
-      })
-      for(const pg of params.group) {
-        const matchIndex = stagegroup.ks3_stage_workflow_group.findIndex(x => x.id === pg.id)
-        if(matchIndex >= 0) {
-          // если группу исключили из стадии
-          if(!pg.check) stagegroup.ks3_stage_workflow_group.splice(matchIndex, 1);
-        } else {
-          // если группу добавили в стадию
-          if(pg.check) {
-            const getGroupById = await this.groupService.findOne(pg.id)
-            stagegroup.ks3_stage_workflow_group.push(getGroupById['data'])
-          }
-        }
-      }
-      result = await this.ks3StageWorkflowRepository.save(stagegroup)*/
-    }
+    // WF
+    const getGroupAll = await this.groupService.findAll();
+    const result = await this.workflowService.onSetStageGroup(stage_id, workflow_id, params, getGroupAll)
 
     return {
       data: result

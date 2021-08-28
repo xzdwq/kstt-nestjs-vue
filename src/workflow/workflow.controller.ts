@@ -27,4 +27,21 @@ export class WorkflowController {
   async setSortWorkflowElement(@Body() body: Object) {
     return this.workflowService.setSortDefaultWorkflowElement(body)
   }
+
+  // Добавление/удаление групп в стадии
+  @Post('defaultworkflow/stagegroup')
+  async editGroupInStage(
+    @Body() body
+  ) {
+    const params = body.params
+    return this.workflowService.editGroupInStage(params)
+  }
+
+  // Обновление типа группы
+  @Put('defaultworkflow/grouptype')
+  async updateGroupType(
+    @Body('params') params
+  ): Promise<any> {
+    return await this.workflowService.updateGroupType(params)
+  }
 }

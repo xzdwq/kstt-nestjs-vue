@@ -51,6 +51,7 @@
   "upload-error": "File upload error",
   "success": "Successfully completed",
   "error": "Error",
+  "save": "Save",
   "crypto": {
     "electonic-signature": "Electronic signature",
     "list-electonic-signature": "List of available<br>electronic signatures",

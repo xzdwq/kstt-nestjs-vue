@@ -24,6 +24,8 @@ import DefButtonBack from '@/components/utils/DefButtonBack.vue'
 import AddGroupInStageForm from '@/components/workflow/AddGroupInStageForm.vue'
 import EditGroupInStageForm from '@/components/workflow/EditGroupInStageForm.vue'
 import DeleteGroupInStage from '@/components/workflow/DeleteGroupInStage.vue'
+import DefAddGroupInStageForm from '@/components/workflow/default/DefAddGroupInStageForm.vue'
+import DefEditGroupInStageForm from '@/components/workflow/default/DefEditGroupInStageForm.vue'
 /**
  * SVG icons
  */
@@ -95,6 +97,8 @@ export default [
   AddGroupInStageForm,
   EditGroupInStageForm,
   DeleteGroupInStage,
+  DefAddGroupInStageForm,
+  DefEditGroupInStageForm,
 
   Loading,
   Bell,

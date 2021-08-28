@@ -51,6 +51,7 @@
   "upload-error": "Ошибка загрузки файла",
   "success": "Выполнено успешно",
   "error": "Ошибка",
+  "save": "Сохранить",
   "crypto": {
     "electonic-signature": "Электронная подпись",
     "list-electonic-signature": "Список доступных<br>электронных подписей",

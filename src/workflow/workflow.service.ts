@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -10,6 +10,8 @@ import { WorkflowEntity } from '@src/workflow/entity/workflow.entity';
 import { WorkflowStageEntity } from '@src/workflow/entity/workflow_stage.entity';
 import { WorkflowStageGroupEntity } from '@src/workflow/entity/workflow_stage_group.entity';
 import { WorkflowStageGroupUserEntity } from '@src/workflow/entity/workflow_stage_group_user.entity'
+
+import { GroupService } from '@src/group/group.service';
 
 @Injectable()
 export class WorkflowService {
@@ -29,7 +31,10 @@ export class WorkflowService {
     @InjectRepository(WorkflowStageGroupEntity)
     private workflowStageGroupRepository: Repository<WorkflowStageGroupEntity>,
     @InjectRepository(WorkflowStageGroupUserEntity)
-    private workflowStageGroupUserRepository: Repository<WorkflowStageGroupUserEntity>
+    private workflowStageGroupUserRepository: Repository<WorkflowStageGroupUserEntity>,
+    // Сервис управления группами
+    @Inject(GroupService)
+    private groupService: GroupService,
     ) {}
 
     // Получить маршрут согласования по умолчанию
@@ -288,7 +293,7 @@ export class WorkflowService {
           // если группу добавили в стадию
           if(pg.check) {
             const getGroupByCode = groupDefault.data.find(x => x.code === pg.code)
-            //- получаем группу в стадии с максимальным порядком выполнения, чтобы добавить новую группу после нее
+            // получаем группу в стадии с максимальным порядком выполнения, чтобы добавить новую группу после нее
             const maxGroupInStage = await this.workflowStageGroupRepository.findOne({
               where: {
                 workflow_id: pg.workflow_id,
@@ -302,7 +307,7 @@ export class WorkflowService {
             if(maxGroupInStage) {
               // Высчитываем новый порядок выполнения
               newOrderExecutionGroup = +maxGroupInStage.order_execution_group+1
-              // Высчитываем новуб иерархию
+              // Высчитываем новую иерархию
               const maxHierarchy = maxGroupInStage.hierarchy.split('.')
               const newSubHierarchy = +maxHierarchy[1]+1
               newHierarchy = maxHierarchy[0]+'.'+newSubHierarchy
@@ -445,5 +450,105 @@ export class WorkflowService {
           message: e.toString(),
         }
       }
+    }
+
+    // Добавление/удаление групп в стадии по умолчанию
+    async editGroupInStage(params): Promise<object> {
+      const stage_id = params.stage_id
+      const groupDefault: any = await this.groupService.findAll();
+      const stagegroup: any = await this.defaultWorkflowStageRepository.findOne(stage_id, {
+        relations: ['groups', 'groups.group']
+      })
+      // console.log(stagegroup)
+      let data = {
+        stage_id: stage_id,
+        add: [],
+        remove: []
+      }
+      for(const pg of params.group) {
+        const match = stagegroup.groups.find(x => x.group.code === pg.code)
+        if(match) {
+          // если группу исключили из стадии
+          if(!pg.check) {
+            const delGroup = stagegroup.groups.filter((g) => g.id === match.id)
+            // console.log(delGroup)
+            // Удаляем пользователей из группы
+            const user = await this.defaultWorkflowStageGroupUserRepository.find({
+              where: {
+                group_id: +delGroup[0].id
+              }
+            })
+            // console.log(user)
+            await this.defaultWorkflowStageGroupUserRepository.remove(user)
+            // Удаляем группу
+            const group = await this.defaultWorkflowStageGroupRepository.find({
+              where: {
+                id: +delGroup[0].id
+              }
+            })
+            const removeGroup = await this.defaultWorkflowStageGroupRepository.remove(group)
+            data.remove.push(removeGroup[0])
+          }
+        } else {
+          // если группу добавили в стадию
+          if(pg.check) {
+            const getGroupByCode = groupDefault.data.find(x => x.code === pg.code)
+            // console.log(getGroupByCode)
+            // получаем группу в стадии с максимальным порядком выполнения, чтобы добавить новую группу после нее
+            const maxGroupInStage = await this.defaultWorkflowStageGroupRepository.findOne({
+              where: {
+                stage_id: pg.stage_id
+              },
+              order: {
+                order_execution_group: 'DESC'
+              }
+            })
+            // console.log(maxGroupInStage)
+            let newOrderExecutionGroup = 0, newHierarchy = '0.0'
+            if(maxGroupInStage) {
+              // Высчитываем новый порядок выполнения
+              newOrderExecutionGroup = +maxGroupInStage.order_execution_group+1
+              // Высчитываем новую иерархию
+              const maxHierarchy = maxGroupInStage.hierarchy.split('.')
+              const newSubHierarchy = +maxHierarchy[1]+1
+              newHierarchy = maxHierarchy[0]+'.'+newSubHierarchy
+            }
+            // Добавляем
+            const addGroup = await this.defaultWorkflowStageGroupRepository.create({
+              order_execution_group: newOrderExecutionGroup,
+              hierarchy: newHierarchy,
+              stage_id: stage_id,
+              group_id: getGroupByCode.id
+            })
+            const newGroup = await this.defaultWorkflowStageGroupRepository.save(addGroup)
+            // После добавления группы добавляем в нее пользователей из таблицы по умолчанию
+            getGroupByCode.user_group.forEach((u) => {
+              const newGroupUser = this.defaultWorkflowStageGroupUserRepository.create({
+                stage_id: newGroup.stage_id,
+                group_id: newGroup.id,
+                user_id: u.user.id,
+                order_execution_user: 1, // TODO
+                hierarchy: '1', // TODO
+              })
+              this.defaultWorkflowStageGroupUserRepository.save(newGroupUser)
+            })
+            data.add.push(newGroup)
+          }
+        }
+      }
+      return data
+    }
+
+    async updateGroupType(params) {
+      const group_id = params.group_id
+      const group: any = await this.defaultWorkflowStageGroupRepository.findOne(group_id, {
+        relations: ['group']
+      })
+      const paramsForDefault = {
+        group_id: group.group.id,
+        group_type: params.group_type
+      }
+      const data = await this.groupService.onUpdateGroupType(paramsForDefault)
+      return data
     }
 }

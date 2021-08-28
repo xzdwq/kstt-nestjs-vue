@@ -42,6 +42,53 @@ export const workflowDefaultManagmentModule = {
       const data = await axios.post('api/sortdefaultworkflowelement', {
         params: params
       })
+    },
+    // Добавление/удаление групп в стадии
+    async defCorrectStageGroup({ commit }, params) {
+      const data = await axios.post('api/defaultworkflow/stagegroup', {
+        params: {
+          group: params.group,
+          stage_id: params.stage_id
+        }
+      })
+      .then((data) => {
+        return {
+          success: true,
+          data: data.data.data
+        }
+      })
+      .catch((e) => {
+        return {
+          success: false,
+          data: [],
+          message: e.toString()
+        }
+      })
+      return data
+    },
+    // Обновление типа группы
+    async defUpdateGroupType({ commit }, params) {
+      try {
+        const data = await axios.put('api/defaultworkflow/grouptype', {
+          params: {
+            group_id: params.group_id,
+            group_type: params.group_type,
+            stage_id: params.stage_id,
+            cascade: params.cascade
+          }
+        })
+        return {
+          success: true,
+          data: data.data.data
+        }
+      }
+      catch(e) {
+        return {
+          success: false,
+          data: [],
+          message: e.toString(),
+        }
+      }
     }
   }
 }

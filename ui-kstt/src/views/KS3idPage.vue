@@ -51,13 +51,14 @@ div
   ks2-form
   //- bottom toolbar
   div(
-    v-if="getKS3id.length > 0 && !getIsLoading"
     class=""
+    v-if="getKS3id.length > 0 && !getIsLoading"
   )
-    def-button(
-      class="text-white bg-[#579bae] flex justify-between"
-      @click="onSave"
-    ) Save
+    div(class="pt-2 flex justify-end")
+      def-button(
+        class="min-w-28 text-white bg-[#06d6a0]"
+        @click="onSave"
+      ) {{ $t('save') }}
 </template>
 <script>
 import {

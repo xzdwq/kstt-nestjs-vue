@@ -8,10 +8,6 @@ div.relative
       @click="onRefresh"
     )
       svg-refresh(:class="{'animate-spin z-0' : getIsLoadWorkflowDefault || isLoadForRefresh}")
-    def-button(
-      class="text-white bg-[#579bae] flex justify-between"
-      @click="onGetSort"
-    ) GET
     div(class="flex w-full justify-center")
       div {{ $t('route-default') }}
   //- component
@@ -140,16 +136,26 @@ div.relative
                                 @click="onDelUser(group.id, user.id)"
                               )
                                 svg-trash
+  //- модальное окно
+  modal(v-model:modalCfg="modalCfg")
+    template(v-slot:title) {{ modalCfg.title }}
+    template(v-slot:body)
+      component(:is="modalCfg.component" v-model:modalCfg="modalCfg")
+    template(v-slot:bottom-toolbar)
+      def-button(class="min-w-28 text-white bg-[#ef476f]" @click="closeModal") {{ $t('cancel') }}
+      def-button(class="min-w-28 text-white bg-[#06d6a0]" @click="saveAndCloseModal") OK
 </template>
 <script>
 import {
   mapGetters,
   mapActions
 } from 'vuex'
+import toast from '@/mixins/toast'
 
 let accum_group = 0, accum_user = 0, counter_user = 0;
 export default {
   name: 'workflow-default',
+  mixins: [toast],
   data() {
     return {
       isLoadForRefresh: true,
@@ -160,6 +166,9 @@ export default {
         groups: [],
         users: []
       },
+      modalCfg: {
+        modalShow: false
+      }
     }
   },
   computed: {
@@ -198,7 +207,9 @@ export default {
   methods: {
     ...mapActions({
       fetchWorkflowDefault: 'workflowDefaultManagmentModule/fetchWorkflowDefault',
-      setDefaultSortWorkflowElement: 'workflowDefaultManagmentModule/setDefaultSortWorkflowElement'
+      setDefaultSortWorkflowElement: 'workflowDefaultManagmentModule/setDefaultSortWorkflowElement',
+      defCorrectStageGroup: 'workflowDefaultManagmentModule/defCorrectStageGroup',
+      defUpdateGroupType: 'workflowDefaultManagmentModule/defUpdateGroupType'
     }),
     async onRefresh() {
       this.isLoadForRefresh = true
@@ -309,8 +320,119 @@ export default {
         return `${stage_idx+1}.${group_idx+1}.${1}`
       }
     },
-    onGetSort() {
-      console.log(this.sorting)
+    // Добавление группы в стадию
+    onAddGroup(stage) {
+      this.modalCfg = {
+        modalShow: true,
+        title: this.$t('manager-stage-group', { stage: this.$i18n.locale == 'ru' ? stage.name_ru : stage.name_en }),
+        component: 'def-add-group-in-stage',
+        width: 'w-9/12 min-w-[500px] max-w-[700px]',
+        height: 'h-[80%] sm:h-[70%] lg:h-4/6 ',
+        tmpGroupCheck: [],
+        data: {
+          type: 'def-add-group-in-stage',
+          stage: stage,
+          group: null
+        }
+      }
+    },
+    // Редактирование типа группы
+    onEditGroup(stage, group) {
+      this.modalCfg = {
+        modalShow: true,
+        title: this.$t('edit-group', { group: this.$i18n.locale == 'ru' ? group.group.name_ru : group.group.name_en, stage: this.$i18n.locale == 'ru' ? stage.name_ru : stage.name_en }),
+        component: 'def-edit-group-in-stage',
+        width: 'w-9/12 min-w-[500px] max-w-[700px]',
+        height: 'h-[30%]',
+        data: {
+          type: 'def-edit-group-in-stage',
+          stage: stage,
+          group: group,
+          cascade: false
+        }
+      }
+    },
+    // Удаление единичной группы из стадии
+    async onDelGroup(group, stage) {
+      this.modalCfg = {
+        modalShow: true,
+        title: this.$t('confirm'),
+        question: this.$t('delete-confirm', {
+          group: this.$i18n.locale == 'ru' ? group.group.name_ru : group.group.name_en, stage: this.$i18n.locale == 'ru' ? stage.name_ru : stage.name_en 
+        }),
+        component: 'delete-group-in-stage',
+        width: 'w-9/12 min-w-[500px] max-w-[700px]',
+        height: 'h-[30%]'
+      }
+      const params = {
+        group: [{
+          id: group.id,
+          code: group.group.code,
+          check: false,
+          stage_id: stage.id
+        }],
+        stage_id: stage.id
+      }
+      this.modalCfg.tmpDelGroup = params
+    },
+    // Исключить пользователя из группы
+    onDelUser(group_id, user_id) {
+      console.log('group_id: '+group_id+' user_id: '+user_id);
+    },
+    closeModal() {
+      this.modalCfg.modalShow = false
+    },
+    async saveAndCloseModal() {
+      if(this.modalCfg.component === 'def-add-group-in-stage') {
+        const params = {
+          group: this.modalCfg.tmpGroupCheck,
+          stage_id: this.modalCfg.tmpGroupCheck[0].stage_id
+        }
+        await this.defCorrectStageGroup(params)
+          .then((data) => {
+            if(data.success) {
+              this.onToast('success', this.$t('success'))
+            } else {
+              this.onToast('danger', this.$t('error'), data.message)
+            }
+          })
+      }
+      if(this.modalCfg.component === 'delete-group-in-stage') {
+        const params = {
+          group: this.modalCfg.tmpDelGroup.group,
+          stage_id: this.modalCfg.tmpDelGroup.stage_id
+        }
+        await this.defCorrectStageGroup(params)
+          .then((data) => {
+            if(data.success) {
+              this.onToast('success', this.$t('success'))
+            } else {
+              this.onToast('danger', this.$t('error'), data.message)
+            }
+          })
+      }
+      if(this.modalCfg.component === 'def-edit-group-in-stage') {
+        const params = {
+          group_id: +this.modalCfg.data.group.id,
+          group_type: +this.modalCfg.data.group.group.type_id,
+          stage_id: +this.modalCfg.data.stage.id,
+          cascade: this.modalCfg.data.cascade
+        }
+        await this.defUpdateGroupType(params)
+        .then((data) => {
+            if(data.success) {
+              this.onToast('success', this.$t('success'))
+            } else {
+              this.onToast('danger', this.$t('error'), data.message)
+            }
+        })
+      }
+      this.closeModal()
+      counter_user = 0
+      accum_group = 0
+      accum_user = 0
+      this.sorting.stages = [], this.sorting.groups = [], this.sorting.users = []
+      setTimeout(() => { this.onRefresh() }, 0)
     }
   },
   async mounted() {
