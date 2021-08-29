@@ -1,6 +1,3 @@
-import { UserEntity } from '@src/user/entity/user.entity';
-import { WorkflowEntity } from '@src/workflow/entity/workflow.entity';
-import { ProjectEntity } from '@src/project/entity/project.entity';
 import {
   Entity,
   Column,
@@ -9,8 +6,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
-  ManyToOne
+  ManyToOne,
+  OneToMany
 } from 'typeorm';
+
+import { UserEntity } from '@src/user/entity/user.entity';
+import { WorkflowEntity } from '@src/workflow/entity/workflow.entity';
+import { ProjectEntity } from '@src/project/entity/project.entity';
+import { KS2Entity } from '@src/ks/ks2/entity/ks2.entity';
 
 @Entity('ks3')
 export class KS3Entity {
@@ -69,6 +72,9 @@ export class KS3Entity {
   @ManyToOne(() => WorkflowEntity, wf => wf.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'workflow_id' })
   workflow: WorkflowEntity[];
+
+  @OneToMany(() => KS2Entity, ks2 => ks2.ks3)
+  ks2: KS2Entity[];
 
   @CreateDateColumn()
   create_at: Date;

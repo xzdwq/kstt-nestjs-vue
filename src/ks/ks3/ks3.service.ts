@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Repository, Like } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { KS3Entity } from '@src/ks/ks3/entity/ks3.entity';
@@ -85,6 +85,7 @@ export class KS3Service {
         .leftJoinAndSelect('stage.group', 'group')
         .leftJoinAndSelect('group.type', 'type')
         .leftJoinAndSelect('group.users', 'users')
+        // .leftJoinAndSelect('ks3.ks2', 'ks2')
         .where(`ks3.id = ${id}`)
         .orderBy({
           'ks3.create_at': 'DESC',
@@ -225,5 +226,18 @@ export class KS3Service {
   async setSortWorkflowElement(body) {
     const result = await this.workflowService.setSortWorkflowElement(body.params)
     return result
+  }
+
+  async updateKS3Metadata(params) {
+    const ks3ById = await this.ks3Repository.findOne(params.id)
+    ks3ById.certificate_number = params.certificate_number
+    ks3ById.document_number = params.document_number
+    ks3ById.date_preparation = params.date_preparation
+    ks3ById.reporting_period = params.reporting_period
+    const data = await this.ks3Repository.save(ks3ById)
+    return {
+      success: true,
+      data: data
+    }
   }
 }

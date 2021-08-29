@@ -75,6 +75,22 @@ export const ks3idModule = {
       finally {
         commit('setIsLoading', false)
       }
+    },
+    // Сохранение метаданных КС-3
+    async saveMetadatKS3({ commit }, params) {
+      try {
+        const data = await axios.put('api/ks3/metadata', { params })
+        return {
+          success: true,
+          data: data.data.data
+        }
+      }
+      catch(e) {
+        return {
+          success: false,
+          message: e.message
+        }
+      }
     }
   }
 }

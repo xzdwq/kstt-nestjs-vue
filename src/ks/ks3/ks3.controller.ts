@@ -63,4 +63,11 @@ export class KS3Controller {
   async setSortWorkflowElement(@Body() body: Object) {
     return this.ks3Service.setSortWorkflowElement(body)
   }
+
+  @Put('ks3/metadata')
+  async updateKS3Metadata(
+    @Body('params') params
+  ): Promise<any> {
+    return await this.ks3Service.updateKS3Metadata(params)
+  }
 }

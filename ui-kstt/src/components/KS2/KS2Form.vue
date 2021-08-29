@@ -1,7 +1,7 @@
 <template lang="pug">
-div
-  div(v-if="getKS3id.length > 0 && !getIsLoadingKS3")
-    fieldset(class="border-2 border-gray-400 rounded p-3 min-h-[120px]")
+div(class="h-full")
+  div(v-if="getKS3id.length > 0 && !getIsLoadingKS3" class="h-full")
+    fieldset(class="border-2 border-gray-400 rounded p-3 min-h-[120px] h-full")
       legend(class="text-sm px-2 font-bold") {{ $t("ks2.acts") }}
       //- toolbar
       div.flex
@@ -33,6 +33,8 @@ div
                 hidden
               )
       //- body
+      div(v-for="item in getKS2id")
+        span {{ item.document_number }}
       //- table
       div(
         v-if="getKS2id.length === 0 && !getIsLoadingKS2"
@@ -107,7 +109,7 @@ export default {
     }
   },
   async mounted() {
-    await this.fetchKS2()
+    await this.fetchKS2({ks3_id: this.id})
   }
 }
 </script>

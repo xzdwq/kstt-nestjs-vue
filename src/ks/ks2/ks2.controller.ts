@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  Get,
+  Param,
   Post
 } from "@nestjs/common";
 import { FormDataRequest } from "nestjs-form-data"
@@ -19,5 +21,12 @@ export class KS2Controller {
     @Body() body
   ) {
     return await this.ks2Service.uploadKS2File(body)
+  }
+
+  @Get('/ks2/:id')
+  async getKS2ByKS3Id(
+    @Param() params
+  ): Promise<any>{
+    return await this.ks2Service.getKS2ByKS3Id(params.id)
   }
 }

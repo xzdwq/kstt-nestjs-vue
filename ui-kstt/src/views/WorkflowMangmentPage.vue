@@ -55,7 +55,7 @@ div.relative
             div.flex
               div(
                 :ref="`stage_${stage_idx}`"
-                class="relative flex items-center justify-start text-center border-4 border-[#9CA3FF] rounded-xl min-h-[90px] w-[180px]"
+                class="relative flex items-center justify-start text-center border-4 border-[#9CA3FF] min-h-[90px] w-[180px]"
               )
                 div(class="w-[40px]")
                 //-   svg-selector(class="handle cursor-move")

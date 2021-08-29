@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+div(class="min-h-[88px]")
   div(v-if="getKS3id.length > 0 && !getIsLoading" class="grid pt-2 text-sm" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));")
     div.flex.py-1
       //- Номер справки КС-3
@@ -151,6 +151,7 @@ export default {
       ru: ru,
       en: enGB,
       form: {
+        id: null,
         certificate_number: null,
         document_number: null,
         date_preparation: null,
@@ -199,6 +200,7 @@ export default {
   async mounted() {
     const data = await this.fetchKS3id(this.id);
     if(data.success) {
+      this.form.id = data.data[0].id,
       this.form.certificate_number = data.data[0].certificate_number
       this.form.document_number = data.data[0].document_number
       this.form.date_preparation = new Date(data.data[0].date_preparation)

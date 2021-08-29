@@ -9,6 +9,7 @@ import { ks2idModule } from "@/store/modules/ks2idModule"
 import { groupModule } from "@/store/modules/groupModule"
 import { workflowManagmentModule } from "@/store/modules/workflowManagmentModule"
 import { workflowDefaultManagmentModule } from "@/store/modules/workflowDefaultManagmentModule"
+import { expandStageInKS3IdModule } from "@/store/modules/expandStageInKS3Id"
 
 export default createStore({
   state: {
@@ -29,6 +30,7 @@ export default createStore({
     ks2idModule,
     groupModule,
     workflowManagmentModule,
-    workflowDefaultManagmentModule
+    workflowDefaultManagmentModule,
+    expandStageInKS3IdModule
   }
 })

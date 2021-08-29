@@ -61,10 +61,13 @@ export const ks2idModule = {
     },
   },
   actions: {
-    async fetchKS2({ state, commit }, query) {
+    async fetchKS2({ state, commit }, params) {
+      const id = params.ks3_id
       try {
         commit('setIsLoading', true);
         commit('setKS2', []);
+        const data = await axios.get(`api/ks2/${id}`)
+        commit('setKS2', data.data.data);
       } catch(e) { console.log(e) }
       finally { setTimeout(() => { commit('setIsLoading', false); }, 500) }
     }

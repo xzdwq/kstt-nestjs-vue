@@ -1,9 +1,13 @@
 <template lang="pug">
 div
   //- toolbar
-  div(class="flex")
+  div(class="flex items-center")
     def-button-back
-  metadata-ks3
+    def-button(
+        class="text-white bg-[#579bae] flex justify-between"
+        @click="onRefresh"
+      )
+        svg-refresh(:class="{'animate-spin z-0' : getIsLoading || isLoadForRefresh}")
   //- загрузка схемы стадий согласования КС-3
   div(
     v-if="getIsLoadStageWorkflow"
@@ -20,57 +24,64 @@ div
   div(v-if="getKS3id.length === 0 && getIsLoading" class="absolute w-[calc(100%-55px)] flex items-center justify-center")
     svg-loading
     p {{ $t('loading') }}
-  //- схема стадий согласования КС-3
-  vue-collapsible-panel-group(v-if="getKS3id.length > 0 && !getIsLoading")
-    vue-collapsible-panel(
-      :expanded="false"
-    )
-      template(#title)
-        div(class="w-full flex items-center select-none")
-          div(class="min-w-[300px] absolute text-sm") {{ $t('stage') }}: {{ this.$i18n.locale == 'ru' ? getCurrentStageInfo.name_ru : getCurrentStageInfo.name_en }}
-          div(class="flex w-full justify-center items-center font-bold ml-16")
-            div(class="w-full md:w-auto")
-              div(class="hidden md:flex") {{ $t('stage-agreement') }}
-            popper(arrow :hover="true" placement="top"
-              class="flex popper-tips font-normal"
-              :content="$t('correction-wf-route')"
-            )
-              def-button(
-                @click="$router.push(`/workflowmanagment/${getKS3id[0].workflow_id}`)"
+  //- body
+  div(class="min-h-[calc(100vh-160px)]")
+    metadata-ks3(ref="metadata_ks3")
+    //- схема стадий согласования КС-3
+    vue-collapsible-panel-group(v-if="getKS3id.length > 0 && !getIsLoading")
+      vue-collapsible-panel(
+        :expanded="expand"
+        @click="onExpand()"
+      )
+        template(#title)
+          div(class="relative w-full flex items-center select-none")
+            div(class="min-w-[300px] absolute text-sm") {{ $t('stage') }}: {{ this.$i18n.locale == 'ru' ? getCurrentStageInfo.name_ru : getCurrentStageInfo.name_en }}
+            div(class="flex w-full justify-center items-center font-bold ml-16")
+              div(class="w-full md:w-auto")
+                div(class="hidden md:flex") {{ $t('stage-agreement') }}
+              popper(arrow :hover="true" placement="top"
+                class="flex popper-tips font-normal"
+                :content="$t('correction-wf-route')"
               )
-                svg-pencilalt
-      template(#content)
-        div
-          stage-workflow(
-            v-if="!getIsLoadStageWorkflow"
-            type="medium"
-            class="py-4"
-            :stageWorkflow="getStageWorkflow"
-            :activeStageWorkflow="getActiveStageWorkflow"
-          )
-  ks2-form
+                def-button(
+                  @click="$router.push(`/workflowmanagment/${getKS3id[0].workflow_id}`)"
+                )
+                  svg-pencilalt
+        template(#content)
+          div
+            stage-workflow(
+              v-if="!getIsLoadStageWorkflow"
+              type="medium"
+              class="py-4"
+              :stageWorkflow="getStageWorkflow"
+              :activeStageWorkflow="getActiveStageWorkflow"
+            )
+      ks2-form(
+        :class="expand ? getExpandHeightClass : getNoExpandHeightClass"
+      )
   //- bottom toolbar
-  div(
-    class=""
-    v-if="getKS3id.length > 0 && !getIsLoading"
-  )
+  div(v-if="getKS3id.length > 0 && !getIsLoading")
     div(class="pt-2 flex justify-end")
       def-button(
         class="min-w-28 text-white bg-[#06d6a0]"
         @click="onSave"
       ) {{ $t('save') }}
-</template>
+  </template>
 <script>
 import {
   mapGetters,
   mapActions
 } from 'vuex'
 
+import toast from '@/mixins/toast'
 export default {
   name: 'ks3id-page',
+  mixins: [toast],
   data() {
     return {
-      id: this.$route.params.id
+      isLoadForRefresh: true,
+      id: this.$route.params.id,
+      expand: false
     }
   },
   computed: {
@@ -80,21 +91,47 @@ export default {
       getStageWorkflow: 'ks3idModule/getStageWorkflow',
       getIsLoadStageWorkflow: 'ks3idModule/getIsLoadStageWorkflow',
       getActiveStageWorkflow: 'ks3idModule/getActiveStageWorkflow',
-      getCurrentStageInfo: 'ks3idModule/getCurrentStageInfo'
+      getCurrentStageInfo: 'ks3idModule/getCurrentStageInfo',
+      getExpandHeightClass: 'expandStageInKS3IdModule/getExpandHeightClass',
+      getNoExpandHeightClass: 'expandStageInKS3IdModule/getNoExpandHeightClass'
     })
   },
   methods: {
     ...mapActions({
-      fetchStageWorkflow: 'ks3idModule/fetchStageWorkflow'
+      fetchStageWorkflow: 'ks3idModule/fetchStageWorkflow',
+      fetchKS3id: 'ks3idModule/fetchKS3id',
+      saveMetadatKS3: 'ks3idModule/saveMetadatKS3'
     }),
-    onSave() {}
+    onExpand() {
+      this.expand = !this.expand
+    },
+    async onSave() {
+      const params = {
+        id: this.$refs.metadata_ks3.form.id,
+        certificate_number: this.$refs.metadata_ks3.form.certificate_number,
+        document_number: this.$refs.metadata_ks3.form.document_number,
+        date_preparation: this.$refs.metadata_ks3.form.date_preparation,
+        reporting_period: this.$refs.metadata_ks3.form.reporting_period
+      }
+      await this.saveMetadatKS3(params)
+      .then((data) => {
+        if(data.success) {
+          this.onToast('success', this.$t('success'))
+        } else {
+          this.onToast('danger', this.$t('error'), data.message)
+        }
+      })
+      await this.onRefresh()
+    },
+    async onRefresh() {
+      this.isLoadForRefresh = true
+      await this.fetchKS3id(this.$refs.metadata_ks3.form.id)
+      setTimeout(() => { this.isLoadForRefresh = false }, 500)
+    }
   },
   async mounted() {
-    /**
-     * Получаем список этапов workflow справки КС-3
-     */
-    // await this.fetchStageWorkflow()
-  },
+    setTimeout(() => { this.isLoadForRefresh = false }, 500)
+  }
 }
 </script>
 <style>
