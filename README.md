@@ -15,6 +15,11 @@ P.S. не забудьте добавить свой `.env.development` и `.env
 
 ```bash
 $ npm i
+
+$ cd ui-kstt
+$ npm i
+
+$ cd ..
 ```
 
 ## Запуск приложения
