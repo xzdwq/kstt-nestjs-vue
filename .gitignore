@@ -41,3 +41,6 @@ lerna-debug.log*
 
 #public
 public/*
+
+#Upload file
+upload/*

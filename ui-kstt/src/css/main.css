@@ -31,9 +31,26 @@
   }
   [type='checkbox'] {
     @apply rounded border-gray-300;
+    @apply disabled:text-gray-400;
+    &:indeterminate {
+      @apply border-transparent bg-no-repeat bg-center;
+
+      background: url("data:image/svg+xml,%3Csvg viewBox=\'0 0 16 16\' fill=\'white\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect width=\'8\' height=\'2\' x=\'4\' y=\'7\' rx=\'1\'/%3E%3C/svg%3E");
+      background-color: currentColor;
+      background-size: 100% 100%;
+    }
   }
   [type='radio'] {
     @apply border-gray-300;
+  }
+}
+
+@layer utilities {
+  .border-spacing-0 {
+    border-spacing: 0;
+  }
+  .border-spacing-1 {
+    border-spacing: 1px;
   }
 }
 
@@ -49,7 +66,11 @@
 
   --text-copy-hover: #323a47;
 
-  --border-border-color-primary: #e0e0e0;
+  --text-wfblue-primary: rgb(57, 100, 179);
+
+  --text-wfgreen-primary: rgb(40, 158, 72);
+
+  --border-border-color-primary: #abb4c2;
   --border-border-color-secondary: #fafafa;
 }
 
@@ -65,7 +86,11 @@
 
   --text-copy-hover: #698098;
 
-  --border-border-color-primary: #0D2438;
+  --text-wfblue-primary: rgb(41, 100, 187);
+
+  --text-wfgreen-primary: rgb(106, 201, 130);
+
+  --border-border-color-primary: #3e4e60;
   --border-border-color-secondary: #102C44;
 }
 
@@ -158,21 +183,4 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #a0aec0;
-}
-
-
-.popper-tips {
-  border: 0px solid transparent !important;
-  margin: 0 !important;
-  font-size: 14px;
-  line-height: 15px;
-  text-align: center;
-  --popper-theme-background-color: #ffffff;
-  --popper-theme-background-color-hover: #ffffff;
-  --popper-theme-text-color: #565656;
-  --popper-theme-border-width: 1px;
-  --popper-theme-border-style: solid;
-  --popper-theme-border-color: #7a7a7a;
-  --popper-theme-border-radius: 5px;
-  --popper-theme-padding: 10px;
 }

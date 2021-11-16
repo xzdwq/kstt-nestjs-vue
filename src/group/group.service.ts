@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GroupEntity } from '@src/group/entity/group.entity';
 import { GroupTypeEntity } from '@src/group/entity/group_type.entity';
+import { SideEntity } from '@src/group/entity/side.entity';
 
 @Injectable()
 export class GroupService {
@@ -11,7 +12,19 @@ export class GroupService {
     private groupRepository: Repository<GroupEntity>,
     @InjectRepository(GroupTypeEntity)
     private groupTypeRepository: Repository<GroupTypeEntity>,
+    @InjectRepository(SideEntity)
+    private sideRepository: Repository<SideEntity>,
   ) {}
+
+  async findGroupByCode(code) {
+    const data = await this.groupRepository.findOne({
+      where: {
+        code: code
+      }
+    })
+    return data
+  }
+
   async findOnlyGroup() {
     const [data, total] = await this.groupRepository.findAndCount()
     return {
@@ -25,7 +38,8 @@ export class GroupService {
       relations: [
         'user_group',
         'user_group.user',
-        'type'
+        'type',
+        'side'
       ]
     })
     return {
@@ -64,5 +78,14 @@ export class GroupService {
       result = group
     }
     return result
+  }
+
+  async findSide() {
+    const [data, total] = await this.sideRepository.findAndCount()
+    return {
+      success: true,
+      data: data,
+      total: total
+    }
   }
 }

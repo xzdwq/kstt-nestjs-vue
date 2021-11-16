@@ -6,27 +6,12 @@ div(class="flex text-sm")
         class="mx-auto rounded-full text-lg flex items-center"
         :class="{'bg-transparent text-copy-primary rounded-none border-4 border-dotted border-green-500': stage.order_execution_stage == activeStageWorkflow && type != 'small', 'bg-green-500': stage.order_execution_stage == activeStageWorkflow && type == 'small', 'bg-green-500 text-white': stage.order_execution_stage < activeStageWorkflow, 'border-2 bg-gray-300 border-gray-300 text-gray-500': stage.order_execution_stage > activeStageWorkflow, 'bg-gray-300': (activeStageWorkflow + 1) - stage.order_execution_stage === 0, 'w-10 h-10': type == 'medium', 'w-4 h-4': type == 'small'}"
       )
-        span(v-if="type == 'medium'" class="text-center w-full pr-[1px] pb-[2px]") {{ stage.order_execution_stage }}
-        popper(
-          arrow
-          :disabled="$route.params.id ? true : false"
-          placement="top"
-          class="popper-cust flex absolute"
-          :style="getPopperStyle"
+        div(
+          v-ttip="getStageInfo(stage), {trigger: 'click'}"
+          class="cursor-pointer flex justify-center items-center"
+          :class="{'w-4 h-4': type == 'small', 'w-10 h-10': type == 'medium'}"
         )
-          div(
-            :class="{'w-4 h-4': type == 'small', 'w-10 h-10': type == 'medium', 'cursor-pointer': !$route.params.id}"
-          )
-          template(#content)
-            div
-              span(class="text-gray-400") {{ $t('stage') }}: 
-              span {{ getNameStage(stage) }}
-            div
-              span(class="text-gray-400") {{ $t('task') }}: 
-              span {{ $t('agree', {date: formatDate(stage.deadline) }) }}
-            div
-              span(class="text-gray-400") {{ $t('performers') }}: 
-              span {{ getGroupUserStage(stage) }}
+          span(v-if="type == 'medium'" class="text-center w-full pr-[1px] pb-[2px]") {{ stage.order_execution_stage }}
       div(
         class="text-center font-semibold"
         :class="{'text-[14px]': type == 'medium', 'text-[10px] leading-[13px] pt-[5px]': type == 'small', 'text-green-500': (activeStageWorkflow + 1) - stage.order_execution_stage > 0}"
@@ -62,12 +47,26 @@ export default {
       en: enGB,
     }
   },
-  computed: {
-    getPopperStyle() {
-      return 'margin: -13.5px !important;'
-    }
-  },
   methods: {
+    getStageInfo(stage) {
+        let text = `
+          <div>
+            <div>
+              <span class="text-gray-400"> ${this.$t('stage')}: </span>
+              <span> ${this.getNameStage(stage)} </span>
+            </div>
+            <div>
+              <span class="text-gray-400"> ${this.$t('task')}: </span>
+              <span> ${this.$t('agree-date', {date: this.formatDate(stage.deadline) })} </span>
+            </div>
+            <div>
+              <span class="text-gray-400"> ${this.$t('performers')}: </span>
+              <span> ${this.getGroupUserStage(stage)} </span>
+            </div>
+          </div>
+        `
+      return text
+    },
     getNameStage(stage) {
       if(this.$i18n.locale == 'ru') {
         if(this.type == 'small') {
@@ -92,40 +91,17 @@ export default {
       )
     },
     getGroupUserStage(stage) {
-      const groups = stage?.group
       let executors = []
-      if(groups) {
-        groups.forEach((group) => {
-          if(group.users) {
-            const users = group.users
-            users.forEach((user) => {
-              executors.push(user.full_name)
-              // executors.push(user.uuid)
-            })
-          }
-        })
-      }
-      return executors.length > 0 ? Array.from(new Set(executors)).join() : '-'
+      stage.types.forEach((i) => {
+        if(i.groups) {
+          i.groups.forEach((g) => {
+            const name = this.$i18n.locale == 'ru' ? g.name_ru : g.name_en
+            executors.push(name)
+          })
+        }
+      })
+      return executors.length > 0 ? Array.from(new Set(executors)).join(', ') : '-'
     }
   },
 }
 </script>
-<style>
-  .popper-cust .popper {
-    width: 250px;
-  }
-  .popper-cust {
-    z-index: 1;
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 15px;
-    --popper-theme-background-color: #ffffff;
-    --popper-theme-background-color-hover: #ffffff;
-    --popper-theme-text-color: #000000;
-    --popper-theme-border-width: 1px;
-    --popper-theme-border-style: solid;
-    --popper-theme-border-color: #7a7a7a;
-    --popper-theme-border-radius: 5px;
-    --popper-theme-padding: 10px;
-  }
-</style>

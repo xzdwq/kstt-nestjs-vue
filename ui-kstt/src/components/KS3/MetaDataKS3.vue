@@ -1,6 +1,6 @@
 <template lang="pug">
 div(class="min-h-[88px]")
-  div(v-if="getKS3id.length > 0 && !getIsLoading" class="grid pt-2 text-sm" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));")
+  div(v-if="getKS3id.length > 0 && !getIsLoading" class="grid pt-2 text-sm" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));")
     div.flex.py-1
       //- Номер справки КС-3
       label(for="certificate-number" class="flex items-center select-none min-w-[170px] font-bold mb-1 lg:mb-0 pr-4 text-copy-primary") {{ $t('ks3.certificate-number') }}:
@@ -9,10 +9,11 @@ div(class="min-h-[88px]")
           v-model="v$.form.certificate_number.$model"
           type="text"
           name="certificate-number"
-          class="bg-gray-200 appearance-none border-2 rounded w-full py-[2px] pl-8 text-copy-secondary"
-          :class="v$.form.certificate_number.$errors.length === 0 ? 'border-gray-200' : 'border-red-500'"
+          class="bg-gray-200 appearance-none border-2 rounded w-full py-[2px] text-copy-secondary"
+          :class="v$.form.certificate_number.$errors.length === 0 ? 'border-gray-200' : 'border-red-500', readonly ? 'h-5' : 'pl-8'"
+          :readonly="readonly"
         )
-        div(:class="form.certificate_number != getKS3id[0].certificate_number ? 'text-red-400' : 'text-gray-500'")
+        div(v-if="!readonly" :class="form.certificate_number != getKS3id[0].certificate_number ? 'text-red-400' : 'text-gray-500'")
           svg-refresh(
             class="cursor-pointer absolute left-0 top-0 mt-[4px] ml-1",
             @click="resetDefaultValue('certificate_number', 'string', $event)"
@@ -20,23 +21,11 @@ div(class="min-h-[88px]")
         div(
           class="w-8 text-red-500 flex items-center"
         )
-          Popper(
-            arrow
-            :hover="true"
-            closeDelay="100"
-            class="popper-cust"
+          svg-exclamation(
+            class="cursor-pointer"
+            v-show="v$.form.certificate_number.$errors.length > 0"
+            v-ttip="v$.form.certificate_number.$errors[0]?.$message"
           )
-            svg-exclamation(
-              class="cursor-pointer"
-              v-show="v$.form.certificate_number.$errors.length > 0"
-            )
-            template(#content)
-              div(
-                class="select-none text-red-600 text-center"
-                v-for="(error, index) of v$.form.certificate_number.$errors"
-                :key="index"
-              )
-                div {{ error.$message }}
     div.flex.py-1
       //- Номер документа
       label(for="document-number" class="flex items-center select-none min-w-[170px] font-bold mb-1 lg:mb-0 pr-4 text-copy-primary") {{ $t('ks3.document-number') }}:
@@ -45,10 +34,11 @@ div(class="min-h-[88px]")
           v-model="v$.form.document_number.$model"
           type="text"
           name="document-number"
-          class="bg-gray-200 appearance-none border-2 rounded w-full py-[2px] pl-8 text-copy-secondary"
-          :class="v$.form.document_number.$errors.length === 0 ? 'border-gray-200' : 'border-red-500'"
+          class="bg-gray-200 appearance-none border-2 rounded w-full py-[2px] text-copy-secondary"
+          :class="v$.form.document_number.$errors.length === 0 ? 'border-gray-200' : 'border-red-500', readonly ? 'h-5' : 'pl-8'"
+          :readonly="readonly"
         )
-        div(:class="form.document_number != getKS3id[0].document_number ? 'text-red-400' : 'text-gray-500'")
+        div(v-if="!readonly" :class="form.document_number != getKS3id[0].document_number ? 'text-red-400' : 'text-gray-500'")
           svg-refresh(
             class="cursor-pointer absolute left-0 top-0 mt-[4px] ml-2",
             @click="resetDefaultValue('document_number', 'string', $event)"
@@ -56,23 +46,11 @@ div(class="min-h-[88px]")
         div(
           class="w-8 text-red-500 flex items-center"
         )
-          Popper(
-            arrow
-            :hover="true"
-            closeDelay="100"
-            class="popper-cust"
+          svg-exclamation(
+            class="cursor-pointer"
+            v-show="v$.form.document_number.$errors.length > 0"
+            v-ttip="v$.form.document_number.$errors[0]?.$message"
           )
-            svg-exclamation(
-              class="cursor-pointer"
-              v-show="v$.form.document_number.$errors.length > 0"
-            )
-            template(#content)
-              div(
-                class="select-none text-red-600 text-center"
-                v-for="(error, index) of v$.form.document_number.$errors"
-                :key="index"
-              )
-                div {{ error.$message }}
     div.flex.py-1
       //- Дата составления
       label(for="date-preparation" class="flex items-center select-none min-w-[170px] font-bold mb-1 lg:mb-0 pr-4 text-copy-primary") {{ $t('ks3.date-preparation') }}:
@@ -82,14 +60,16 @@ div(class="min-h-[88px]")
           :inputFormat="this.$i18n.locale == 'ru' ? 'dd.MM.yyyy' : 'MM/dd/yyyy'"
           :locale="this.$i18n.locale == 'ru' ? ru : en"
           ref="date_preparation"
-          class="bg-gray-200 appearance-none border-2 rounded w-full py-[2px] pl-8 text-copy-secondary"
+          class="bg-gray-200 appearance-none border-2 rounded w-full py-[2px] text-copy-secondary"
+          :class="readonly ? 'h-6' : 'pl-8'"
+          :disabled="readonly"
         )
-        div(:class="new Date(form.date_preparation).getTime() != new Date(getKS3id[0].date_preparation).getTime() ? 'text-red-400' : 'text-gray-500'")
+        div(v-if="!readonly" :class="new Date(form.date_preparation).getTime() != new Date(getKS3id[0].date_preparation).getTime() ? 'text-red-400' : 'text-gray-500'")
           svg-refresh(
             class="cursor-pointer absolute left-0 top-0 mt-[4px] ml-2",
             @click="resetDefaultValue('date_preparation', 'date', $event)"
           )
-        div(@click="setFocus('date_preparation')" class="cursor-pointer text-gray-500 absolute top-[3px] right-[35px]")
+        div(v-if="!readonly" @click="setFocus('date_preparation')" class="cursor-pointer text-gray-500 absolute top-[3px] right-[35px]")
           svg-calendar
         div.w-8
     div.flex.py-1
@@ -104,14 +84,16 @@ div(class="min-h-[88px]")
           starting-view="year"
           month-list-format="LLLL"
           ref="reporting_period"
-          class="bg-gray-200 appearance-none border-2 rounded w-full py-[2px] pl-8 text-copy-secondary"
+          class="bg-gray-200 appearance-none border-2 rounded w-full py-[2px] text-copy-secondary"
+        :class="readonly ? 'h-6' : 'pl-8'"
+        :disabled="readonly"
         )
-        div(:class="new Date(form.reporting_period).getTime() != new Date(getKS3id[0].reporting_period).getTime() ? 'text-red-400' : 'text-gray-500'")
+        div(v-if="!readonly" :class="new Date(form.reporting_period).getTime() != new Date(getKS3id[0].reporting_period).getTime() ? 'text-red-400' : 'text-gray-500'")
           svg-refresh(
             class="cursor-pointer absolute left-0 top-0 mt-[4px] ml-2",
             @click="resetDefaultValue('reporting_period', 'date', $event)"
           )
-        div(@click="setFocus('reporting_period')" class="cursor-pointer text-gray-500 absolute top-[3px] right-[35px]")
+        div(v-if="!readonly" @click="setFocus('reporting_period')" class="cursor-pointer text-gray-500 absolute top-[3px] right-[35px]")
           svg-calendar
         div.w-8
 </template>
@@ -123,19 +105,17 @@ import { required, helpers, minLength } from '@vuelidate/validators'
 import Datepicker from 'vue3-datepicker'
 import { enGB, ru } from 'date-fns/locale'
 
-import Popper from "vue3-popper";
-
 import {
   mapGetters,
   mapActions
 } from 'vuex'
 
 import toast from '@/mixins/toast'
+import matchRoles from '@/mixins/matchRoles'
 export default {
   name: 'metadata-ks3',
-  mixins: [toast],
+  mixins: [toast, matchRoles],
   components: {
-    Popper,
     Datepicker
   },
   setup () {
@@ -147,6 +127,7 @@ export default {
   },
   data() {
     return {
+      readonly: true,
       id: this.$route.params.id,
       ru: ru,
       en: enGB,
@@ -198,6 +179,8 @@ export default {
     })
   },
   async mounted() {
+    const matchRole = await this.matchRole('metadataKs3')
+    this.readonly = !matchRole
     const data = await this.fetchKS3id(this.id);
     if(data.success) {
       this.form.id = data.data[0].id,

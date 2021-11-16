@@ -22,6 +22,14 @@ module.exports = {
   
           form: 'var(--bg-background-form)',
         },
+        wfblue: {
+          primary: 'var(--text-wfblue-primary)',
+          secondary: 'var(--text-wfblue-secondary)'
+        },
+        wfgreen: {
+          primary: 'var(--text-wfgreen-primary)',
+          secondary: 'var(--text-wfgreen-secondary)'
+        },
         copy: {
           primary: 'var(--text-copy-primary)',
           secondary: 'var(--text-copy-secondary)',

@@ -85,6 +85,7 @@ export const groupModule = {
     async fetchGroupType({ commit }) {
       try {
         commit('setGroupTypeLoading', true)
+        commit('setGroupType', [])
         const data = await axios.get('api/grouptype')
         commit('setGroupType', data.data.data)
         return {
@@ -111,6 +112,12 @@ export const groupModule = {
           workflow_id: params.workflow_id,
           cascade: params.cascade
         }
+      })
+    },
+    // Создание новой группы
+    async createNewGroup({}, params) {
+      await axios.post('api/creategroup', {
+        params
       })
     }
   }

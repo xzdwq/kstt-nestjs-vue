@@ -6,6 +6,7 @@ export const workflowManagmentModule = {
     isLoadStageWorkflow: false,
     stageWorkflow: [],
     ks3ByWfId: [],
+    allTypesInWorkflow: [],
     allGroupsInWorkflowStage: [],
     allUsersInWorkflowStage: []
   }),
@@ -24,7 +25,8 @@ export const workflowManagmentModule = {
     },
     getAllGroupsInWorkflowStage(state) {
       return state.allGroupsInWorkflowStage;
-    }
+    },
+    getAllTypesInWorkflow: (state) => state.allTypesInWorkflow
   },
   mutations: {
     setIsLoadStageWorkflow(state, loading) {
@@ -41,7 +43,8 @@ export const workflowManagmentModule = {
     },
     setAllGroupsInWorkflowStage(state, groups) {
       state.allGroupsInWorkflowStage = groups;
-    }
+    },
+    setAllTypesInWorkflow: (state, type) => state.allTypesInWorkflow = type
   },
   actions: {
     async fetchStageWorkflow({ commit, getters }, params) {
@@ -56,6 +59,7 @@ export const workflowManagmentModule = {
           })
           commit('setStageWorkflow', data.data.data)
           commit('setKs3ByWfId', data.data.ks3 || [])
+          commit('setAllTypesInWorkflow', data.data.allTypesInWorkflow)
           commit('setAllGroupsInWorkflowStage', data.data.allGroupsInWorkflowStage || [])
           commit('setAllUsersInWorkflowStage', data.data.allUsersInWorkflowStage || [])
         //}
@@ -68,9 +72,59 @@ export const workflowManagmentModule = {
       }
     },
     async setSortWorkflowElement({ commit }, params) {
-      const data = await axios.post('api/ks3/sortworkflowelement', {
+      await axios.post('api/ks3/sortworkflowelement', {
         params: params
       })
+    },
+    // Добавление/удаление групп в стадии
+    async correctStageGroup({ commit }, params) {
+      const data = await axios.post('api/workflow/stagegroup', {
+        params: {
+          workflow_id: params.workflow_id,
+          group: params.group,
+          stage_id: params.stage_id,
+          type_id: params.type_id
+        }
+      })
+      .then((data) => {
+        return {
+          success: true,
+          data: data.data.data
+        }
+      })
+      .catch((e) => {
+        return {
+          success: false,
+          data: [],
+          message: e.toString()
+        }
+      })
+      return data
+    },
+    // Обноаление типа
+    async updateType({ commit }, params) {
+      try {
+        const data = await axios.put('api/workflow/type', {
+          params: {
+            workflow_id: params.workflow_id,
+            stage_id: params.stage_id,
+            type_id: params.type_id,
+            subtype_id: params.subtype_id,
+            cascade: params.cascade
+          }
+        })
+        return {
+          success: true,
+          data: data.data.data
+        }
+      }
+      catch(e) {
+        return {
+          success: false,
+          data: [],
+          message: e.toString(),
+        }
+      }
     }
   }
 }

@@ -1,7 +1,13 @@
 import { Module } from '@nestjs/common';
+
+import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
+var winston = require('winston');
+require('winston-daily-rotate-file');
+
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '@cfg/configuration';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from '@src/user/user.module';
@@ -14,6 +20,9 @@ import { HttpErrorFilter } from '@src/core/httperror.filter';
 import { ProjectModule } from '@src/project/project.module';
 import { GroupModule } from '@src/group/group.module';
 import { WorkflowModule } from '@src/workflow/workflow.module';
+import { AuthModule } from '@src/auth/auth.module';
+import { FileModule } from '@src/file/file.module';
+import { MailingModule } from '@src/mailing/mailing.module';
 
 @Module({
   imports: [
@@ -25,6 +34,34 @@ import { WorkflowModule } from '@src/workflow/workflow.module';
       load: [
         configuration
       ],
+    }),
+    WinstonModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        transports: [
+          new winston.transports.DailyRotateFile({
+            filename: config.get('log_file_path'),
+            datePattern: 'YYYY-MM-DD',
+            zippedArchive: false,
+            maxsize: config.get('log_file_max_size'),
+            maxFiles: config.get('log_max_files'),
+            handleExceptions: true,
+            format: winston.format.combine(
+              nestWinstonModuleUtilities.format.nestLike(),
+              winston.format.splat(),
+              winston.format.simple(),
+              winston.format.metadata(),
+              winston.format.timestamp({
+                format: 'DD.MM.YYYY HH:mm:ss'
+              }),
+              winston.format.ms(),
+              winston.format.printf(({ timestamp, ms, level, metadata, message, }) => {
+                return `${timestamp} ${ms} ${level.toUpperCase()} [${metadata.context}] ${message}`
+              })
+            )
+          })
+        ]
+      })
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -45,6 +82,7 @@ import { WorkflowModule } from '@src/workflow/workflow.module';
         autoLoadEntities: true
       })
     }),
+    AuthModule,
     UserModule,
     NotificationModule,
     KS3Module,
@@ -52,13 +90,16 @@ import { WorkflowModule } from '@src/workflow/workflow.module';
     ProjectModule,
     GroupModule,
     WorkflowModule,
-    KS2Module
+    KS2Module,
+    FileModule,
+    MailingModule
   ],
   controllers: [
     AppController
   ],
   providers: [
-    AppService, {
+    AppService,
+    {
       provide: APP_FILTER,
       useClass: HttpErrorFilter
     }

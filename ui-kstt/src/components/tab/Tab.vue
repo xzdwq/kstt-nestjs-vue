@@ -1,20 +1,13 @@
 <template lang="pug">
 div(
-  v-show="title == selectedTitle"
-  class="p-4"
+  v-show="code == $store.getters[`tabModule/gettab_${uniqstate}`]"
+  class="p-2"
 )
   slot
 </template>
 <script>
-import { inject } from 'vue'
 export default {
   name: 'tab',
-  props: ['title'],
-  setup() {
-    const selectedTitle = inject('selectedTitle')
-    return {
-      selectedTitle
-    }
-  }
+  props: ['title', 'code', 'uniqstate', 'countTitleModule']
 }
 </script>

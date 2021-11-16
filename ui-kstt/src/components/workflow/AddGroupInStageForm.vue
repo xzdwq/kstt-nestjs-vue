@@ -13,10 +13,9 @@ div(class="bg-background-secondary h-full p-2 rounded-md overflow-y-scroll")
           div(class="flex items-center")
             //- метки
             div(
-              class="text-[10px] text-copy-secondary rounded-3xl"
-              :class="group.type.id == 1 ? 'bg-green-200' : 'bg-red-200'"
+              class="text-[10px] text-copy-secondary rounded-3xl bg-green-200"
             )
-              div(class="px-1") {{ this.$i18n.locale == 'ru' ? group.type.name_ru : group.type.name_en }}
+              div(class="px-1") {{ this.$i18n.locale == 'ru' ? group.side.name_ru : group.side.name_en }}
             //- чекбокс
             div(class="pl-1")
               input(type="checkbox" class="form-checkbox cursor-pointer" :checked="matchGroup(group.id, group.code)" @change="chancgeCheckbox($event, group)")
@@ -59,17 +58,57 @@ export default {
       fetchGroup: 'groupModule/fetchGroup'
     }),
     matchGroup(id, code) {
-      const match = this.modalCfg.data.stage.group.find(i => i.code === code)?.code
-      this.modalCfg.tmpGroupCheck.push(
-        {
-          id: id,
-          code: code,
-          check: code === match,
-          stage_id: this.modalCfg.data.stage.id,
-          workflow_id: this.modalCfg.workflow_id ? +this.modalCfg.workflow_id : null,
+      if(this.modalCfg.data.type?.groups) {
+        const match = this.modalCfg.data.type.groups.find(i => i.code === code)
+        this.modalCfg.tmpGroupCheck.push(
+          {
+            id: id,
+            code: code,
+            check: code === match?.code,
+            stage_id: this.modalCfg.data.stage.id,
+            type_id: this.modalCfg.data.type.id
+          }
+        )
+        return code === match?.code
+      } else {
+        //- Для конкретного КС-2
+        if(this.modalCfg.ks2_id) {
+          if(this.modalCfg.data.type?.ks2_groups) {
+            const match = this.modalCfg.data.type.ks2_groups.find(i => i.code === code)
+            this.modalCfg.tmpGroupCheck.push(
+              {
+                id: id,
+                code: code,
+                check: code === match?.code,
+                type_id: this.modalCfg.data.type.id
+              }
+            )
+            return code === match?.code
+          } else {
+            this.modalCfg.tmpGroupCheck.push(
+              {
+                id: id,
+                code: code,
+                ks2_id: this.modalCfg.ks2_id,
+                check: false,
+                type_id: null
+              }
+            )
+            return false
+          }
+        } else {
+          this.modalCfg.tmpGroupCheck.push(
+            {
+              id: id,
+              code: code,
+              check: false,
+              stage_id: this.modalCfg.data.stage.id,
+              type_id: null
+            }
+          )
+          return false
         }
-      )
-      return code === match
+      }
     },
     chancgeCheckbox(e, group) {
       const checked = e.target.checked

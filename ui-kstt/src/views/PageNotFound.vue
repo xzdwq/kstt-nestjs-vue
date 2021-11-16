@@ -1,6 +1,7 @@
 <template lang="pug">
 div
-  h1 404 Error. Page Not Found
+  def-button-back
+  h1 {{ $t('page-not-found') }}
   section.error-container
     span 4
     span

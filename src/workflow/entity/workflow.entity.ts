@@ -18,7 +18,7 @@ export class WorkflowEntity {
   @Generated('uuid')
   uuid: string;
 
-  @OneToMany(() => WorkflowStageEntity, stage => stage.workflow)
+  @OneToMany(() => WorkflowStageEntity, stage => stage.workflow, { onDelete: 'CASCADE' })
   stage: WorkflowStageEntity[];
 
   @Column({

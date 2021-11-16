@@ -1,6 +1,9 @@
 <template lang="pug">
 div(class="flex w-full")
-  div(class="flex items-center w-full")
+  div(
+    class="flex justify-start items-center flex-1"
+    :class="alignInfo == 'start' ? 'max-w-[550px]' : null"
+  )
     def-button(
       class="text-white bg-[#579bae] p-[2px]"
       @click="jumpFirstPage"
@@ -20,7 +23,7 @@ div(class="flex w-full")
       @input="inputPage"
       class="w-12 appearance-none text-copy-secondary p-[2px]"
     )
-    span(class="px-2 lg:text-base text-xs") {{ $t('outof', {total: getTotalPage}) }}
+    span(class="px-2 lg:text-base text-xs min-w-[50px]") {{ $t('outof', {total: getTotalPage}) }}
     def-button(
       class="text-white bg-[#579bae] p-[2px]"
       @click="nextPage"
@@ -31,20 +34,26 @@ div(class="flex w-full")
       @click="jumpLastPage"
     )
       svg-doubleright
-    span(class="px-2 lg:text-base text-xs") {{ $t('qtyrows') }}:
-    input(
-      type="number"
-      v-model="limitRecords"
-      min="1"
-      :max="totalRecords"
-      class="w-12 appearance-none text-copy-secondary p-[2px]"
+    div(
+      class="hidden md:flex justify-start items-center md:min-w-[190px] lg:min-w-[250px]"
     )
-    def-button(
-      class="text-white bg-[#579bae] p-[2px]"
-      @click="changeSettings"
-    )
-      svg-check
-  div(class="flex w-1/4 lg:w-2/4 items-center justify-end")
+      span(class="px-2 lg:text-base text-xs") {{ $t('qtyrows') }}:
+      input(
+        type="number"
+        v-model="limitRecords"
+        min="1"
+        :max="totalRecords"
+        class="w-12 appearance-none text-copy-secondary p-[2px]"
+      )
+      def-button(
+        class="text-white bg-[#579bae] p-[2px]"
+        @click="changeSettings"
+      )
+        svg-check
+  div(
+    class="hidden sm:flex flex-0 items-center pl-1"
+    :class="`justify-${alignInfo}`, alignInfo == 'start' ? 'flex-1' : null"
+  )
     span(class="lg:text-base text-xs") {{ paginatorInfo }}
 </template>
 <script>
@@ -54,10 +63,12 @@ export default {
     'getPageModule',
     'getTotalPageModule',
     'fetchStoreModule',
+    'fetchStoreModuleParams',
     'setPageModule',
     'getLimitModule',
     'setLimitModule',
     'getTotalRecordsModule',
+    'alignInfo'
   ],
   data() {
     return {
@@ -71,7 +82,9 @@ export default {
       this.$store.commit(this.setPageModule, page)
     },
     async fetchKS3() {
-      await this.$store.dispatch(this.fetchStoreModule)
+      const fn = this.fetchStoreModule
+      const params = this.fetchStoreModuleParams
+      await this.$store.dispatch(fn, params)
     },
     async setLimit(limit) {
       await this.$store.commit(this.setLimitModule, limit)

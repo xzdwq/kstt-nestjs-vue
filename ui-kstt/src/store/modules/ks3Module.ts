@@ -7,7 +7,7 @@ export const ks3Module = {
     searchQuery: '',
     ks3Total: 0,
     page: 1,
-    limit: 6,
+    limit: 8,
     totalPages: 0,
     isLoading: false,
     needLoad: true,
@@ -106,7 +106,7 @@ export const ks3Module = {
         if(query) commit('setPage', 1)
         // commit('setKS3', [])
         // commit('setTotalPages', 0)
-        const data = await axios.get('api/ks3', {
+        const data:any = await axios.get('api/ks3', {
           params: {
             _page: state.page,
             _limit: state.limit,
@@ -117,7 +117,7 @@ export const ks3Module = {
         commit('setKS3Total', data.data.total)
         commit('setTotalPages', Math.ceil(data.data.total / state.limit))
         commit('setNeedLoad', false)
-      } catch(e) { console.log(e) }
+      } catch(e) {}
       finally { setTimeout(() => { commit('setIsLoading', false); }, 500) }
     },
     async createKS3({ commit, dispatch }, data) {

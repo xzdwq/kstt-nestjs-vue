@@ -14,35 +14,50 @@ nav(class="z-10 md:mx-auto flex justify-between p-3 border-2 border-transparent 
     //-       :to="'/about'"
     //-     ) {{ $t('about-nav') }}
   div.flex.w-auto
-    popper(arrow :hover="true" placement="bottom"
-      class="flex pr-2 popper-tips"
-      :content="$t('workflow-managment')"
+    div(
+      v-if="$store.getters['authModule/getAuth']"
+      class="flex w-auto"
     )
-      workflow-managment
-    popper(arrow :hover="true" placement="bottom"
-      class="flex pr-2 popper-tips"
-      :content="$t('configuration')"
-    )
+      div(v-if="workflowManagment")
+        workflow-managment
       cog-settings
-    popper(arrow :hover="true" placement="bottom"
-      class="flex pr-2 popper-tips"
-      :content="$t('notification')"
-    )
       bell-notification
-    popper(arrow :hover="true" placement="bottom"
-      class="flex pr-2 popper-tips"
-      :content="$t('theme-switch')"
-    )
-      theme-switcher
-    popper(arrow :hover="true" placement="bottom"
-      class="flex items-center pr-2 popper-tips"
-      :content="$t('lang-switch')"
-    )
-      locales-switcher
+    theme-switcher
+    locales-switcher
+    logout
 </template>
 
 <script>
+import {
+  mapGetters
+} from 'vuex'
+import matchRoles from '@/mixins/matchRoles'
 export default {
-  name: 'header-navbar'
+  name: 'header-navbar',
+  mixins: [matchRoles],
+  data() {
+    return {
+      workflowManagment: false
+    }
+  },
+  computed: {
+    ...mapGetters({
+      getAuth: 'authModule/getAuth'
+    })
+  },
+  async mounted() {
+    if(this.$store.getters['authModule/getAuth']) {
+      await this.matchRole('workflowManagment')
+    }
+  },
+  watch: {
+    getAuth(val) {
+      if(val) {
+        if(this.$store.getters['authModule/getAuth']) {
+          setTimeout(() => { this.matchRole('workflowManagment') }, 0)
+        }
+      }
+    }
+  }
 }
 </script>

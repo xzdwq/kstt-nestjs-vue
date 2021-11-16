@@ -33,12 +33,14 @@ export class NotificationEntity {
 
   @Column({
     length: 255,
-    nullable: true
+    nullable: true,
+    default: 'system'
   })
   type: string;
 
   @Column({
-    nullable: false
+    nullable: false,
+    default: 0
   })
   status: number;
 

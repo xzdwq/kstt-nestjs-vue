@@ -8,7 +8,7 @@ import {
   UpdateDateColumn
 } from "typeorm";
 
-import { DefaultWorkflowStageGroupEntity } from "@src/workflow/entity/default/default_workflow_stage_group.entity";
+import { DefaultWorkflowStageTypeEntity } from "@src/workflow/entity/default/default_workflow_stage_type.entity";
 
 @Entity('default_workflow_stage')
 export class DefaultWorkflowStageEntity {
@@ -18,6 +18,12 @@ export class DefaultWorkflowStageEntity {
   @Column()
   @Generated('uuid')
   uuid: string;
+
+  @Column({
+    length: 255,
+    nullable: false
+  })
+  code: string;
 
   @Column({
     length: 1024,
@@ -63,8 +69,8 @@ export class DefaultWorkflowStageEntity {
   })
   hierarchy: string;
 
-  @OneToMany(() => DefaultWorkflowStageGroupEntity, stage_group => stage_group.stage)
-  groups: DefaultWorkflowStageGroupEntity[];
+  @OneToMany(() => DefaultWorkflowStageTypeEntity, stage_group => stage_group.stage)
+  types: DefaultWorkflowStageTypeEntity[];
 
   @CreateDateColumn()
   create_at: Date;

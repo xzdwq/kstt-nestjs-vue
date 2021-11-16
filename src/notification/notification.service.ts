@@ -2,10 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotificationEntity } from './entity/notification.entity';
+import { UserService } from '@src/user/user.service';
 
 @Injectable()
 export class NotificationService {
   constructor(
+    private userService: UserService,
     @InjectRepository(NotificationEntity)
     private notificationRepository: Repository<NotificationEntity>
   ){}
@@ -54,6 +56,26 @@ export class NotificationService {
       data: res,
       total: null,
       totalNotRead: null
+    }
+  }
+
+  async create(email, text) {
+    const user = await this.userService.getUserByEmail(email)
+    if(user) {
+      const createNotif = await this.notificationRepository.create({
+        text_ru: text.text_ru,
+        text_en: text.text_en,
+        user_id: user.id
+      })
+      const newNotif = await this.notificationRepository.save(createNotif)
+      return {
+        success: true,
+        data: newNotif
+      }
+    }
+    return {
+      success: false,
+      message: 'User not found'
     }
   }
 }

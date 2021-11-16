@@ -11,8 +11,12 @@ export const localesSwitcherModule = {
     }
   },
   mutations: {
-    localesSwitch(state: any) {
-      const newLocales = state.locales === 'ru' ? 'en' : 'ru'
+    localesSwitch(state, params) {
+      let newLocales
+      if(!params.forced && params.locale) {
+        params.locale === 'ru' ? newLocales = 'ru' : newLocales = 'en'
+      }
+      if(params.forced) newLocales = state.locales === 'ru' ? 'en' : 'ru'
       state.locales = newLocales;
       localStorage.setItem('locales', newLocales)
     }

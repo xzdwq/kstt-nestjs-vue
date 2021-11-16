@@ -8,7 +8,7 @@ div(
     @click="isMenuOpen = !isMenuOpen"
   )
     slot(name="icon")
-    span(class="pr-2") {{ text }}
+    span(class="pr-2" :class="textClass") {{ text }}
     svg-down(
       class="duration-300"
       :class="{'rotate-180': isMenuOpen}"
@@ -24,7 +24,7 @@ div(
     div(
       v-if="isMenuOpen"
       :class="{'right-0': listAligh == 'right', 'left-0': listAligh == 'left'}, listWidthClass"
-      class="origin-top-right absolute mt-1 rounded-md shadow-lg text-sm overflow-hidden z-20"
+      class="origin-top-right absolute mt-1 rounded-sm shadow-lg text-sm overflow-hidden z-20"
     )
       div(
         class="rounded-md bg-white shadow-xs"
@@ -43,7 +43,7 @@ div(
 <script>
 export default {
   name: 'dropdown-menu',
-  props: ['text', 'listAligh', 'listWidthClass'],
+  props: ['text', 'listAligh', 'listWidthClass', 'textClass'],
   data() {
     return {
       isMenuOpen: false

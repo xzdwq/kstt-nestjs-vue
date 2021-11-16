@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { WorkflowEntity } from '@src/workflow/entity/workflow.entity';
-import { WorkflowStageGroupEntity } from '@src/workflow/entity/workflow_stage_group.entity';
+import { WorkflowStageTypeEntity } from '@src/workflow/entity/workflow_stage_type.entity';
 
 @Entity('workflow_stage')
 export class WorkflowStageEntity {
@@ -20,6 +20,12 @@ export class WorkflowStageEntity {
   @Column()
   @Generated('uuid')
   uuid: string;
+
+  @Column({
+    length: 255,
+    nullable: false
+  })
+  code: string;
 
   @Column({
     length: 1024,
@@ -90,8 +96,8 @@ export class WorkflowStageEntity {
   @JoinColumn({ name: 'workflow_id' })
   workflow: WorkflowEntity[];
 
-  @OneToMany(() => WorkflowStageGroupEntity, stage_group => stage_group.stage)
-  group: WorkflowStageGroupEntity[];
+  @OneToMany(() => WorkflowStageTypeEntity, stage_group => stage_group.stage, { onDelete: 'CASCADE' })
+  types: WorkflowStageTypeEntity[];
 
   @CreateDateColumn()
   create_at: Date;

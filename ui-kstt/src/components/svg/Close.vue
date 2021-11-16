@@ -1,6 +1,6 @@
 <template lang="pug">
 svg(
-    class="w-6 h-6 cursor-pointer"
+    class="w-6 h-6"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -9,7 +9,7 @@ svg(
     path(
       stroke-linecap="round"
       stroke-linejoin="round"
-      stroke-width="3"
+      stroke-width="2"
       d="M6 18L18 6M6 6l12 12"
     )
 </template>

@@ -1,10 +1,11 @@
 <template lang="pug">
 div(
-  class="text-copy-primary hover:text-copy-hover cursor-pointer"
+  class="pr-2 text-copy-primary hover:text-copy-hover cursor-pointer"
   @click.prevent="animateScale($event)"
 )
-  svg-sun(v-if="getTheme === 'theme-light'")
-  svg-moon(v-else)
+  div(v-ttip="$t('theme-switch')")
+    svg-sun(v-if="getTheme === 'theme-light'")
+    svg-moon(v-else)
 </template>
 
 <script>

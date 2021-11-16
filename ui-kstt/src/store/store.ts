@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import { authModule } from '@/store/modules/authModule'
 import { localesSwitcherModule } from "@/store/modules/localesSwitcher";
 import { themeSwitcherModule } from "@/store/modules/themeSwitcher";
 import { bellNotificationModule } from "@/store/modules/bellNotification";
@@ -10,6 +11,8 @@ import { groupModule } from "@/store/modules/groupModule"
 import { workflowManagmentModule } from "@/store/modules/workflowManagmentModule"
 import { workflowDefaultManagmentModule } from "@/store/modules/workflowDefaultManagmentModule"
 import { expandStageInKS3IdModule } from "@/store/modules/expandStageInKS3Id"
+import { tabModule } from '@/store/modules/tabModule'
+import { countTitleModule } from '@/store/modules/countTitleModule'
 
 export default createStore({
   state: {
@@ -21,6 +24,7 @@ export default createStore({
   actions: {
   },
   modules: {
+    authModule,
     localesSwitcherModule,
     themeSwitcherModule,
     bellNotificationModule,
@@ -31,6 +35,8 @@ export default createStore({
     groupModule,
     workflowManagmentModule,
     workflowDefaultManagmentModule,
-    expandStageInKS3IdModule
+    expandStageInKS3IdModule,
+    tabModule,
+    countTitleModule
   }
 })

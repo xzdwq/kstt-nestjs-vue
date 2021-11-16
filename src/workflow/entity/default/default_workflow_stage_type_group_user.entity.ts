@@ -9,10 +9,10 @@ import {
   UpdateDateColumn
 } from "typeorm";
 
-import { DefaultWorkflowStageGroupEntity } from "@src/workflow/entity/default/default_workflow_stage_group.entity";
+import { DefaultWorkflowStageGroupEntity } from "@src/workflow/entity/default/default_workflow_stage_type_group.entity";
 import { UserEntity } from '@src/user/entity/user.entity';
 
-@Entity('default_workflow_stage_group_user')
+@Entity('default_workflow_stage_type_group_user')
 export class DefaultWorkflowStageGroupUserEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,6 +25,11 @@ export class DefaultWorkflowStageGroupUserEntity {
     nullable: false
   })
   stage_id: number;
+
+  @Column({
+    nullable: false
+  })
+  type_id: number;
 
   @Column({
     nullable: false

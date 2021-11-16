@@ -1,11 +1,18 @@
 <template lang="pug">
-div(class="h-full rounded-md bg-background-secondary text-base leading-normal text-left")
-  tab-wrapper
-    tab(:title="$t('crypto.electonic-signature')")
-      div(class="p-2 h-[38vh] overflow-y-scroll overflow-x-hidden")
+div(class="relative h-full rounded-md bg-background-secondary text-base leading-normal text-left")
+  tab-wrapper(class="relative h-full" :tabflex="true" :selectednoactivtab="true" :uniqstate="uniqstate")
+    tab(
+      class="relative h-[calc(100%-60px)]"
+      :title="'crypto.electonic-signature'" code="electonic-signature" :uniqstate="uniqstate"
+    )
+      div(class="p-2 h-[41vh] overflow-y-scroll overflow-x-hidden")
         signature-form(ref="signatureForm")
-    tab(:title="$t('crypto.list-electonic-signature')")
-      div(class="text-base p-2 h-[38vh] overflow-y-scroll overflow-x-hidden") Tab 2 Lorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf s Lorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf sLorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf sLorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf sLorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf sLorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf sLorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf sLorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf sLorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf sLorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf sLorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf sLorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb nsbdfbsmdfbmsnbsbdf  sfbmbwjeh sdf sdnf wr sdf,sdf sLorem ipssdf sdf sdf sdf sd fsdf sdbfmsdfjshd bsdnbf df sdfb END
+    tab(
+      class="relative h-[calc(100%-60px)]"
+      :title="'crypto.list-electonic-signature'" code="list-electonic-signature" :uniqstate="uniqstate"
+    )
+      div(class="relative h-full text-base p-1 overflow-scroll")
+        electronic-signature-list
 </template>
 <script>
 import TabWrapper from '@/components/tab/TabWrapper.vue'
@@ -16,6 +23,11 @@ import {
 export default {
   name: 'tabs-panel',
   components: { TabWrapper, Tab },
+  data() {
+    return {
+      uniqstate: 'cog'
+    }
+  },
   methods: {
     ...mapActions({
       saveCogForm: 'cryptoConfigurationModule/saveCogForm'

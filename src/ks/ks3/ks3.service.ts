@@ -1,4 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, LoggerService } from '@nestjs/common';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -9,6 +10,7 @@ import { WorkflowService } from '@src/workflow/workflow.service';
 @Injectable()
 export class KS3Service {
   constructor(
+    @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService,
     @InjectRepository(KS3Entity)
     private ks3Repository: Repository<KS3Entity>,
     @Inject(GroupService)
@@ -20,42 +22,24 @@ export class KS3Service {
   async findAll(page: number, limit: number, query: string): Promise<object> {
     if(!query) query = ''
 
-  //   const [data, total] = await this.ks3Repository.findAndCount({
-  //     relations: [
-  //       'user',
-  //       'project',
-  //       'workflow',
-  //       'workflow.stage',
-  //       'workflow.stage.group',
-  //       'workflow.stage.group.type',
-  //       'workflow.stage.group.users'
-  //     ],
-  //     skip: limit * (page - 1),
-  //     take: limit,
-  //     where: [
-  //       { certificate_number: Like(`%${query}%`) },
-  //       { document_number: Like(`%${query}%`) }
-  //     ],
-  //     order: {
-  //       create_at: 'DESC'
-  //     }
-  //   })
-
     const queryB = await this.ks3Repository
         .createQueryBuilder('ks3')
         .leftJoinAndSelect('ks3.user', 'user')
+        .leftJoinAndSelect('ks3.ks2', 'ks2')
         .leftJoinAndSelect('ks3.project', 'project')
         .leftJoinAndSelect('ks3.workflow', 'workflow')
         .leftJoinAndSelect('workflow.stage', 'stage')
-        .leftJoinAndSelect('stage.group', 'group')
-        .leftJoinAndSelect('group.type', 'type')
-        .leftJoinAndSelect('group.users', 'users')
+        .leftJoinAndSelect('stage.types', 'types')
+        .leftJoinAndSelect('types.groups', 'groups')
+        .leftJoinAndSelect('groups.type', 'type')
+        .leftJoinAndSelect('groups.users', 'users')
         .where('ks3.certificate_number like :query', { query:`%${query}%` })
         .orWhere('ks3.document_number like :query', { query:`%${query}%` })
         .orderBy({
           'ks3.create_at': 'DESC',
           'stage.order_execution_stage': 'ASC',
-          'group.order_execution_group': 'ASC',
+          'types.order_execution_type': 'ASC',
+          'groups.order_execution_group': 'ASC',
           'users.order_execution_user': 'ASC'
         })
 
@@ -77,23 +61,25 @@ export class KS3Service {
 
   async getKS3id(id: number): Promise<object> {
     const data = await this.ks3Repository
-        .createQueryBuilder('ks3')
-        .leftJoinAndSelect('ks3.user', 'user')
-        .leftJoinAndSelect('ks3.project', 'project')
-        .leftJoinAndSelect('ks3.workflow', 'workflow')
-        .leftJoinAndSelect('workflow.stage', 'stage')
-        .leftJoinAndSelect('stage.group', 'group')
-        .leftJoinAndSelect('group.type', 'type')
-        .leftJoinAndSelect('group.users', 'users')
-        // .leftJoinAndSelect('ks3.ks2', 'ks2')
-        .where(`ks3.id = ${id}`)
-        .orderBy({
-          'ks3.create_at': 'DESC',
-          'stage.order_execution_stage': 'ASC',
-          'group.order_execution_group': 'ASC',
-          'users.order_execution_user': 'ASC'
-        })
-        .getMany()
+      .createQueryBuilder('ks3')
+      .leftJoinAndSelect('ks3.user', 'user')
+      .leftJoinAndSelect('ks3.ks2', 'ks2')
+      .leftJoinAndSelect('ks3.project', 'project')
+      .leftJoinAndSelect('ks3.workflow', 'workflow')
+      .leftJoinAndSelect('workflow.stage', 'stage')
+      .leftJoinAndSelect('stage.types', 'types')
+      .leftJoinAndSelect('types.groups', 'groups')
+      .leftJoinAndSelect('groups.type', 'type')
+      .leftJoinAndSelect('groups.users', 'users')
+      .where('ks3.id = :id', { id: id })
+      .orderBy({
+        'ks3.create_at': 'DESC',
+        'stage.order_execution_stage': 'ASC',
+        'types.order_execution_type': 'ASC',
+        'groups.order_execution_group': 'ASC',
+        'users.order_execution_user': 'ASC'
+      })
+      .getMany()
     // Информация по текущей стадии согласования
     const wf_id_by_ks3 = data[0].workflow_id
     const currentStageWFId = await this.workflowService.onGetCurrentWorkflowStageById(wf_id_by_ks3)
@@ -118,6 +104,7 @@ export class KS3Service {
       data: workflowStageById.data,
       total: workflowStageById.total,
       ks3: ks3info,
+      allTypesInWorkflow: workflowStageById.allTypesInWorkflow,
       allGroupsInWorkflowStage: workflowStageById.allGroupsInWorkflowStage,
       allUsersInWorkflowStage: workflowStageById.allUsersInWorkflowStage
     }
@@ -148,43 +135,57 @@ export class KS3Service {
     }
   }
 
-  async createKS3(body): Promise<object> {
+  async createKS3(body, author): Promise<object> {
     // 1. Создаем новый workflow и получаем его id
     const newWorkflow = await this.workflowService.onCreateWorkflow()
 
     // 2. Создаем стадии согласования для вновь созданного workflow копируя их из таблицы по умолчанию
     const newWorkflowStage = await this.workflowService.onCreateWorkflowStage(newWorkflow.id)
 
-    // 3. Создаем группы и присваиваем их ранее созданным стадиям по логике как из таблицы по умолчанию
-    const newWorkflowGroup = await this.workflowService.onCreateWorkflowGroup(newWorkflow.id, newWorkflowStage)
+    // 3. Создаем новые типы будущих групп по логике как из таблицы по умолчанию
+    const newWorkflowType = await this.workflowService.onCreateWorkflowType(newWorkflow.id, newWorkflowStage)
 
-    // 4. Создаем пользователей и присваиваем их в ранее созданные группы по логике как из таблицы по умолчанию
-    const getGroupDefault: any = await this.groupService.findAll()
-    const groupDefault = getGroupDefault.data;
-    await this.workflowService.onCreateWorkflowUser(newWorkflow.id, newWorkflowGroup, groupDefault)
-    // 5. Создаем новую карточку КС-3 и присваиваем ей ранее созданный workflow_id
+    // 4. Создаем группы и присваиваем их ранее созданным стадиям по логике как из таблицы по умолчанию
+    const newWorkflowGroup = await this.workflowService.onCreateWorkflowGroup(newWorkflow.id, newWorkflowStage, newWorkflowType)
+
+    // 5. Создаем пользователей и присваиваем их в ранее созданные группы по логике как из таблицы по умолчанию
+    // const getGroupDefault: any = await this.groupService.findAll()
+    // const groupDefault = getGroupDefault.data;
+    await this.workflowService.onCreateWorkflowUser(newWorkflow.id, newWorkflowGroup)
+    // 6. Создаем новую карточку КС-3 и присваиваем ей ранее созданный workflow_id
     const createNewKS3 = await this.ks3Repository.create({
       certificate_number: body.data.certificateNumber,
       document_number: body.data.documentNumber,
       reporting_period: body.data.period,
       date_preparation: body.data.documentPeriod,
-      user_id: 1,
+      user_id: author.DB.id,
       workflow_id: newWorkflow.id
     })
     const newKS3 = await this.ks3Repository.save(createNewKS3)
 
-    const data = await this.ks3Repository.find({
-      relations: [
-        'user',
-        'project',
-        'workflow',
-        'workflow.stage',
-        'workflow.stage.group',
-        'workflow.stage.group.type',
-        'workflow.stage.group.users'
-      ],
-      where: { id: newKS3.id }
-    })
+    const data: any = await this.ks3Repository
+      .createQueryBuilder('ks3')
+      .leftJoinAndSelect('ks3.user', 'user')
+      .leftJoinAndSelect('ks3.ks2', 'ks2')
+      .leftJoinAndSelect('ks3.project', 'project')
+      .leftJoinAndSelect('ks3.workflow', 'workflow')
+      .leftJoinAndSelect('workflow.stage', 'stage')
+      .leftJoinAndSelect('stage.types', 'types')
+      .leftJoinAndSelect('types.groups', 'groups')
+      .leftJoinAndSelect('groups.type', 'type')
+      .leftJoinAndSelect('groups.side', 'side')
+      .leftJoinAndSelect('groups.users', 'users')
+      .where('ks3.id = :id', { id: newKS3.id })
+      .orderBy({
+        'ks3.create_at': 'DESC',
+        'stage.order_execution_stage': 'ASC',
+        'types.order_execution_type': 'ASC',
+        'groups.order_execution_group': 'ASC',
+        'users.order_execution_user': 'ASC'
+      })
+      .getMany()
+
+    this.logger.log(`New KS3 id: ${data[0].id}, workflow_id: ${data[0].workflow_id} created`, KS3Service.name)
 
     return {
       success: true,
@@ -238,6 +239,32 @@ export class KS3Service {
     return {
       success: true,
       data: data
+    }
+  }
+  // Удалить КС-3
+  async delKS3(ks3_id) {
+    const ks3_info = await this.ks3Repository.findOne(ks3_id)
+    // Удаляем КС-3
+    await this.ks3Repository.delete({
+      id: ks3_id
+    })
+    // Удаляем WF КС-3
+    await this.workflowService.deleteWF(ks3_info.workflow_id)
+    return {
+      success: true
+    }
+  }
+  // Изменить стадию у КС-3
+  async changeStage(ks3_id, stage_code) {
+    const ks3_info: any = await this.ks3Repository.findOne(ks3_id, {
+      relations: ['workflow']
+    })
+    const wf_id = ks3_info.workflow.id
+    // Указываем, что КС-3 стартанула
+    await this.workflowService.start(wf_id, stage_code)
+    // await this.ks3Repository.update(ks3_id, { ks2_status_id: status.id })
+    return {
+      success: true
     }
   }
 }

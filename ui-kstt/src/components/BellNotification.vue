@@ -1,9 +1,12 @@
 <template lang="pug">
 div(
-  class="flex text-copy-primary hover:text-copy-hover cursor-pointer"
+  class="pr-2 flex text-copy-primary hover:text-copy-hover cursor-pointer"
   @click="openPopupNotification"
 )
-  svg-bell(:class="{ 'animate-swing text-red-500' : getCountNotifications > 0}")
+  svg-bell(
+    v-ttip="$t('notification')"
+    :class="{ 'animate-swing text-red-500' : getCountNotifications > 0}"
+  )
   span(class="-ml-0.5 align-text-top text-base tracking-tighter font-bold select-none" :class="{ 'text-red-500' : getCountNotifications > 0 }")
     sup {{ getCountNotifications }}
 popup-notification(

@@ -75,7 +75,7 @@ export const bellNotificationModule = {
         commit('setPage', 1)
         commit('setTotalPages', 0)
         commit('setIsLoading', true);
-        const data = await axios.get(`api/notification/${state.user_id || 1}`, {
+        const data = await axios.get(`api/notification/`, {
           params: {
             _page: state.page,
             _limit: state.limit
@@ -93,7 +93,7 @@ export const bellNotificationModule = {
       try {
         commit('setIsLoading', true);
         commit('setPage', state.page + 1)
-        const data = await axios.get(`api/notification/${state.user_id || 1}`, {
+        const data = await axios.get(`api/notification/`, {
           params: {
             _page: state.page,
             _limit: state.limit
@@ -107,7 +107,7 @@ export const bellNotificationModule = {
     },
     async fetchReadNotifications({ state, commit, getters }, params) {
       const newStatus = params.status === 1 ? 0 : 1
-      await axios.post(`api/notification/${state.user_id || 1}`, {
+      await axios.post(`api/notification/`, {
         params: {
           notification_id: params.id,
           status: newStatus

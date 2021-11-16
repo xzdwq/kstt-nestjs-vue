@@ -9,11 +9,12 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { WorkflowStageEntity } from '@src/workflow/entity/workflow_stage.entity';
-import { GroupTypeEntity } from '@src/group/entity/group_type.entity';
-import { WorkflowStageGroupUserEntity } from '@src/workflow/entity/workflow_stage_group_user.entity';
 
-@Entity('workflow_stage_group')
+import { WorkflowStageGroupUserEntity } from '@src/workflow/entity/workflow_stage_type_group_user.entity';
+import { WorkflowStageTypeEntity } from '@src/workflow/entity/workflow_stage_type.entity';
+import { SideEntity } from '@src/group/entity/side.entity';
+
+@Entity('workflow_stage_type_group')
 export class WorkflowStageGroupEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -39,15 +40,6 @@ export class WorkflowStageGroupEntity {
     nullable: false
   })
   name_en: string;
-
-  @Column({
-    nullable: false,
-    default: 1
-  })
-  type_id: number;
-  @ManyToOne(() => GroupTypeEntity, group_type => group_type.id, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'type_id' })
-  type: GroupTypeEntity;
 
   @Column({
     nullable: false,
@@ -85,9 +77,22 @@ export class WorkflowStageGroupEntity {
     nullable: false
   })
   stage_id: number;
-  @ManyToOne(() => WorkflowStageEntity, stage => stage.id, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'stage_id' })
-  stage: WorkflowStageEntity[];
+
+  @Column({
+    nullable: false
+  })
+  type_id: number;
+  @ManyToOne(() => WorkflowStageTypeEntity, type => type.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'type_id' })
+  type: WorkflowStageTypeEntity[];
+  
+  @Column({
+    nullable: false
+  })
+  side_id: number;
+  @ManyToOne(() => SideEntity, side => side.id)
+  @JoinColumn({ name: 'side_id' })
+  side: SideEntity[];
 
   @OneToMany(() => WorkflowStageGroupUserEntity, user => user.workflow_stage_group, { onDelete: 'CASCADE' })
   users: WorkflowStageGroupUserEntity[];

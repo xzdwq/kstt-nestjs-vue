@@ -12,7 +12,8 @@ import {
 
 import { UserGroupEntity } from '@src/user/entity/user_group.entity';
 import { GroupTypeEntity } from '@src/group/entity/group_type.entity';
-import { DefaultWorkflowStageGroupEntity } from "@src/workflow/entity/default/default_workflow_stage_group.entity";
+import { DefaultWorkflowStageGroupEntity } from "@src/workflow/entity/default/default_workflow_stage_type_group.entity";
+import { SideEntity } from '@src/group/entity/side.entity';
 
 @Entity('group')
 export class GroupEntity {
@@ -27,6 +28,7 @@ export class GroupEntity {
 
   @Column({
     length: 255,
+    unique: true,
     nullable: false
   })
   code: string;
@@ -48,9 +50,18 @@ export class GroupEntity {
     default: 1
   })
   type_id: number;
-  @ManyToOne(() => GroupTypeEntity, group_type => group_type.id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => GroupTypeEntity, group_type => group_type.id)
   @JoinColumn({ name: 'type_id' })
   type: GroupTypeEntity;
+
+  @Column({
+    nullable: false,
+    default: 1
+  })
+  side_id: number;
+  @ManyToOne(() => SideEntity, side => side.id)
+  @JoinColumn({ name: 'side_id' })
+  side: SideEntity;
 
   @OneToMany(() => UserGroupEntity, (user_group) => user_group.group)
   user_group: UserGroupEntity[];
